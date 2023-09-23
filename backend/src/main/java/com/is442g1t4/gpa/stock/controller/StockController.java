@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.is442g1t4.gpa.stock.model.Stock;
 import com.is442g1t4.gpa.stock.service.StockService;
@@ -24,11 +25,23 @@ import com.is442g1t4.gpa.stock.service.StockService;
 @RestController
 @RequestMapping("/api/v1/stock")
 public class StockController {
-    // private final StockService stockService;
+    @Autowired
+    private StockService stockService;
 
-    @GetMapping("/")
-    public String index() {
-        return "Greetings from Spring Boot!";
+    @GetMapping
+    public ResponseEntity<List<Stock>> getAllStocks() {
+        return new ResponseEntity<List<Stock>>(stockService.getAllStocks(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{stockTicker}")
+    public ResponseEntity<Optional<Stock>> getStock(@PathVariable String stockTicker) {
+        return new ResponseEntity<Optional<Stock>>(stockService.getStock(stockTicker), HttpStatus.OK);
+    }
+
+    @PutMapping("/{stockTicker}")
+    public ResponseEntity<Stock> updateStock(@PathVariable String stockTicker, @RequestBody Stock updatedStock) {
+        Stock updated = stockService.updateStock(stockTicker, updatedStock.getStockCurrPrice(), updatedStock.getStockDailyChange());
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     // @Autowired
