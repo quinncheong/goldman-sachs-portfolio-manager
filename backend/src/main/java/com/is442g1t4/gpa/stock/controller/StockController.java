@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +43,16 @@ public class StockController {
     public ResponseEntity<Stock> updateStock(@PathVariable String stockTicker, @RequestBody Stock updatedStock) {
         Stock updated = stockService.updateStock(stockTicker, updatedStock.getStockCurrPrice(), updatedStock.getStockDailyChange());
         return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
+
+    // getting stock data from AlphaVantage
+    @GetMapping("/getStockData/{stockTicker}")
+    private String getStockData(@PathVariable String stockTicker){
+        String uri = String.format("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=%s&apikey=KGS8AP59WY1X5L3V",stockTicker);
+        RestTemplate restTemplate = new RestTemplate();
+        String result = (restTemplate.getForObject(uri, String.class));
+
+        return result;
     }
 
     // @Autowired
