@@ -41,14 +41,17 @@ public class StockController {
 
     @PutMapping("/{stockTicker}")
     public ResponseEntity<Stock> updateStock(@PathVariable String stockTicker, @RequestBody Stock updatedStock) {
-        Stock updated = stockService.updateStock(stockTicker, updatedStock.getStockCurrPrice(), updatedStock.getStockDailyChange());
+        Stock updated = stockService.updateStock(stockTicker, updatedStock.getStockCurrPrice(),
+                updatedStock.getStockDailyChange());
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     // getting stock data from AlphaVantage
     @GetMapping("/getStockData/{stockTicker}")
-    private String getStockData(@PathVariable String stockTicker){
-        String uri = String.format("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=%s&apikey=KGS8AP59WY1X5L3V",stockTicker);
+    private String getStockData(@PathVariable String stockTicker) {
+        String uri = String.format(
+                "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=%s&apikey=KGS8AP59WY1X5L3V",
+                stockTicker);
         RestTemplate restTemplate = new RestTemplate();
         String result = (restTemplate.getForObject(uri, String.class));
 

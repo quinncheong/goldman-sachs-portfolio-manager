@@ -14,6 +14,7 @@ import java.util.Optional;
 public class PortfolioService {
     @Autowired
     private PortfolioRepository portfolioRepository;
+
     public List<Portfolio> getAllPortfolios() {
         return portfolioRepository.findAll();
     }
