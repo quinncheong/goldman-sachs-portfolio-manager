@@ -29,19 +29,23 @@ public class StockController {
     @Autowired
     private StockService stockService;
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Stock>> getAllStocks() {
-        return new ResponseEntity<List<Stock>>(stockService.getAllStocks(), HttpStatus.OK);
+        return new ResponseEntity<List<Stock>>(stockService.getAllStocks(),
+                HttpStatus.OK);
     }
 
     @GetMapping("/{stockTicker}")
     public ResponseEntity<Optional<Stock>> getStock(@PathVariable String stockTicker) {
-        return new ResponseEntity<Optional<Stock>>(stockService.getStock(stockTicker), HttpStatus.OK);
+        return new ResponseEntity<Optional<Stock>>(stockService.getStock(stockTicker),
+                HttpStatus.OK);
     }
 
     @PutMapping("/{stockTicker}")
-    public ResponseEntity<Stock> updateStock(@PathVariable String stockTicker, @RequestBody Stock updatedStock) {
-        Stock updated = stockService.updateStock(stockTicker, updatedStock.getStockCurrPrice(),
+    public ResponseEntity<Stock> updateStock(@PathVariable String stockTicker,
+            @RequestBody Stock updatedStock) {
+        Stock updated = stockService.updateStock(stockTicker,
+                updatedStock.getStockCurrPrice(),
                 updatedStock.getStockDailyChange());
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }

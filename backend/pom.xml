@@ -17,26 +17,7 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<spring.profiles.active>${environment}</spring.profiles.active>
 	</properties>
-
-	<profiles>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<env.file>src/main/resources/.env-dev</env.file>
-			</properties>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<properties>
-				<env.file>src/main/resources/.env-prod</env.file>
-			</properties>
-		</profile>
-	</profiles>
 
 	<dependencies>
 		<dependency>
@@ -58,6 +39,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
 		<dependency>

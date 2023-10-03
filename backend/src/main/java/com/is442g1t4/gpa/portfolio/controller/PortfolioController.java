@@ -17,20 +17,21 @@ import org.springframework.web.bind.annotation.RestController;
 import com.is442g1t4.gpa.portfolio.model.Portfolio;
 import com.is442g1t4.gpa.portfolio.service.PortfolioService;
 
-
 @RestController
 @RequestMapping("/api/v1/portfolio")
 public class PortfolioController {
     @Autowired
     private PortfolioService portfolioService;
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Portfolio>> getAllPortfolios() {
-        return new ResponseEntity<List<Portfolio>>(portfolioService.getAllPortfolios(), HttpStatus.OK);
+        return new ResponseEntity<List<Portfolio>>(portfolioService.getAllPortfolios(),
+                HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Portfolio>> getPortfolio(@PathVariable ObjectId id) {
-        return new ResponseEntity<Optional<Portfolio>>(portfolioService.getPortfolio(id), HttpStatus.OK);
+        return new ResponseEntity<Optional<Portfolio>>(portfolioService.getPortfolio(id),
+                HttpStatus.OK);
     }
 }
