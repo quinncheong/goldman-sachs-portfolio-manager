@@ -14,11 +14,12 @@ import java.util.Optional;
 public class StockService {
     @Autowired
     private StockRepository stockRepository;
+
     public List<Stock> getAllStocks() {
         return stockRepository.findAll();
     }
 
-    public Optional<Stock> getStock(String stockTicker) {
+    public Optional<Stock> getStockByTicker(String stockTicker) {
         return stockRepository.findStockByStockTicker(stockTicker);
     }
 
@@ -40,6 +41,10 @@ public class StockService {
 
     public Stock saveStock(Stock stock) {
         return null;
+    }
+
+    public Stock addStockPriceData(Stock stock) {
+        return stockRepository.addStockPriceData(stock);
     }
 
 }

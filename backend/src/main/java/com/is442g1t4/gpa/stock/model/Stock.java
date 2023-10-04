@@ -1,5 +1,7 @@
 package com.is442g1t4.gpa.stock.model;
 
+import java.util.Date;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -37,4 +39,23 @@ public class Stock {
     private String stockMktSector;
     private Double stockCurrPrice;
     private Double stockDailyChange;
+
+    @Document(collection = "stockPriceData")
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public class StockPriceData {
+        @Id
+        private ObjectId id;
+        private String stockTicker;
+        private Date date;
+        private double open;
+        private double high;
+        private double close;
+        private double low;
+        private double adjustedClose;
+        private long volume;
+        private double dividend;
+        private double splitCoefficient;
+    }
 }
