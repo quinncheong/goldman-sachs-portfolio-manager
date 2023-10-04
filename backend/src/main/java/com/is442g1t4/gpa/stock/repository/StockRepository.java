@@ -11,4 +11,6 @@ import com.is442g1t4.gpa.stock.model.Stock;
 @Repository
 public interface StockRepository extends MongoRepository<Stock, ObjectId> {
     Optional<Stock> findStockByStockTicker(String stockTicker);
+
+    // Stock addStockPriceData(Stock stock);
 }

@@ -37,7 +37,7 @@ public class StockController {
 
     @GetMapping("/{stockTicker}")
     public ResponseEntity<Optional<Stock>> getStock(@PathVariable String stockTicker) {
-        return new ResponseEntity<Optional<Stock>>(stockService.getStock(stockTicker),
+        return new ResponseEntity<Optional<Stock>>(stockService.getStockByTicker(stockTicker),
                 HttpStatus.OK);
     }
 
