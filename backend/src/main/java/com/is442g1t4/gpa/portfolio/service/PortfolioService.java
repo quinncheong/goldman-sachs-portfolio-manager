@@ -40,11 +40,18 @@ public class PortfolioService {
     }
 
     public Portfolio createPortfolio(Portfolio portfolio) {
+        if (portfolio.getId() != null && portfolioRepository.existsById(portfolio.getId())) {
+            return null;
+        }
+        return portfolioRepository.save(portfolio);
+    }
+
+    public Portfolio updatePortfolio(Portfolio portfolio) {
         return portfolioRepository.save(portfolio);
     }
 
     public String deletePortfolioByPortfolioId(ObjectId id) {
         portfolioRepository.deleteById(id);
-        return "Portfolio deleted";
+        return "Portfolio Deleted";
     }
 }

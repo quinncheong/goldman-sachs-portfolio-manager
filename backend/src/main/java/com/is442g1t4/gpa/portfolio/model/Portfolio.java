@@ -18,6 +18,7 @@ public class Portfolio {
     @Id
     private ObjectId id;
     private ObjectId userId;
+
     private String name;
     private String description;
     private double initialValue;
