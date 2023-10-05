@@ -40,6 +40,13 @@ public class PortfolioService {
     }
 
     public Portfolio createPortfolio(Portfolio portfolio) {
+        if (portfolioRepository.existsById(portfolio.getId())) {
+            return null;
+        }
+        return portfolioRepository.save(portfolio);
+    }
+
+    public Portfolio updatePortfolio(Portfolio portfolio) {
         return portfolioRepository.save(portfolio);
     }
 

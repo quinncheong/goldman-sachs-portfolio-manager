@@ -44,8 +44,26 @@ public class PortfolioController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Portfolio> createPortfolio(@RequestBody Portfolio portfolio) {
-        return new ResponseEntity<Portfolio>(portfolioService.createPortfolio(portfolio),
+    public ResponseEntity<?> createPortfolio(@RequestBody Portfolio portfolio) {
+
+        Portfolio createdPortfolio = portfolioService.createPortfolio(portfolio);
+        if (createdPortfolio.equals(null)) {
+            return new ResponseEntity<String>("Portfolio Already Exists",
+                    HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<Portfolio>(createdPortfolio, HttpStatus.OK);
+
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<Portfolio> updatePortfolio(@RequestBody Portfolio portfolio) {
+        return new ResponseEntity<Portfolio>(portfolioService.updatePortfolio(portfolio),
+                HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deletePortfolio(@PathVariable ObjectId id) {
+        return new ResponseEntity<String>(portfolioService.deletePortfolioByPortfolioId(id),
                 HttpStatus.OK);
     }
 
