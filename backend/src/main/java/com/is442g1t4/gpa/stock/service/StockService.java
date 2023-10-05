@@ -43,8 +43,8 @@ public class StockService {
         return null;
     }
 
-    public Stock addStockPriceData(Stock stock) {
-        return stockRepository.addStockPriceData(stock);
-    }
+    // public Stock addStockPriceData(Stock stock) {
+    // return stockRepository.addStockPriceData(stock);
+    // }
 
 }
