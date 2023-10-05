@@ -47,7 +47,7 @@ public class PortfolioController {
     public ResponseEntity<?> createPortfolio(@RequestBody Portfolio portfolio) {
 
         Portfolio createdPortfolio = portfolioService.createPortfolio(portfolio);
-        if (createdPortfolio.equals(null)) {
+        if (createdPortfolio == null) {
             return new ResponseEntity<String>("Portfolio Already Exists",
                     HttpStatus.BAD_REQUEST);
         }
