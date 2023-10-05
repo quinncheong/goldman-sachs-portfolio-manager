@@ -19,10 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Portfolio {
     @Id
-    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId id;
-
-    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId userId;
 
     private String name;
