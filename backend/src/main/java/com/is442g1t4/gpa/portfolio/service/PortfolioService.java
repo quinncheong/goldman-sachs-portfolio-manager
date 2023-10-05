@@ -52,6 +52,6 @@ public class PortfolioService {
 
     public String deletePortfolioByPortfolioId(ObjectId id) {
         portfolioRepository.deleteById(id);
-        return "Portfolio deleted";
+        return "Portfolio Deleted";
     }
 }
