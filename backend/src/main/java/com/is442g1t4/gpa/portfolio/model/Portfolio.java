@@ -1,5 +1,7 @@
 package com.is442g1t4.gpa.portfolio.model;
 
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,12 +17,15 @@ import lombok.NoArgsConstructor;
 public class Portfolio {
     @Id
     private ObjectId id;
-    private String stockTicker;
-    private int stockQuantity;
-    private Double purchasePrice;
-    private Double stockCurrPrice;
-    private String portfolioDescription;
-    private Double portfolioAssetValue;
-    private Double portfolioDailyPL;
+    private ObjectId userId;
+    private String name;
+    private String description;
+    private double initialValue;
+    private List<AllocatedStock> allocatedStocks;
 
+    @Data
+    public static class AllocatedStock {
+        private String stockId;
+        private int quantity;
+    }
 }
