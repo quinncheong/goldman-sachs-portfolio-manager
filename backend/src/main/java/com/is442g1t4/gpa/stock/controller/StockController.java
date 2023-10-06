@@ -50,6 +50,16 @@ public class StockController {
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
+    @PostMapping("/")
+    public ResponseEntity<Stock> createStock(@RequestBody Stock stock) {
+
+        //if
+
+        //else
+        Stock savedStock = stockService.addStock(stock);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedStock);
+    }
+
     // getting stock data from AlphaVantage
     @GetMapping("/getStockData/{stockTicker}")
     private String getStockData(@PathVariable String stockTicker) {

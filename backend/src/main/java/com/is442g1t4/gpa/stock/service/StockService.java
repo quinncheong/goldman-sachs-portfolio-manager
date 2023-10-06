@@ -39,8 +39,12 @@ public class StockService {
     public void deleteStock() {
     }
 
-    public Stock saveStock(Stock stock) {
-        return null;
+    public Stock addStock(Stock stock) {
+        Optional<Stock> retrievedStock = getStockByTicker(stock.getStockTicker());
+        if (retrievedStock.isPresent()){
+            return null;
+        }
+        return stockRepository.save(stock);
     }
 
     // public Stock addStockPriceData(Stock stock) {
