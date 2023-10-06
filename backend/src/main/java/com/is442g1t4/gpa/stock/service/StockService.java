@@ -23,18 +23,28 @@ public class StockService {
         return stockRepository.findStockByStockTicker(stockTicker);
     }
 
-    public Stock updateStock(String stockTicker, Double newPrice, Double newChange) {
-        Optional<Stock> existingStock = stockRepository.findStockByStockTicker(stockTicker);
+    public Stock updateStock(Stock stock) {
+        return stockRepository.save(stock);
 
-        if (existingStock.isPresent()) {
-            Stock stockToUpdate = existingStock.get();
-            stockToUpdate.setStockCurrPrice(newPrice);
-            stockToUpdate.setStockDailyChange(newChange);
-            return stockRepository.save(stockToUpdate);
-        } else {
-            throw new StockNotFoundException("Stock with ticker " + stockTicker + " not found");
+        // if (existingStock.isPresent()) {
+        //     Stock stockToUpdate = existingStock.get();
+        //     stockToUpdate.setStockCurrPrice(newPrice);
+        //     stockToUpdate.setStockDailyChange(newChange);
+        //     return stockRepository.save(stockToUpdate);
+        // } else {
+        //     throw new StockNotFoundException("Stock with ticker " + stockTicker + " not found");
         }
-    }
+    
+
+    // public Stock updateStock(Stock stock){
+    //     // return stockRepository.save(stock);
+
+    //     Optional<Stock> retrievedStock = getStockByTicker(stock.getStockTicker());
+    //     if (retrievedStock.isPresent()){
+            
+    //     }
+        
+    // }
 
     public void deleteStock() {
     }

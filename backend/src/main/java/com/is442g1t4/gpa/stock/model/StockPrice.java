@@ -5,6 +5,9 @@ import java.util.Date;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 // import javax.persistence.Column;
@@ -26,14 +29,26 @@ import lombok.NoArgsConstructor;
 
 // @Entity
 // @Table(name = "stock")
-@Document(collection = "stock")
+@Document(collection = "stockPrice")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Stock {
+public class StockPrice {
     @Id
+    private ObjectId id;
     private String stockTicker;
-    private String stockName;
-    private String stockDescription;
-    private String stockMktSector;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date date;
+    private double open;
+    private double high;
+    private double close;
+    private double low;
+    private double adjustedClose;
+    // private long volume;
+    // private double dividend;
+    // private double splitCoefficient;
 }
+
+
+
