@@ -51,12 +51,11 @@ public class StockController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Stock> createStock(@RequestBody Stock stock) {
-
-        //if
-
-        //else
+    public ResponseEntity<?> createStock(@RequestBody Stock stock) {
         Stock savedStock = stockService.addStock(stock);
+        if (savedStock == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Stock already exists");
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(savedStock);
     }
 
