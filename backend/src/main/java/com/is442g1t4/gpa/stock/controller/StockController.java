@@ -41,13 +41,13 @@ public class StockController {
                 HttpStatus.OK);
     }
 
-    @PutMapping("/{stockTicker}")
-    public ResponseEntity<Stock> updateStock(@PathVariable String stockTicker,
-            @RequestBody Stock updatedStock) {
-        Stock updated = stockService.updateStock(stockTicker,
-                updatedStock.getStockCurrPrice(),
-                updatedStock.getStockDailyChange());
-        return new ResponseEntity<>(updated, HttpStatus.OK);
+    @PostMapping("/")
+    public ResponseEntity<?> createStock(@RequestBody Stock stock) {
+        Stock savedStock = stockService.addStock(stock);
+        if (savedStock == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Stock already exists");
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedStock);
     }
 
     // getting stock data from AlphaVantage
@@ -61,6 +61,7 @@ public class StockController {
 
         return result;
     }
+
 
     // @Autowired
     // public StockController(StockService stockService) {
