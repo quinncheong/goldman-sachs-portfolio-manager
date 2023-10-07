@@ -19,9 +19,6 @@ public class StockPriceService {
 
     public StockPrice addStockPrice(StockPrice stockPrice) {
 
-        // get stock price by stock ticker and date
-        // if there is already an existing ^, return null
-
         StockPrice retrievedStockPrice = stockPriceRepository.findStockPriceByStockTickerAndDate(stockPrice.getStockTicker(), stockPrice.getDate());
 
         if (retrievedStockPrice == null){
