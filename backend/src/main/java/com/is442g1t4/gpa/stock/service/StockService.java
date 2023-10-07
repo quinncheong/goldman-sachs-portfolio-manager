@@ -25,7 +25,7 @@ public class StockService {
 
     public Stock updateStock(Stock stock) {
         return stockRepository.save(stock);
-
+    }
 
     public void deleteStock() {
     }
