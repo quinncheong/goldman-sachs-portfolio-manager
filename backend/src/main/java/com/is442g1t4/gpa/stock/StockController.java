@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.is442g1t4.gpa.stock.model.Stock;
+
 import java.util.List;
 import java.util.Optional;
 

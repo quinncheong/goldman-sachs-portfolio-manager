@@ -1,9 +1,13 @@
 package com.is442g1t4.gpa.stock.scheduler;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import com.is442g1t4.gpa.stock.model.Stock;
 
 import reactor.core.publisher.Mono;
 
@@ -25,20 +29,18 @@ public class StockDetailsRetriever {
         StockDetailsRetriever.ALPHAVANTAGE_API_KEY = ALPHAVANTAGE_API_KEY;
     }
 
-    public StockDetailsResponse retrieveStockDetails(String stockTicker) {
-
-        Mono<ResponseEntity<StockDetailsResponse>> responseMono = baseQueryClient.get()
+    public Stock retrieveOneStockDetails(String stockSymbol) {
+        Mono<ResponseEntity<Stock>> responseMono = baseQueryClient.get()
                 .uri(builder -> builder
                         .queryParam("function", "OVERVIEW")
-                        .queryParam("symbol", stockTicker)
+                        .queryParam("symbol", stockSymbol)
                         .queryParam("apikey", ALPHAVANTAGE_API_KEY)
                         .build())
                 .retrieve()
-                .toEntity(StockDetailsResponse.class);
+                .toEntity(Stock.class);
 
-        ResponseEntity<StockDetailsResponse> response = responseMono.block();
+        ResponseEntity<Stock> response = responseMono.block();
         System.out.println(response.getBody());
         return response.getBody();
     }
-
 }

@@ -20,8 +20,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Optional;
 
-import com.is442g1t4.gpa.stock.Stock;
 import com.is442g1t4.gpa.stock.StockService;
+import com.is442g1t4.gpa.stock.model.Stock;
 
 @RestController
 @RequestMapping("/api/v1/stock-price")

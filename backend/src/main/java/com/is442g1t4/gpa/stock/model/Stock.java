@@ -1,12 +1,17 @@
-package com.is442g1t4.gpa.stock.scheduler;
+package com.is442g1t4.gpa.stock.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Document(collection = "stock")
 @Data
-public class StockDetailsResponse {
+@AllArgsConstructor
+@NoArgsConstructor
+public class Stock {
+    @Id
     public String Symbol;
     public String AssetType;
     public String Name;

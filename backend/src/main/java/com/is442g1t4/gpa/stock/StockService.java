@@ -3,6 +3,8 @@ package com.is442g1t4.gpa.stock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.is442g1t4.gpa.stock.model.Stock;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -15,8 +17,8 @@ public class StockService {
         return stockRepository.findAll();
     }
 
-    public Optional<Stock> getStockByTicker(String stockTicker) {
-        return stockRepository.findStockByStockTicker(stockTicker);
+    public Optional<Stock> getStockByTicker(String stockSymbol) {
+        return stockRepository.findStockBySymbol(stockSymbol);
     }
 
     public Stock updateStock(Stock stock) {
@@ -27,7 +29,7 @@ public class StockService {
     }
 
     public Stock addStock(Stock stock) {
-        Optional<Stock> retrievedStock = getStockByTicker(stock.getStockTicker());
+        Optional<Stock> retrievedStock = getStockByTicker(stock.getSymbol());
         if (retrievedStock.isPresent()) {
             return null;
         }

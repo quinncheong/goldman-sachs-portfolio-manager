@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,6 +14,7 @@ import com.is442g1t4.gpa.stock.scheduler.StockDetailsRetriever;
 
 @RestController
 @SpringBootApplication
+@EnableScheduling
 public class PortfolioApplication {
 
 	@RequestMapping("/")
@@ -24,8 +26,9 @@ public class PortfolioApplication {
 		SpringApplication.run(PortfolioApplication.class, args);
 		System.out.println("Application is running!");
 
-		StockDetailsRetriever stockDetailsRetriever = new StockDetailsRetriever();
-		stockDetailsRetriever.retrieveStockDetails();
+		// StockDetailsRetriever stockDetailsRetriever = new StockDetailsRetriever();
+		// String stockTickerToRetrieve = "AAPL";
+		// stockDetailsRetriever.retrieveStockDetails(stockTickerToRetrieve);
 	}
 
 	@Bean

@@ -3,9 +3,9 @@ package com.is442g1t4.gpa.stock.stockPrice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.is442g1t4.gpa.stock.Stock;
 import com.is442g1t4.gpa.stock.StockRepository;
 import com.is442g1t4.gpa.stock.exceptions.StockNotFoundException;
+import com.is442g1t4.gpa.stock.model.Stock;
 
 import java.util.List;
 import java.util.Optional;
