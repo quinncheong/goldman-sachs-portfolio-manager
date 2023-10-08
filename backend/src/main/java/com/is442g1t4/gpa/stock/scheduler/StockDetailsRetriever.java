@@ -25,37 +25,20 @@ public class StockDetailsRetriever {
         StockDetailsRetriever.ALPHAVANTAGE_API_KEY = ALPHAVANTAGE_API_KEY;
     }
 
-    public StockDetailsResponse retrieveStockDetails() {
+    public StockDetailsResponse retrieveStockDetails(String stockTicker) {
 
         Mono<ResponseEntity<StockDetailsResponse>> responseMono = baseQueryClient.get()
                 .uri(builder -> builder
                         .queryParam("function", "OVERVIEW")
-                        .queryParam("symbol", "AAPL")
+                        .queryParam("symbol", stockTicker)
                         .queryParam("apikey", ALPHAVANTAGE_API_KEY)
                         .build())
                 .retrieve()
                 .toEntity(StockDetailsResponse.class);
 
         ResponseEntity<StockDetailsResponse> response = responseMono.block();
-        System.out.println(ALPHAVANTAGE_API_KEY);
         System.out.println(response.getBody());
         return response.getBody();
     }
-
-    // public String retrieve() {
-
-    // String uri =
-    // "https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey=demo";
-    // WebClient.Builder webClientBuilder = WebClient.builder();
-
-    // String res = webClientBuilder.build()
-    // .get()
-    // .uri(uri)
-    // .retrieve()
-    // .bodyToMono(String.class).block();
-
-    // System.out.println(res);
-    // return res;
-    // }
 
 }
