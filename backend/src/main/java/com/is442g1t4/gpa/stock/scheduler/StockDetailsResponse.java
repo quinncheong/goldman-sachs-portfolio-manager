@@ -1,4 +1,4 @@
-package com.is442g1t4.gpa.stock;
+package com.is442g1t4.gpa.stock.scheduler;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

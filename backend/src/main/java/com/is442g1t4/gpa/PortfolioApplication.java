@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.is442g1t4.gpa.stock.StockDetailsRetriever;
+import com.is442g1t4.gpa.stock.scheduler.StockDetailsRetriever;
 
 @RestController
 @SpringBootApplication

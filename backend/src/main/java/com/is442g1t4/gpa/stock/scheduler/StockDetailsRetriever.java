@@ -1,4 +1,4 @@
-package com.is442g1t4.gpa.stock;
+package com.is442g1t4.gpa.stock.scheduler;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

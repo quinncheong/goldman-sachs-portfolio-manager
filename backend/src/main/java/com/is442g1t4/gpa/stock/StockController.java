@@ -1,4 +1,4 @@
-package com.is442g1t4.gpa.stock.controller;
+package com.is442g1t4.gpa.stock;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,9 +19,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
-
-import com.is442g1t4.gpa.stock.model.Stock;
-import com.is442g1t4.gpa.stock.service.StockService;
 
 @RestController
 @RequestMapping("/api/v1/stock")
