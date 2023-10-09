@@ -1,10 +1,5 @@
-import Image from 'next/image'
-import Box from "tailwindcss";
-
-import Navbar from '@components/layout/Navbar';
-
-export default function Home() {
+export default function login() {
   return (
-      <Navbar />
+      <p>This is the login page</p>
   )
 }
