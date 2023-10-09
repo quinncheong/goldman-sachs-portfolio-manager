@@ -10,6 +10,5 @@ import com.is442g1t4.gpa.stock.model.Stock;
 @Repository
 public interface StockRepository extends MongoRepository<Stock, String> {
     Optional<Stock> findStockBySymbol(String symbol);
-
     // Stock addStockPriceData(Stock stock);
 }

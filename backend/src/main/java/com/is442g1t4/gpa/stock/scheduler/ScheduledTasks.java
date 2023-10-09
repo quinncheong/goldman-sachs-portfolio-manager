@@ -9,7 +9,8 @@ import com.is442g1t4.gpa.stock.model.Stock;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.time.Duration;
+import java.util.List;
 
 @Component
 public class ScheduledTasks {
@@ -22,13 +23,19 @@ public class ScheduledTasks {
     @Autowired
     StockRepository stockRepository;
 
-    // @Scheduled(cron = "0 22 20 * * MON-FRI")
-    // public void repopulateStockDetailsDaily() {
-    // System.out.println("Running CRON at 20:22" +
-    // dateTimeFormatter.format(LocalDateTime.now()));
-    // ArrayList<Stock> stockDetails =
-    // stockDetailsRetriever.retrieveOneStockDetails("AAPL");
-    // stockRepository.saveAll(stockDetails);
-    // }
+    @Scheduled(cron = "0 00 05 * * MON-FRI")
+    public void repopulateStockDetailsDaily() {
+        LocalDateTime start = LocalDateTime.now();
+        System.out.println("Running Daily repopulate stock details CRON Job" + dateTimeFormatter.format(start));
+
+        List<Stock> stockDetails = stockDetailsRetriever.retrieveAllStockDetails();
+        stockRepository.saveAll(stockDetails);
+
+        LocalDateTime end = LocalDateTime.now();
+        System.out.println("Completed Daily repopulate stock details CRON Job" + dateTimeFormatter.format(end));
+
+        Duration duration = Duration.between(start, end);
+        System.out.println("Total duration: " + duration.toSeconds() + " seconds");
+    }
 
 }
