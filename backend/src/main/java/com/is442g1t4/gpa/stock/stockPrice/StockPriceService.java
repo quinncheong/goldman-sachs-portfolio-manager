@@ -7,6 +7,7 @@ import com.is442g1t4.gpa.stock.StockRepository;
 import com.is442g1t4.gpa.stock.exceptions.StockNotFoundException;
 import com.is442g1t4.gpa.stock.model.Stock;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,19 @@ public class StockPriceService {
 
         return null;
 
+    }
+
+    public List<StockPrice> getAllStockPrices() {
+        return stockPriceRepository.findAll();
+    }
+
+    public List<StockPrice> getStockPriceByTicker(String stockTicker) {
+        return stockPriceRepository.findStockPriceByStockTicker(stockTicker);
+    }
+
+    public StockPrice getStockPriceByDate(String stockTicker, Date date) {
+        StockPrice stockPrice = stockPriceRepository.findStockPriceByStockTickerAndDate(stockTicker, date);
+        return stockPrice;
     }
 
 }
