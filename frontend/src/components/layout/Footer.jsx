@@ -1,6 +1,32 @@
-import React from "react";
+"use client";
+
+import Link from "next/link";
+import React, { useState } from "react";
 
 export default function Navbar() {
+  let [menuItems, setMenu] = useState([
+    "Login",
+    "Home",
+    "Dashboard",
+    "Account",
+  ]);
+
+  function menu() {
+    return (
+      <div className="navbar-center hidden lg:flex">
+        <ul className="menu menu-horizontal px-1">
+          {menuItems.map((menuItem) => {
+            return (
+              <li>
+                <Link href={menuItem.toLowerCase()}>{menuItem}</Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  }
+
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
@@ -47,30 +73,9 @@ export default function Navbar() {
         <a className="btn btn-ghost normal-case text-xl">
           Goldman Portfolio Analyzer
         </a>
+        {menu()}
       </div>
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <a>Item 1</a>
-          </li>
-          <li tabIndex={0}>
-            <details>
-              <summary>Parent</summary>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </details>
-          </li>
-          <li>
-            <a>Item 3</a>
-          </li>
-        </ul>
-      </div>
+
       <div className="navbar-end">
         <a className="btn">Button</a>
       </div>
