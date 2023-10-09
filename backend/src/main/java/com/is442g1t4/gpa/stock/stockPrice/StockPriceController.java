@@ -1,4 +1,4 @@
-package com.is442g1t4.gpa.stock.controller;
+package com.is442g1t4.gpa.stock.stockPrice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,26 +20,23 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Optional;
 
+import com.is442g1t4.gpa.stock.StockService;
 import com.is442g1t4.gpa.stock.model.Stock;
-import com.is442g1t4.gpa.stock.model.StockPrice;
-import com.is442g1t4.gpa.stock.service.StockPriceService;
-import com.is442g1t4.gpa.stock.service.StockService;
 
 @RestController
 @RequestMapping("/api/v1/stock-price")
-public class StockPriceController{
-    
+public class StockPriceController {
+
     @Autowired
     private StockPriceService stockPriceService;
 
     @PostMapping("/")
-    public ResponseEntity<?> createStockPrice(@RequestBody StockPrice stockPrice){
+    public ResponseEntity<?> createStockPrice(@RequestBody StockPrice stockPrice) {
         StockPrice savedStockPrice = stockPriceService.addStockPrice(stockPrice);
-        if(savedStockPrice == null){
+        if (savedStockPrice == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Stock Price already exists");
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(savedStockPrice);
     }
-
 
 }

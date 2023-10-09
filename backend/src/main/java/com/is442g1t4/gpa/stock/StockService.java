@@ -1,11 +1,9 @@
-package com.is442g1t4.gpa.stock.service;
+package com.is442g1t4.gpa.stock;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.is442g1t4.gpa.stock.exception.StockNotFoundException;
 import com.is442g1t4.gpa.stock.model.Stock;
-import com.is442g1t4.gpa.stock.repository.StockRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,8 +17,8 @@ public class StockService {
         return stockRepository.findAll();
     }
 
-    public Optional<Stock> getStockByTicker(String stockTicker) {
-        return stockRepository.findStockByStockTicker(stockTicker);
+    public Optional<Stock> getStockByTicker(String stockSymbol) {
+        return stockRepository.findStockBySymbol(stockSymbol);
     }
 
     public Stock updateStock(Stock stock) {
@@ -31,12 +29,11 @@ public class StockService {
     }
 
     public Stock addStock(Stock stock) {
-        Optional<Stock> retrievedStock = getStockByTicker(stock.getStockTicker());
-        if (retrievedStock.isPresent()){
+        Optional<Stock> retrievedStock = getStockByTicker(stock.getSymbol());
+        if (retrievedStock.isPresent()) {
             return null;
         }
         return stockRepository.save(stock);
     }
-
 
 }

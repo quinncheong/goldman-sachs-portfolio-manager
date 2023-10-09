@@ -1,4 +1,4 @@
-package com.is442g1t4.gpa.stock.controller;
+package com.is442g1t4.gpa.stock;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,11 +17,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.is442g1t4.gpa.stock.model.Stock;
+
 import java.util.List;
 import java.util.Optional;
-
-import com.is442g1t4.gpa.stock.model.Stock;
-import com.is442g1t4.gpa.stock.service.StockService;
 
 @RestController
 @RequestMapping("/api/v1/stock")
@@ -49,19 +48,6 @@ public class StockController {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(savedStock);
     }
-
-    // getting stock data from AlphaVantage
-    @GetMapping("/getStockData/{stockTicker}")
-    private String getStockData(@PathVariable String stockTicker) {
-        String uri = String.format(
-                "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=%s&apikey=KGS8AP59WY1X5L3V",
-                stockTicker);
-        RestTemplate restTemplate = new RestTemplate();
-        String result = (restTemplate.getForObject(uri, String.class));
-
-        return result;
-    }
-
 
     // @Autowired
     // public StockController(StockService stockService) {

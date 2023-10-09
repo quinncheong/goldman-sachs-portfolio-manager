@@ -1,4 +1,4 @@
-package com.is442g1t4.gpa.stock.model;
+package com.is442g1t4.gpa.stock.stockPrice;
 
 import java.util.Date;
 
@@ -49,6 +49,3 @@ public class StockPrice {
     // private double dividend;
     // private double splitCoefficient;
 }
-
-
-
