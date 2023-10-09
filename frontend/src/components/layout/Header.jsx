@@ -4,12 +4,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 export default function Navbar() {
-  let [menuItems, setMenu] = useState([
-    "Login",
-    "Home",
-    "Dashboard",
-    "Account",
-  ]);
+  let [menuItems, setMenu] = useState(["Login", "Dashboard", "Account"]);
 
   function menu() {
     return (
@@ -70,9 +65,9 @@ export default function Navbar() {
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost normal-case text-xl">
+        <Link href={"/"} className="btn btn-ghost normal-case text-xl">
           Goldman Portfolio Analyzer
-        </a>
+        </Link>
         {menu()}
       </div>
 
