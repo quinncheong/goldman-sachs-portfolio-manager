@@ -37,4 +37,5 @@ build/
 .env-dev
 .env
 
+### Testing folder ###
 examples/

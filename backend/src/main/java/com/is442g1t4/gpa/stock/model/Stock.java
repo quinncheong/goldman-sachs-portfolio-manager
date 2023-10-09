@@ -1,39 +1,61 @@
 package com.is442g1t4.gpa.stock.model;
 
-import java.util.Date;
-
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-// import javax.persistence.Column;
-// import javax.persistence.Entity;
-// import javax.persistence.EnumType;
-// import javax.persistence.Enumerated;
-// import javax.persistence.GeneratedValue;
-// import javax.persistence.GenerationType;
-// import javax.persistence.Id;
-// import javax.persistence.JoinColumn;
-// import javax.persistence.ManyToOne;
-// import javax.persistence.Table;
-// import javax.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
-// import org.springframework.data.annotation.Id;
-
-// import com.fasterxml.jackson.annotation.JsonFormat;import org.springframework.data.annotation.Id;
-
-// @Entity
-// @Table(name = "stock")
 @Document(collection = "stock")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Stock {
     @Id
-    private String stockTicker;
-    private String stockName;
-    private String stockDescription;
-    private String stockMktSector;
+    public String Symbol;
+    public String AssetType;
+    public String Name;
+    public String Description;
+    public String CIK;
+    public String Exchange;
+    public String Currency;
+    public String Country;
+    public String Sector;
+    public String Industry;
+    public String Address;
+    public String FiscalYearEnd;
+    public String LatestQuarter;
+    public Long MarketCapitalization;
+    public Long EBITDA;
+    public Double PERatio;
+    public Double PEGRatio;
+    public Double BookValue;
+    public Double DividendPerShare;
+    public Double DividendYield;
+    public Double EPS;
+    public Double RevenuePerShareTTM;
+    public Double ProfitMargin;
+    public Double OperatingMarginTTM;
+    public Double ReturnOnAssetsTTM;
+    public Double ReturnOnEquityTTM;
+    public Long RevenueTTM;
+    public Long GrossProfitTTM;
+    public Double DilutedEPSTTM;
+    public Double QuarterlyEarningsGrowthYOY;
+    public Double QuarterlyRevenueGrowthYOY;
+    public Double AnalystTargetPrice;
+    public Double TrailingPE;
+    public Double ForwardPE;
+    public Double PriceToSalesRatioTTM;
+    public Double PriceToBookRatio;
+    public Double EVToRevenue;
+    public Double EVToEBITDA;
+    public Double Beta;
+    public Double _52WeekHigh;
+    public Double _52WeekLow;
+    public Double _50DayMovingAverage;
+    public Double _200DayMovingAverage;
+    public Long SharesOutstanding;
+    public String DividendDate;
+    public String ExDividendDate;
 }
