@@ -1,15 +1,15 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { getPortfolios } from "@api/portfolio.js";
 
 export default function portfolio() {
   const [portfolios, setPortfolios] = useState([])
-  const useEffect(() => {
-    
-  
-    return () => {
-      second
-    }
-  }, [third])
+
+  useEffect(() => {
+    let portfolios = getPortfolios();
+    console.log(portfolios);
+    setPortfolios(portfolios);
+  }, [])
   
 
   return (

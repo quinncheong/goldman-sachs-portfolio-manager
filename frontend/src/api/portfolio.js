@@ -11,7 +11,6 @@ const axiosInstance = axios.create({
     }
 });
 
-
 export const getPortfolios = async () => {
     if (process.env.NODE_ENV !== "production" ) {
         console.log(mockPortfolios)

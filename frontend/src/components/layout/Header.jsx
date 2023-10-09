@@ -10,9 +10,9 @@ export default function Navbar() {
     return (
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          {menuItems.map((menuItem) => {
+          {menuItems.map((menuItem, index) => {
             return (
-              <li>
+              <li key={index}>
                 <Link href={menuItem.toLowerCase()}>{menuItem}</Link>
               </li>
             );
