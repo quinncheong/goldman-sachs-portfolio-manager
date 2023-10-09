@@ -2,7 +2,7 @@
 
 import { useGetPortfolios } from "@api/portfolio.js";
 
-export default function portfolio() {
+export default function Portfolio() {
   const { data, isLoading, isError, error } = useGetPortfolios();
   
   if (isLoading) return (<div>Loading...</div>)
