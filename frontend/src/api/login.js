@@ -29,7 +29,7 @@ const getLoginStatus = async () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(isLoggedIn);
-    }, 2000);
+    }, 1000);
   });
 };
 
