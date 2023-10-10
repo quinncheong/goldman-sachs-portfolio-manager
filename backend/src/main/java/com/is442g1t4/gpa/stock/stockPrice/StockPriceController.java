@@ -51,27 +51,34 @@ public class StockPriceController {
 
     @GetMapping("/{stockTicker}")
     public ResponseEntity<List<StockPrice>> getStockPrice(@PathVariable String stockTicker) {
-        if (stockPriceService.getStockPriceByTicker(stockTicker).isEmpty()){
+        if (stockPriceService.getStockPriceByTicker(stockTicker).isEmpty()) {
             return new ResponseEntity<List<StockPrice>>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<List<StockPrice>>(stockPriceService.getStockPriceByTicker(stockTicker), HttpStatus.OK);
+        return new ResponseEntity<List<StockPrice>>(stockPriceService.getStockPriceByTicker(stockTicker),
+                HttpStatus.OK);
     }
 
     @GetMapping("/{stockTicker}/{date}")
-    public ResponseEntity<StockPrice> getStockPriceByDate(@PathVariable String stockTicker, @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
-        System.out.println(date);
-        StockPrice stockPrice = stockPriceService.getStockPriceByDate(stockTicker, date);
+    public ResponseEntity<StockPrice> getStockPriceByDate(@PathVariable String stockTicker,
+            @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+
+        StockPrice stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, date);
+        System.out.println(stockPrice);
+
         if (stockPrice == null) {
             return new ResponseEntity<StockPrice>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<StockPrice>(stockPrice, HttpStatus.OK);
     }
     // @GetMapping("/date/{date}")
-    // public ResponseEntity<List<StockPrice>> getStockPriceByDateOnly(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
-    //     if (stockPriceService.getStockPriceByDateOnly(date).isEmpty()) {
-    //         return new ResponseEntity<List<StockPrice>>(HttpStatus.NOT_FOUND);
-    //     }
-    //     return new ResponseEntity<List<StockPrice>>(stockPriceService.getStockPriceByDateOnly(date), HttpStatus.OK);
+    // public ResponseEntity<List<StockPrice>> getStockPriceByDateOnly(@PathVariable
+    // @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+    // if (stockPriceService.getStockPriceByDateOnly(date).isEmpty()) {
+    // return new ResponseEntity<List<StockPrice>>(HttpStatus.NOT_FOUND);
+    // }
+    // return new
+    // ResponseEntity<List<StockPrice>>(stockPriceService.getStockPriceByDateOnly(date),
+    // HttpStatus.OK);
     // }
 
 }

@@ -3,10 +3,10 @@ package com.is442g1t4.gpa.stock.stockPrice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.is442g1t4.gpa.stock.StockRepository;
-import com.is442g1t4.gpa.stock.exceptions.StockNotFoundException;
-import com.is442g1t4.gpa.stock.model.Stock;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -37,13 +37,14 @@ public class StockPriceService {
         return stockPriceRepository.findStockPriceByStockTicker(stockTicker);
     }
 
-    public StockPrice getStockPriceByDate(String stockTicker, Date date) {
-        StockPrice stockPrice = stockPriceRepository.findStockPriceByStockTickerAndDate(stockTicker, date);
+    public StockPrice getStockPriceBySymbolAndDate(String stockTicker, Date date) {
+        Date nextDay = new Date(date.getTime() + 86400000);
+        StockPrice stockPrice = stockPriceRepository.findStockPriceByStockTickerAndDate(stockTicker, date, nextDay);
         return stockPrice;
     }
     // public List<StockPrice> getStockPriceByDateOnly(Date date) {
-    //     return stockPriceRepository.findStockPriceByDate(date);
-        
+    // return stockPriceRepository.findStockPriceByDate(date);
+
     // }
 
 }
