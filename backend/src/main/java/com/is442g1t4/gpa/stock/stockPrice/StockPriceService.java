@@ -17,9 +17,8 @@ public class StockPriceService {
     private StockPriceRepository stockPriceRepository;
 
     public StockPrice addStockPrice(StockPrice stockPrice) {
-
-        StockPrice retrievedStockPrice = stockPriceRepository
-                .findStockPriceByStockTickerAndDate(stockPrice.getStockTicker(), stockPrice.getDate());
+        Date nextDay = new Date(stockPrice.getDate().getTime() + 86400000);
+        StockPrice retrievedStockPrice = stockPriceRepository.findStockPriceByStockTickerAndDate(stockPrice.getStockTicker(), stockPrice.getDate(), nextDay);
 
         if (retrievedStockPrice == null) {
             return stockPriceRepository.save(stockPrice);
@@ -42,9 +41,5 @@ public class StockPriceService {
         StockPrice stockPrice = stockPriceRepository.findStockPriceByStockTickerAndDate(stockTicker, date, nextDay);
         return stockPrice;
     }
-    // public List<StockPrice> getStockPriceByDateOnly(Date date) {
-    // return stockPriceRepository.findStockPriceByDate(date);
-
-    // }
 
 }

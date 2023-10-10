@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -70,6 +71,24 @@ public class StockPriceController {
         }
         return new ResponseEntity<StockPrice>(stockPrice, HttpStatus.OK);
     }
+
+    @GetMapping("/{stockTicker}/{startDate}/{endDate}")
+    public ResponseEntity<?> getStockPriceByDateRange(@PathVariable String stockTicker, @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+
+        StockPrice stockPriceStartDate = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, startDate);
+        StockPrice stockPriceEndDate = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, endDate);
+
+        if (stockPriceStartDate == null || stockPriceEndDate == null) {
+            return new ResponseEntity<List<StockPrice>>(HttpStatus.NOT_FOUND);
+        }else{
+            List <StockPrice> stockPriceList = new ArrayList<>();
+            stockPriceList.add(stockPriceStartDate);
+            stockPriceList.add(stockPriceEndDate);
+            return new ResponseEntity<List<StockPrice>>(stockPriceList, HttpStatus.OK);
+        }
+    }
+
+
     // @GetMapping("/date/{date}")
     // public ResponseEntity<List<StockPrice>> getStockPriceByDateOnly(@PathVariable
     // @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
