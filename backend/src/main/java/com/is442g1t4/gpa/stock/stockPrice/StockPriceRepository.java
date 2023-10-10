@@ -14,7 +14,10 @@ public interface StockPriceRepository extends MongoRepository<StockPrice, Object
 
     @Query("{ 'stockTicker' : ?0, 'date' : ?1 }")
     StockPrice findStockPriceByStockTickerAndDate(String stockTicker, Date date);
+    
 
     List<StockPrice> findStockPriceByStockTicker(String stockTicker);
+
+    // List<StockPrice> findStockPriceByDate(Date date);
     
 }
