@@ -4,7 +4,12 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 export default function Navbar() {
-  let [menuItems, setMenu] = useState(["Login", "Dashboard", "Account"]);
+  let [menuItems, setMenu] = useState([
+    "Dashboard",
+    "Account",
+    "Portfolios",
+    "Stocks",
+  ]);
 
   function menu() {
     return (
