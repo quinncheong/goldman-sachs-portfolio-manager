@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "name": "Portfolio 1",
     "description": "This is the first portfolio",
     "stocks": [
@@ -18,8 +19,100 @@
     ]
   },
   {
+    "id": 2,
     "name": "Portfolio 2",
     "description": "This is the second portfolio",
+    "stocks": [
+      {
+        "name": "Stock 1",
+        "description": "This is the first stock",
+        "price": 100,
+        "quantity": 10
+      },
+      {
+        "name": "Stock 2",
+        "description": "This is the second stock",
+        "price": 200,
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Portfolio 3",
+    "description": "This is the third portfolio",
+    "stocks": [
+      {
+        "name": "Stock 1",
+        "description": "This is the first stock",
+        "price": 100,
+        "quantity": 10
+      },
+      {
+        "name": "Stock 2",
+        "description": "This is the second stock",
+        "price": 200,
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "name": "Portfolio 4",
+    "description": "This is the fourth portfolio",
+    "stocks": [
+      {
+        "name": "Stock 1",
+        "description": "This is the first stock",
+        "price": 100,
+        "quantity": 10
+      },
+      {
+        "name": "Stock 2",
+        "description": "This is the second stock",
+        "price": 200,
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "name": "Portfolio 5",
+    "description": "This is the fourth portfolio",
+    "stocks": [
+      {
+        "name": "Stock 1",
+        "description": "This is the first stock",
+        "price": 100,
+        "quantity": 10
+      },
+      {
+        "name": "Stock 2",
+        "description": "This is the second stock",
+        "price": 200,
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "name": "Portfolio 6",
+    "description": "This is the fourth portfolio",
+    "stocks": [
+      {
+        "name": "Stock 1",
+        "description": "This is the first stock",
+        "price": 100,
+        "quantity": 10
+      },
+      {
+        "name": "Stock 2",
+        "description": "This is the second stock",
+        "price": 200,
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "name": "Portfolio 7",
+    "description": "This is the fourth portfolio",
     "stocks": [
       {
         "name": "Stock 1",
