@@ -18,7 +18,7 @@ export default function Navbar() {
           {menuItems.map((menuItem, index) => {
             return (
               <li key={index}>
-                <Link href={menuItem.toLowerCase()}>{menuItem}</Link>
+                <Link href={"/" + menuItem.toLowerCase()}>{menuItem}</Link>
               </li>
             );
           })}
