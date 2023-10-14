@@ -12,6 +12,7 @@ export default function Portfolio() {
 
   return (
     <div className="container flex flex-col m-auto p-5 h-screen">
+      <h2 className="text-xl sm:text-2xl font-semibold mb-5">Your Portfolio:</h2>
       <div className="flex flex-wrap gap-5">{renderPortfolios()}</div>
     </div>
   );
