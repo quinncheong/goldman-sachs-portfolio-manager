@@ -67,22 +67,22 @@ public class UserController {
     }
         
 
-    // @PostMapping("/auth")
-    // public ResponseEntity<?> authenticateClient(@RequestBody AuthenticationRequest authenticationRequest) {
-    //     String username = authenticationRequest.getUsername();
-    //     String password = authenticationRequest.getPassword();
-    //     System.out.println(username);
-    //     System.out.println(password);
-    //     try {
-    //         System.out.println("Start auth...");
-    //         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-    //         System.out.println("End auth...");
-    //     }
-    //     catch (Exception e) {
-    //         return ResponseEntity.ok(new AuthenticationResponse(e.getMessage()));
-    //     }
-    //     return ResponseEntity.ok(new AuthenticationResponse("Authentication Successful" + username));
-    // }
+     @PostMapping("/auth")
+     public ResponseEntity<?> authenticateClient(@RequestBody AuthenticationRequest authenticationRequest) {
+         String username = authenticationRequest.getUsername();
+         String password = authenticationRequest.getPassword();
+         System.out.println(username);
+         System.out.println(password);
+         try {
+             System.out.println("Start auth...");
+             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+             System.out.println("End auth...");
+         }
+         catch (Exception e) {
+             return ResponseEntity.ok(new AuthenticationResponse(e.getMessage()));
+         }
+         return ResponseEntity.ok(new AuthenticationResponse("Authentication Successful" + username));
+     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable ObjectId id) {
