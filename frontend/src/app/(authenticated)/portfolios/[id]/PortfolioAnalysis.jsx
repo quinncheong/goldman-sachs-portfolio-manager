@@ -42,12 +42,16 @@ export default function PortfolioAnalysis() {
       </div>
 
       <div className="col-span-1 p-5 bg-gray-700 rounded-md">
-        <h1 className="m-3 text-xl font-semibold">Portfolio Analysis</h1>
+        <h1 className="mb-1 text-white text-xl font-semibold">
+          Portfolio Analysis
+        </h1>
         {portfolioMonetaryAnalysis()}
       </div>
 
       <div className="col-span-1 conatainer p-5 bg-gray-700 rounded-md">
-        <h1 className="m-3 text-xl font-semibold">Portfolio Analysis</h1>
+        <h1 className="mb-1 text-xl text-white font-semibold">
+          Portfolio Analysis
+        </h1>
         {portfolioMonetaryAnalysis()}
       </div>
 
