@@ -1,5 +1,6 @@
 package com.is442g1t4.gpa.portfolio.allocatedStock;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class AllocatedStockService {
         return allocatedStockRepository.findAll();
     }
 
-    public AllocatedStock getAllocatedStockById(String id) {
+    public AllocatedStock getAllocatedStockById(ObjectId id) {
         return allocatedStockRepository.findAllocatedStockById(id);
     }
 

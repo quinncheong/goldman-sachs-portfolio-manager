@@ -1,5 +1,7 @@
 package com.is442g1t4.gpa.portfolio.model;
 
+import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
+
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -24,11 +26,11 @@ public class Portfolio {
     private double initialValue;
     private List<AllocatedStock> allocatedStocks;
 
-    @Data
-    public static class AllocatedStock {
-        private String stockId;
-        private int quantity;
-    }
+    // @Data
+    // public static class AllocatedStock {
+    //     private String stockId;
+    //     private int quantity;
+    // }
 
     
 }

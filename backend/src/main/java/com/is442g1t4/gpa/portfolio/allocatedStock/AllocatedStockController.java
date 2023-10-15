@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 // import org.modelmapper.ModelMapper;
 
+import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,7 +48,7 @@ public class AllocatedStockController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AllocatedStock> getAllocatedStock(@PathVariable String id){
+    public ResponseEntity<AllocatedStock> getAllocatedStock(@PathVariable ObjectId id){
         if (allocatedStockService.getAllocatedStockById(id) == null) {
             return new ResponseEntity<AllocatedStock>(HttpStatus.NOT_FOUND);
         }

@@ -13,6 +13,6 @@ public interface AllocatedStockRepository extends MongoRepository<AllocatedStock
     
     List<AllocatedStock> findAllocatedStockByStockTicker(String stockTicker);
 
-    AllocatedStock findAllocatedStockById(String id);
+    AllocatedStock findAllocatedStockById(ObjectId id);
 
 }

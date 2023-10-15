@@ -67,4 +67,19 @@ public class PortfolioController {
                 HttpStatus.OK);
     }
 
+    @PutMapping("/clear/{portfolioId}")
+    public ResponseEntity<Portfolio> clearPortfolio(@PathVariable ObjectId portfolioId) {
+        return new ResponseEntity<Portfolio>(portfolioService.clearPortfolio(portfolioId),
+                HttpStatus.OK);
+    }
+    
+    @PutMapping("/add/{allocatedStockId}/{portfolioId}")
+    public ResponseEntity<Portfolio> addStock(@PathVariable ObjectId allocatedStockId,
+            @PathVariable ObjectId portfolioId) {
+        
+        System.out.println(allocatedStockId.toString() + " and "+portfolioId.toString());
+        return new ResponseEntity<Portfolio>(portfolioService.addStockToPortfolio(allocatedStockId,portfolioId),
+                HttpStatus.OK);
+
+    }
 }
