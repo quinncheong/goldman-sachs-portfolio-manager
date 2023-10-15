@@ -76,8 +76,7 @@ public class PortfolioController {
     @PutMapping("/add/{allocatedStockId}/{portfolioId}")
     public ResponseEntity<Portfolio> addStock(@PathVariable ObjectId allocatedStockId,
             @PathVariable ObjectId portfolioId) {
-        
-        System.out.println(allocatedStockId.toString() + " and "+portfolioId.toString());
+    
         return new ResponseEntity<Portfolio>(portfolioService.addStockToPortfolio(allocatedStockId,portfolioId),
                 HttpStatus.OK);
 

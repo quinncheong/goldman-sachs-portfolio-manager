@@ -24,6 +24,9 @@ public class PortfolioService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private AllocatedStockRepository allocatedStockRepository;
+
     public List<Portfolio> getAllPortfolios() {
         return portfolioRepository.findAll();
     }
@@ -60,12 +63,13 @@ public class PortfolioService {
 
     public Portfolio addStockToPortfolio(ObjectId allocatedStockId, ObjectId portfolioId) {
         Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
+        Optional<AllocatedStock> allocatedStock = allocatedStockRepository.findById(allocatedStockId);
         if (portfolio.isPresent()) {
-            AllocatedStockService newService = new AllocatedStockService();
-            portfolio.get().getAllocatedStocks().add(newService.getAllocatedStockById(allocatedStockId));
-            System.out.println("hello " + portfolio.get());
+            portfolio.get().getAllocatedStocks().add(allocatedStock.get());
+            System.out.println(portfolio.get());
         }
-        return null;
+        System.out.println(portfolio.get());
+        return portfolioRepository.save(portfolio.get());
     }
 
     public Portfolio clearPortfolio(ObjectId id) {
