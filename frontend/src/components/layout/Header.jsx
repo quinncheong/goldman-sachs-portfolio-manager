@@ -76,9 +76,9 @@ export default function Navbar() {
         {menu()}
       </div>
 
-      <div className="navbar-end">
-        <a className="btn">Button</a>
-      </div>
+      <button className="btn text-white bg-primary-100 ml-auto mr-3">
+        Logout
+      </button>
     </div>
   );
 }
