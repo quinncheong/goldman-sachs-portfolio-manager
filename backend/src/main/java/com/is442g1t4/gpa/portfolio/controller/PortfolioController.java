@@ -55,7 +55,7 @@ public class PortfolioController {
 
     }
 
-    @PutMapping("/")
+    @PutMapping("/{id}")
     public ResponseEntity<Portfolio> updatePortfolio(@RequestBody Portfolio portfolio) {
         return new ResponseEntity<Portfolio>(portfolioService.updatePortfolio(portfolio),
                 HttpStatus.OK);
