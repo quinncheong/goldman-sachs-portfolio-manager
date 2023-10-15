@@ -1,8 +1,10 @@
 import React from "react";
+import PortfolioMarketChart from "./PortfolioMarketChart";
+import PortfolioSectorChart from "./PortfolioSectorChart";
 
 export default function PortfolioAnalysis() {
-  return (
-    <div className="flex gap-5 p-5 flex-grow">
+  const portfolioMonetaryAnalysis = () => {
+    return (
       <div className="bg-gray-700 p-4">
         <h2 className="text-xl sm:text-2xl font-semibold mb-4">
           Your Portfolio Analysis:
@@ -34,6 +36,14 @@ export default function PortfolioAnalysis() {
           </div>
         </div>
       </div>
+    );
+  };
+
+  return (
+    <div className="flex flex-wrap gap-5 p-5 justify-items items-center">
+      <PortfolioMarketChart />
+      <PortfolioSectorChart />
+      {portfolioMonetaryAnalysis()}
     </div>
   );
 }

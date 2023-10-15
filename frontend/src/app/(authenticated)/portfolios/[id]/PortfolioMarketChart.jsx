@@ -53,7 +53,7 @@ const data = [
   },
 ];
 
-export default function PortfolioChart() {
+export default function PortfolioMarketChart() {
   return (
     <LineChart
       width={730}
