@@ -22,30 +22,32 @@ import com.is442g1t4.gpa.user.UserService;
 public class SecurityConfig {
     @Autowired
     private UserService userService;
+
     public SecurityConfig(UserService userService) {
         this.userService = userService;
     }
     // @Autowired
-    // protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    //     auth.userD.etailsService(userService);
+    // protected void configure(AuthenticationManagerBuilder auth) throws Exception
+    // {
+    // auth.userD.etailsService(userService);
     // }
 
     @Bean
     public AuthenticationManager customAuthenticationManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject
-          (AuthenticationManagerBuilder.class);
+        AuthenticationManagerBuilder authenticationManagerBuilder = http
+                .getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(passwordEncoder());
         // .passwordEncoder(bCryptPasswordEncoder());
         return authenticationManagerBuilder.build();
     }
     // @Bean
     // protected AuthenticationManager authenticationManager() throws Exception {
-    //     return super.authenticationManagerBean();
+    // return super.authenticationManagerBean();
     // }
 
     // @Bean
     // public BCryptPasswordEncoder bCryptPasswordEncoder() {
-    //     return new BCryptPasswordEncoder();
+    // return new BCryptPasswordEncoder();
     // }
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -57,8 +59,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest()
-                        .permitAll()
-                        )
+                        .permitAll())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();

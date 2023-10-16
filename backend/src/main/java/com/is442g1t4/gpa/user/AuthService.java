@@ -15,13 +15,14 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
-public class AuthService implements UserDetailsService{
+public class AuthService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         User foundUser = userRepository.findByUsername(username);
-        if (foundUser == null) return null;
+        if (foundUser == null)
+            return null;
         System.out.println(foundUser);
         ObjectId id = foundUser.getId();
         String name = foundUser.getName();
@@ -29,9 +30,9 @@ public class AuthService implements UserDetailsService{
         String pwd = foundUser.getPassword();
         String email = foundUser.getEmail();
         List<ObjectId> portfolioIds = foundUser.getPortfolioIds();
-        
-        // return new User(id,name,currusername,pwd,email,portfolioIds);
-        return new User(currusername,pwd, new ArrayList<>());
+
+        return new User(id, name, currusername, pwd, email, portfolioIds);
+        // return new User(currusername, pwd, new ArrayList<>());
     }
 
 }
