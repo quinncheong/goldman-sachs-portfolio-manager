@@ -26,11 +26,6 @@ public class Portfolio {
     private double initialValue;
     private List<AllocatedStock> allocatedStocks;
 
-    // @Data
-    // public static class AllocatedStock {
-    //     private String stockId;
-    //     private int quantity;
-    // }
 
     
 }

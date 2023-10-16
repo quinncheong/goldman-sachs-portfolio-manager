@@ -66,14 +66,12 @@ public class PortfolioService {
         Optional<AllocatedStock> allocatedStock = allocatedStockRepository.findById(allocatedStockId);
         if (portfolio.isPresent()) {
             portfolio.get().getAllocatedStocks().add(allocatedStock.get());
-            System.out.println(portfolio.get());
         }
-        System.out.println(portfolio.get());
         return portfolioRepository.save(portfolio.get());
     }
 
-    public Portfolio clearPortfolio(ObjectId id) {
-        Optional<Portfolio> portfolio = portfolioRepository.findById(id);
+    public Portfolio delStocksFromPortfolio(ObjectId portfolioId) {
+        Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
         if (portfolio.isPresent()) {
             portfolio.get().setAllocatedStocks(Collections.<AllocatedStock>emptyList());
             return portfolioRepository.save(portfolio.get());
