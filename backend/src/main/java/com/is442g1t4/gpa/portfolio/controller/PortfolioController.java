@@ -67,13 +67,13 @@ public class PortfolioController {
                 HttpStatus.OK);
     }
 
-    @PutMapping("/clear/{portfolioId}")
+    @DeleteMapping("/stock/{portfolioId}")
     public ResponseEntity<Portfolio> clearPortfolio(@PathVariable ObjectId portfolioId) {
         return new ResponseEntity<Portfolio>(portfolioService.delStocksFromPortfolio(portfolioId),
                 HttpStatus.OK);
     }
     
-    @PutMapping("/add/{allocatedStockId}/{portfolioId}")
+    @PutMapping("/{allocatedStockId}/{portfolioId}")
     public ResponseEntity<Portfolio> addStock(@PathVariable ObjectId allocatedStockId,
             @PathVariable ObjectId portfolioId) {
     
