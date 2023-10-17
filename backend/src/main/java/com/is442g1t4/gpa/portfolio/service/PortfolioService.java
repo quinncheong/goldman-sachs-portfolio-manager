@@ -8,6 +8,9 @@ import com.is442g1t4.gpa.portfolio.repository.PortfolioRepository;
 import com.is442g1t4.gpa.user.User;
 import com.is442g1t4.gpa.user.UserRepository;
 import com.is442g1t4.gpa.portfolio.model.Portfolio;
+import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
+import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
+import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +23,9 @@ public class PortfolioService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AllocatedStockRepository allocatedStockRepository;
 
     public List<Portfolio> getAllPortfolios() {
         return portfolioRepository.findAll();
@@ -55,5 +61,22 @@ public class PortfolioService {
         return "Portfolio Deleted";
     }
 
-    
+    public Portfolio addStockToPortfolio(ObjectId allocatedStockId, ObjectId portfolioId) {
+        Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
+        Optional<AllocatedStock> allocatedStock = allocatedStockRepository.findById(allocatedStockId);
+        if (portfolio.isPresent()) {
+            portfolio.get().getAllocatedStocks().add(allocatedStock.get());
+        }
+        return portfolioRepository.save(portfolio.get());
+    }
+
+    public Portfolio delStocksFromPortfolio(ObjectId portfolioId) {
+        Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
+        if (portfolio.isPresent()) {
+            portfolio.get().setAllocatedStocks(Collections.<AllocatedStock>emptyList());
+            return portfolioRepository.save(portfolio.get());
+        }
+        return null;
+
+    }
 }
