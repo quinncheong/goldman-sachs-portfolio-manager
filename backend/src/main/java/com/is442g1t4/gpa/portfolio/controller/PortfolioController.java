@@ -79,7 +79,6 @@ public class PortfolioController {
     
         return new ResponseEntity<Portfolio>(portfolioService.addStockToPortfolio(allocatedStockId,portfolioId),
                 HttpStatus.OK);
-
     }
 
     @GetMapping("/allocatedStock/{id}")
