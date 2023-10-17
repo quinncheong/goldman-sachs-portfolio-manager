@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.model.Portfolio;
 import com.is442g1t4.gpa.portfolio.service.PortfolioService;
 
@@ -73,12 +74,16 @@ public class PortfolioController {
                 HttpStatus.OK);
     }
     
-    @PutMapping("/{allocatedStockId}/{portfolioId}")
-    public ResponseEntity<Portfolio> addStock(@PathVariable ObjectId allocatedStockId,
-            @PathVariable ObjectId portfolioId) {
+    @PutMapping("/{portfolioId}/{allocatedStockId}")
+    public ResponseEntity<Portfolio> addStock(@PathVariable ObjectId portfolioId, @PathVariable ObjectId allocatedStockId) {
     
         return new ResponseEntity<Portfolio>(portfolioService.addStockToPortfolio(allocatedStockId,portfolioId),
                 HttpStatus.OK);
 
+    }
+
+    @GetMapping("/allocatedStock/{id}")
+    public ResponseEntity<List<AllocatedStock>> getAllocatedStocks(@PathVariable ObjectId id){
+        return new ResponseEntity<List<AllocatedStock>>(portfolioService.getAllAllocatedStocksInPortfolio(id), HttpStatus.OK);
     }
 }

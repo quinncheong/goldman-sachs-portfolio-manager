@@ -79,4 +79,11 @@ public class PortfolioService {
         return null;
 
     }
+
+    public List<AllocatedStock> getAllAllocatedStocksInPortfolio(ObjectId id) {
+
+        Portfolio retrievedPortfolio = portfolioRepository.findPortfolioById(id);
+        List<AllocatedStock> allocatedStocks = retrievedPortfolio.getAllocatedStocks();
+        return allocatedStocks;
+    }
 }

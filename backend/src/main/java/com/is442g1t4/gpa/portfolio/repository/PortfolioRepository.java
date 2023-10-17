@@ -8,4 +8,6 @@ import com.is442g1t4.gpa.portfolio.model.Portfolio;
 
 @Repository
 public interface PortfolioRepository extends MongoRepository<Portfolio, ObjectId> {
+
+    Portfolio findPortfolioById(ObjectId id);
 }
