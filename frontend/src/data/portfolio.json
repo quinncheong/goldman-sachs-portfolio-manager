@@ -57,6 +57,7 @@
     ]
   },
   {
+    "id": 4,
     "name": "Portfolio 4",
     "description": "This is the fourth portfolio",
     "stocks": [
@@ -75,6 +76,7 @@
     ]
   },
   {
+    "id": 5,
     "name": "Portfolio 5",
     "description": "This is the fourth portfolio",
     "stocks": [
@@ -93,6 +95,7 @@
     ]
   },
   {
+    "id": 6,
     "name": "Portfolio 6",
     "description": "This is the fourth portfolio",
     "stocks": [
@@ -111,6 +114,7 @@
     ]
   },
   {
+    "id": 7,
     "name": "Portfolio 7",
     "description": "This is the fourth portfolio",
     "stocks": [
