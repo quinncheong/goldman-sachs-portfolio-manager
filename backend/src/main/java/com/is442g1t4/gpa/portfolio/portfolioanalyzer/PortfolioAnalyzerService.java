@@ -25,13 +25,13 @@ import java.time.Instant;
 public class PortfolioAnalyzerService {
 
     @Autowired
-    private static PortfolioService portfolioService;
+    private PortfolioService portfolioService;
 
     @Autowired
-    private static StockService stockService;
+    private StockService stockService;
 
-    public static Map<String, Object> getPortfolioAnalysis(ObjectId id){
-        Map<String, Object> result = new HashMap<>();
+    public Map<String, Double> getPortfolioAnalysis(ObjectId id){
+        Map<String, Double> result = new HashMap<>();
         DecimalFormat df = new DecimalFormat("#.##");
 
         List<AllocatedStock> allocatedStocks = portfolioService.getAllAllocatedStocksInPortfolio(id);
@@ -39,29 +39,29 @@ public class PortfolioAnalyzerService {
         double cost = 0;
         double value = 0;
         double previousValue = 0;
-        double pnl;
-        double dpnl;
+        Double pnl;
+        Double dpnl;
 
         for (AllocatedStock allocatedStock : allocatedStocks){
             String stockTicker = allocatedStock.getStockTicker();
             Stock stock = stockService.getStockByTicker(stockTicker).get();
             int quantity = allocatedStock.getStockQuantity();
             cost = cost + (allocatedStock.getStockBuyPrice() * quantity);
-            value  = value + (stock.priceToday() * quantity);
+            value  = value + (100 * quantity);
             Date buyDate = allocatedStock.getStockBuyDate();
             Instant instant = buyDate.toInstant();
             if(instant.atZone(ZoneId.systemDefault()).toLocalDate().equals(LocalDate.now()) ){
                 previousValue = previousValue + (stock.priceToday() * quantity);
             } else {
-                previousValue = previousValue + (stock.priceYesterday());
+                previousValue = previousValue + (stock.priceYesterday() * quantity);
             }
         }
 
         dpnl = value/previousValue - 1;
         pnl = value/cost - 1;
 
-        result.put("cost", df.format(dpnl));
-        result.put("pnl", df.format(pnl));
+        result.put("dpnl", Double.parseDouble(df.format(dpnl)));
+        result.put("pnl", Double.parseDouble(df.format(pnl)));
 
 
         return result;

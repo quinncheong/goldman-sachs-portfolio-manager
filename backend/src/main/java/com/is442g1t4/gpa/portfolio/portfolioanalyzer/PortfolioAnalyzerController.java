@@ -25,8 +25,11 @@ import com.is442g1t4.gpa.portfolio.portfolioanalyzer.PortfolioAnalyzerService;
 @RequestMapping("/api/v1/portfolio-analyzer")
 public class PortfolioAnalyzerController {
 
+    @Autowired
+    private PortfolioAnalyzerService portFolioAnalyzer;
+
     @GetMapping("/{id}")
-    public ResponseEntity <Map<String, Object>> getCalculatedStock (@PathVariable ObjectId id){
-        return new ResponseEntity<Map<String, Object>>(PortfolioAnalyzerService.getPortfolioAnalysis(id), HttpStatus.OK);
+    public ResponseEntity <Map<String, Double>> getCalculatedStock (@PathVariable ObjectId id){
+        return new ResponseEntity<Map<String, Double>>(portFolioAnalyzer.getPortfolioAnalysis(id), HttpStatus.OK);
     }
 }
