@@ -46,10 +46,12 @@ public class PortfolioAnalyzerService {
             String stockTicker = allocatedStock.getStockTicker();
             Stock stock = stockService.getStockByTicker(stockTicker).get();
             int quantity = allocatedStock.getStockQuantity();
-            cost = cost + (allocatedStock.getStockBuyPrice() * quantity);
-            value  = value + (100 * quantity);
             Date buyDate = allocatedStock.getStockBuyDate();
             Instant instant = buyDate.toInstant();
+
+            cost = cost + (allocatedStock.getStockBuyPrice() * quantity);
+            value  = value + (stock.priceToday() * quantity);
+
             if(instant.atZone(ZoneId.systemDefault()).toLocalDate().equals(LocalDate.now()) ){
                 previousValue = previousValue + (stock.priceToday() * quantity);
             } else {
