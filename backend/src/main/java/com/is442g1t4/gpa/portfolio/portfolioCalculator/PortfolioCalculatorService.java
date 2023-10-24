@@ -39,22 +39,16 @@ public class PortfolioCalculatorService {
                     calculatedStock.put(stockTicker, portfolioCalculator);
                 }else{
                     PortfolioCalculator portfolioCalculator = calculatedStock.get(stockTicker);
-                    int currStockQuantity = portfolioCalculator.getStockQuantity();
-                    int newStockQuantity = allocatedStock.getStockQuantity();
-                    double currAvgStockBuyPrice = portfolioCalculator.getAvgStockBuyPrice();
-                    double newAvgStockBuyPrice = allocatedStock.getStockBuyPrice();
-                    int totalStockQuantity = currStockQuantity + newStockQuantity;
-                    double avgStockBuyPrice = ((currAvgStockBuyPrice * currStockQuantity) + (newAvgStockBuyPrice * newStockQuantity)) / totalStockQuantity;
-                    
-                    portfolioCalculator.setStockQuantity(totalStockQuantity);
-                    portfolioCalculator.setAvgStockBuyPrice(avgStockBuyPrice);
-                    calculatedStock.put(stockTicker, portfolioCalculator);
+                    int quantity = allocatedStock.getStockQuantity();
+                    portfolioCalculator.setStockQuantity(portfolioCalculator.getStockQuantity() + quantity);
+                    portfolioCalculator.setAvgStockBuyPrice(portfolioCalculator.getAvgStockBuyPrice() + quantity * allocatedStock.getStockBuyPrice());
                 }
             }
             for (String stockTicker : calculatedStock.keySet()){
                 PortfolioCalculator portfolioCalculator = calculatedStock.get(stockTicker);
                 Stock stock = stockService.getStockByTicker(stockTicker).get();
                 double value = portfolioCalculator.getStockQuantity() * stock.priceToday();
+                portfolioCalculator.setAvgStockBuyPrice(portfolioCalculator.getAvgStockBuyPrice() / portfolioCalculator.getStockQuantity());
                 totalValue = totalValue + value;
                 portfolioCalculator.setCurrentValue(value);
             }
