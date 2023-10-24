@@ -36,11 +36,11 @@ public class AllocatedStockController {
     @Autowired
     private AllocatedStockService allocatedStockService;
 
-    @PostMapping("/")
-    public ResponseEntity<?> createAllocatedStock(@RequestBody AllocatedStock allocatedStock){
-        AllocatedStock savedAllocatedStock = allocatedStockService.addAllocatedStock(allocatedStock);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedAllocatedStock);
-    }
+    // @PostMapping("/")
+    // public ResponseEntity<?> createAllocatedStock(@RequestBody AllocatedStock allocatedStock){
+    //     AllocatedStock savedAllocatedStock = allocatedStockService.addAllocatedStock(allocatedStock);
+    //     return ResponseEntity.status(HttpStatus.CREATED).body(savedAllocatedStock);
+    // }
 
     @GetMapping("/all")
     public ResponseEntity<List<AllocatedStock>> getAllAllocatedStocks(){
