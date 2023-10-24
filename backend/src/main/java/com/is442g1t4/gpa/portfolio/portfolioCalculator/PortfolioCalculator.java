@@ -20,6 +20,7 @@ public class PortfolioCalculator {
     private String stockTicker;
     private int stockQuantity;
     private double avgStockBuyPrice;
-    
+    private double weight;
+    private double currentValue;
 
 }
