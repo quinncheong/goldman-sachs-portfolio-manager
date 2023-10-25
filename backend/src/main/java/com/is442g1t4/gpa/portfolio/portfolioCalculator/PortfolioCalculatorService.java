@@ -48,6 +48,7 @@ public class PortfolioCalculatorService {
             for (String stockTicker : calculatedStock.keySet()){
                 PortfolioCalculator portfolioCalculator = calculatedStock.get(stockTicker);
                 // Stock stock = stockService.getStockByTicker(stockTicker).get();
+                // double value = portfolioCalculator.getStockQuantity() * stock.getPriceToday();
                 double value = portfolioCalculator.getStockQuantity() * stockService.getPriceTodayByTicker(stockTicker);
                 portfolioCalculator.setAvgStockBuyPrice(portfolioCalculator.getAvgStockBuyPrice() / portfolioCalculator.getStockQuantity());
                 totalValue = totalValue + value;
