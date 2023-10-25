@@ -17,8 +17,8 @@ import lombok.NoArgsConstructor;
 @JsonNaming(PropertyNamingStrategy.UpperCamelCaseStrategy.class)
 public class Stock {
     @Id
-    private String assetType;
     private String symbol;
+    private String assetType;
     private String name;
     private String description;
     private String CIK;
