@@ -48,4 +48,10 @@ public class UserController {
         return new ResponseEntity<String>(userService.deleteUser(id),
                 HttpStatus.OK);
     }
+
+    @PutMapping("/{id}/{portfolioId}")
+    public ResponseEntity<User> addPortfolioToUser(@PathVariable ObjectId id, @PathVariable ObjectId portfolioId) {
+        return new ResponseEntity<User>(userService.addPortfolioToUser(id, portfolioId),
+                HttpStatus.OK);
+    }
 }

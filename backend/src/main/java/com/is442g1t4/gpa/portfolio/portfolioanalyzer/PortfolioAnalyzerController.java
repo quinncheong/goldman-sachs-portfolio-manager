@@ -26,10 +26,10 @@ import com.is442g1t4.gpa.portfolio.portfolioanalyzer.PortfolioAnalyzerService;
 public class PortfolioAnalyzerController {
 
     @Autowired
-    private PortfolioAnalyzerService portFolioAnalyzer;
+    private PortfolioAnalyzerService portfolioAnalyzer;
 
     @GetMapping("/{id}")
-    public ResponseEntity <Map<String, Double>> getCalculatedStock (@PathVariable ObjectId id){
-        return new ResponseEntity<Map<String, Double>>(portFolioAnalyzer.getPortfolioAnalysis(id), HttpStatus.OK);
+    public ResponseEntity <Map<String, Double>> getPortfolioAnalysis (@PathVariable ObjectId id){
+        return new ResponseEntity<Map<String, Double>>(portfolioAnalyzer.getPortfolioAnalysis(id), HttpStatus.OK);
     }
 }

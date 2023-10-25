@@ -28,4 +28,14 @@ public class UserService {
         userRepository.deleteById(id);
         return "User deleted";
     }
+
+    public User addPortfolioToUser(ObjectId id, ObjectId portfolioId) {
+        Optional<User> user = userRepository.findById(id);
+
+        if (user.isPresent()){
+            user.get().getPortfolioIds().add(portfolioId);
+        }
+
+        return userRepository.save(user.get());
+    }
 }
