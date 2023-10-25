@@ -35,7 +35,8 @@ public class PortfolioCalculatorService {
                 String stockTicker = allocatedStock.getStockTicker();
 
                 if (!calculatedStock.containsKey(stockTicker)){
-                    PortfolioCalculator portfolioCalculator = new PortfolioCalculator(stockTicker, allocatedStock.getStockQuantity(), allocatedStock.getStockBuyPrice(), 0.0, 0.0);
+                    int quantity = allocatedStock.getStockQuantity();
+                    PortfolioCalculator portfolioCalculator = new PortfolioCalculator(stockTicker, quantity, quantity * allocatedStock.getStockBuyPrice(), 0.0, 0.0);
                     calculatedStock.put(stockTicker, portfolioCalculator);
                 }else{
                     PortfolioCalculator portfolioCalculator = calculatedStock.get(stockTicker);
