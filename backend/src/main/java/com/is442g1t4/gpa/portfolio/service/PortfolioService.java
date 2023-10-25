@@ -5,8 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.is442g1t4.gpa.portfolio.repository.PortfolioRepository;
+import com.is442g1t4.gpa.portfolio.service.PortfolioService;
+import com.is442g1t4.gpa.stock.StockService;
+import com.is442g1t4.gpa.stock.StockRepository;
+import com.is442g1t4.gpa.stock.model.Stock;
 import com.is442g1t4.gpa.user.User;
 import com.is442g1t4.gpa.user.UserRepository;
+
 import com.is442g1t4.gpa.portfolio.model.Portfolio;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
@@ -26,6 +31,12 @@ public class PortfolioService {
 
     @Autowired
     private AllocatedStockRepository allocatedStockRepository;
+
+    @Autowired
+    private StockService stockRepository;
+
+    @Autowired
+    private AllocatedStockService allocatedStockService;
 
     public List<Portfolio> getAllPortfolios() {
         return portfolioRepository.findAll();
@@ -61,11 +72,18 @@ public class PortfolioService {
         return "Portfolio Deleted";
     }
 
-    public Portfolio addStockToPortfolio(ObjectId allocatedStockId, ObjectId portfolioId) {
+    // public Portfolio oldaddStockToPortfolio(ObjectId allocatedStockId, ObjectId portfolioId) {
+    //     Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
+    //     Optional<AllocatedStock> allocatedStock = allocatedStockRepository.findById(allocatedStockId);
+    //     if (portfolio.isPresent()) {
+    //         portfolio.get().getAllocatedStocks().add(allocatedStock.get());
+    //     }
+    //     return portfolioRepository.save(portfolio.get());
+    // }
+    public Portfolio addStockToPortfolio(String symbol, int quantity, ObjectId portfolioId) {
         Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
-        Optional<AllocatedStock> allocatedStock = allocatedStockRepository.findById(allocatedStockId);
         if (portfolio.isPresent()) {
-            portfolio.get().getAllocatedStocks().add(allocatedStock.get());
+            portfolio.get().getAllocatedStocks().add(allocatedStockService.addAllocatedStock(symbol, quantity));
         }
         return portfolioRepository.save(portfolio.get());
     }
