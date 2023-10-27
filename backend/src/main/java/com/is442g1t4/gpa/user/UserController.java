@@ -61,4 +61,10 @@ public class UserController {
         return new ResponseEntity<User>(userService.addPortfolio(id, portfolio),
                 HttpStatus.OK);
     }
+
+    @PutMapping("/cash/{id}/{cash}")
+    public ResponseEntity<User> addCash(@PathVariable ObjectId id, @PathVariable double cash) {
+        return new ResponseEntity<User>(userService.addCash(id, cash),
+                HttpStatus.OK);
+    }
 }

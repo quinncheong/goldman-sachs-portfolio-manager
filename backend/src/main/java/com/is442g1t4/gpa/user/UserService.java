@@ -54,4 +54,13 @@ public class UserService {
 
         return userRepository.save(user.get());
     }
+
+    public User addCash(ObjectId id, double cash){
+        Optional<User> user = userRepository.findById(id);
+
+        if (user.isPresent()){
+            user.get().setCashBalance(user.get().getCashBalance() + cash);
+        }
+        return userRepository.save(user.get());
+    }
 }
