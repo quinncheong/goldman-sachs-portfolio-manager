@@ -10,6 +10,23 @@ const axiosLoginInstance = axios.create({
   },
 });
 
+export const login = async (username, password) => {
+  const json = {
+    "username": username,
+    "password": password
+  }
+  try { 
+    let response = await axiosLoginInstance.post("/authenticate", json)
+    return response.data.token
+  } catch (err) {
+    if (err.response.status === 403) {
+      console.log("Wrong username/password.")
+    } else {
+      console.log("Something went wrong.")
+    }
+  }
+}
+
 export const useGetLoginStatus = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["getPortfolios"],
