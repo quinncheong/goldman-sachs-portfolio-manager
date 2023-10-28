@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.is442g1t4.gpa.auth.PasswordRequest;
 import com.is442g1t4.gpa.portfolio.model.Portfolio;
 import com.is442g1t4.gpa.user.User;
 import com.is442g1t4.gpa.user.UserService;
@@ -45,7 +46,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}/changepassword")
-    public ResponseEntity<User> changeUserPassword(@PathVariable ObjectId id, @RequestBody String password){
+    public ResponseEntity<User> changeUserPassword(@PathVariable ObjectId id, @RequestBody PasswordRequest password){
         return new ResponseEntity<User>(userService.changeUserPassword(id,password),
                 HttpStatus.OK);
     }
