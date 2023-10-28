@@ -49,7 +49,7 @@ public class ScheduledTasks {
         LocalDateTime start = LocalDateTime.now();
         System.out.println("Running Daily repopulate stock details CRON Job" + dateTimeFormatter.format(start));
 
-        List<StockPrice> stockDetails = stockDetailsRetriever.retrieveOneStockPriceDetails("AAPL");
+        List<StockPrice> stockDetails = stockDetailsRetriever.retrieveFullStockPrices("AAPL");
         stockPriceRepository.saveAll(stockDetails);
 
         LocalDateTime end = LocalDateTime.now();

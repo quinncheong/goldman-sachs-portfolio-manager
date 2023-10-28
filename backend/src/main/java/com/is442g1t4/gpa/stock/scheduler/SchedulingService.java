@@ -29,9 +29,39 @@ public class SchedulingService {
 
         for (TrackedStock trackedStock : trackedStocks) {
             List<StockPrice> fullStockPrices = stockDetailsRetriever
-                    .retrieveOneStockPriceDetails(trackedStock.getSymbol());
+                    .retrieveFullStockPrices(trackedStock.getSymbol());
 
             stockPriceRepository.saveAll(fullStockPrices);
+            System.out.println("Saved for" + trackedStock.getSymbol());
+
+            // try {
+            // Thread.sleep(30000);
+            // } catch (InterruptedException e) {
+            // // TODO Add to custom logger or DLQ
+            // e.printStackTrace();
+            // }
+        }
+        return;
+    }
+
+    public void updateLatestStockPrices() {
+        List<TrackedStock> trackedStocks = trackedStockRepository.findAll();
+
+        for (TrackedStock trackedStock : trackedStocks) {
+            List<StockPrice> latestStockPrices = stockDetailsRetriever
+                    .retrieveCurrStockPrices(trackedStock.getSymbol());
+
+            StockPrice priceToday = latestStockPrices.get(0);
+            // StockPrice priceYesterday = latestStockPrices.get(1);
+
+            StockPrice priceTodayFromDb = stockPriceRepository.findStockPriceByStockTickerAndDate(
+                    priceToday.getStockTicker(), priceToday.getDate(),
+                    priceToday.getDate());
+
+            if (priceTodayFromDb == null) {
+                stockPriceRepository.save(priceToday);
+            }
+
             System.out.println("Saved for" + trackedStock.getSymbol());
 
             try {

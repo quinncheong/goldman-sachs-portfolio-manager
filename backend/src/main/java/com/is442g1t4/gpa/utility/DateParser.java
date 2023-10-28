@@ -8,7 +8,6 @@ public class DateParser {
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
         try {
             Date date = dateFormat.parse(dateStr);
-            System.out.println(date);
             return date;
         } catch (Exception e) {
             // TODO: handle exception

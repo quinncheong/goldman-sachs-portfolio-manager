@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +20,7 @@ import com.is442g1t4.gpa.stock.model.TrackedStock;
 import com.is442g1t4.gpa.stock.stockPrice.StockPrice;
 import com.is442g1t4.gpa.stock.stockPrice.StockPriceRepository;
 import com.is442g1t4.gpa.utility.DateParser;
+
 import com.is442g1t4.gpa.stock.scheduler.AlphavantageResponse.AlphavantageStockPrice;
 
 import reactor.core.publisher.Mono;
@@ -35,9 +37,6 @@ public class StockDetailsRetriever {
 
     @Autowired
     private TrackedStockRepository trackedStockRepository;
-
-    @Autowired
-    private StockPriceRepository stockPriceRepository;
 
     public StockDetailsRetriever() {
         baseQueryClient = WebClient.builder()
@@ -73,7 +72,7 @@ public class StockDetailsRetriever {
     }
 
     // https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&outputsize=full&apikey=demo
-    public List<StockPrice> retrieveOneStockPriceDetails(String stockSymbol) {
+    public List<StockPrice> retrieveFullStockPrices(String stockSymbol) {
         Mono<ResponseEntity<AlphavantageResponse>> responseMono = baseQueryClient.get()
                 .uri(builder -> builder
                         .queryParam("function", "TIME_SERIES_DAILY_ADJUSTED")
@@ -104,6 +103,38 @@ public class StockDetailsRetriever {
 
         return stockPrices;
 
+    }
+
+    public List<StockPrice> retrieveCurrStockPrices(String stockSymbol) {
+        Mono<ResponseEntity<AlphavantageResponse>> responseMono = baseQueryClient.get()
+                .uri(builder -> builder
+                        .queryParam("function", "TIME_SERIES_DAILY_ADJUSTED")
+                        .queryParam("symbol", stockSymbol)
+                        .queryParam("outputsize", "compact")
+                        .queryParam("apikey", ALPHAVANTAGE_API_KEY)
+                        .build())
+                .retrieve()
+                .toEntity(AlphavantageResponse.class);
+
+        ResponseEntity<AlphavantageResponse> response = responseMono.block();
+        Map<String, AlphavantageStockPrice> dailyTimeSeries = response.getBody().getDailyTimeSeries();
+
+        ArrayList<StockPrice> stockPrices = new ArrayList<>();
+        for (String date : dailyTimeSeries.keySet()) {
+
+            AlphavantageStockPrice currStockPrice = dailyTimeSeries.get(date);
+            StockPrice stockPrice = new StockPrice(
+                    stockSymbol,
+                    DateParser.parseDateString(date, "yyyy-MM-dd"),
+                    currStockPrice.getOpen(),
+                    currStockPrice.getHigh(),
+                    currStockPrice.getClose(),
+                    currStockPrice.getLow(),
+                    currStockPrice.getAdjustedClose());
+            stockPrices.add(stockPrice);
+        }
+
+        return stockPrices;
     }
 
     public Stock retrieveOneStockDetails(String stockSymbol) {

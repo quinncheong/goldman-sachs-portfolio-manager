@@ -40,7 +40,7 @@ public class SchedulerTestController {
     @GetMapping("/retrieve/one-stock-price")
     public ResponseEntity<List<StockPrice>> getOneStockPrice() {
 
-        List<StockPrice> prices = stockDetailsRetriever.retrieveOneStockPriceDetails("AAPL");
+        List<StockPrice> prices = stockDetailsRetriever.retrieveFullStockPrices("AAPL");
         return new ResponseEntity<List<StockPrice>>(prices, HttpStatus.OK);
     }
 
