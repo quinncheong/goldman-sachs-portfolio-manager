@@ -44,7 +44,7 @@ public class ScheduledTasks {
     }
 
     // @Scheduled(cron = "0 30 20 * * MON-FRI")
-    @Scheduled(cron = "03 56 20 * * MON-SUN")
+    @Scheduled(cron = "30 56 20 * * MON-SUN")
     public void repopulateStockPriceDaily() {
         LocalDateTime start = LocalDateTime.now();
         System.out.println("Running Daily repopulate stock details CRON Job" + dateTimeFormatter.format(start));

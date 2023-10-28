@@ -15,7 +15,7 @@ public class AlphavantageResponse {
     private Map<String, AlphavantageStockPrice> dailyTimeSeries;
 
     @Data
-    class MetaData {
+    static class MetaData {
         @JsonProperty("1. Information")
         private String information;
 
@@ -34,7 +34,7 @@ public class AlphavantageResponse {
     }
 
     @Data
-    class AlphavantageStockPrice {
+    static class AlphavantageStockPrice {
         @JsonProperty("1. open")
         private double open;
 
