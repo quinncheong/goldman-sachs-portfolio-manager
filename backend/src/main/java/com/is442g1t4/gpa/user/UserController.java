@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.is442g1t4.gpa.portfolio.model.Portfolio;
 import com.is442g1t4.gpa.user.User;
 import com.is442g1t4.gpa.user.UserService;
 
@@ -46,6 +47,24 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable ObjectId id) {
         return new ResponseEntity<String>(userService.deleteUser(id),
+                HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/{portfolioId}")
+    public ResponseEntity<User> addPortfolioToUser(@PathVariable ObjectId id, @PathVariable ObjectId portfolioId) {
+        return new ResponseEntity<User>(userService.addPortfolioToUser(id, portfolioId),
+                HttpStatus.OK);
+    }
+
+    @PutMapping("/portfolio/{id}")
+    public ResponseEntity<User> addPortfolio(@PathVariable ObjectId id, Portfolio portfolio) {
+        return new ResponseEntity<User>(userService.addPortfolio(id, portfolio),
+                HttpStatus.OK);
+    }
+
+    @PutMapping("/cash/{id}/{cash}")
+    public ResponseEntity<User> addCash(@PathVariable ObjectId id, @PathVariable double cash) {
+        return new ResponseEntity<User>(userService.addCash(id, cash),
                 HttpStatus.OK);
     }
 }

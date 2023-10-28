@@ -60,7 +60,9 @@ public class PortfolioService {
         if (portfolio.getId() != null && portfolioRepository.existsById(portfolio.getId())) {
             return null;
         }
-        return portfolioRepository.save(portfolio);
+        Portfolio createdPortfolio = new Portfolio();
+        createdPortfolio.setAllocatedStocks(Collections.<AllocatedStock>emptyList());
+        return portfolioRepository.save(createdPortfolio);
     }
 
     public Portfolio updatePortfolio(Portfolio portfolio) {
