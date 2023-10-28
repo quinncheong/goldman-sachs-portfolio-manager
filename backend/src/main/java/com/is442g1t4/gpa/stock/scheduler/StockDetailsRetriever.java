@@ -17,6 +17,7 @@ import com.is442g1t4.gpa.stock.TrackedStockRepository;
 import com.is442g1t4.gpa.stock.model.Stock;
 import com.is442g1t4.gpa.stock.model.TrackedStock;
 import com.is442g1t4.gpa.stock.stockPrice.StockPrice;
+import com.is442g1t4.gpa.stock.stockPrice.StockPriceRepository;
 import com.is442g1t4.gpa.utility.DateParser;
 import com.is442g1t4.gpa.stock.scheduler.AlphavantageResponse.AlphavantageStockPrice;
 
@@ -34,6 +35,9 @@ public class StockDetailsRetriever {
 
     @Autowired
     private TrackedStockRepository trackedStockRepository;
+
+    @Autowired
+    private StockPriceRepository stockPriceRepository;
 
     public StockDetailsRetriever() {
         baseQueryClient = WebClient.builder()
@@ -69,9 +73,7 @@ public class StockDetailsRetriever {
     }
 
     // https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&outputsize=full&apikey=demo
-
-    public List<StockPrice> retrieveStockPriceDetails(String stockSymbol) {
-        System.out.println("retrieving stock price");
+    public List<StockPrice> retrieveOneStockPriceDetails(String stockSymbol) {
         Mono<ResponseEntity<AlphavantageResponse>> responseMono = baseQueryClient.get()
                 .uri(builder -> builder
                         .queryParam("function", "TIME_SERIES_DAILY_ADJUSTED")
@@ -83,8 +85,6 @@ public class StockDetailsRetriever {
                 .toEntity(AlphavantageResponse.class);
 
         ResponseEntity<AlphavantageResponse> response = responseMono.block();
-        System.out.println(response.getBody());
-        System.out.println(response.toString());
         Map<String, AlphavantageStockPrice> dailyTimeSeries = response.getBody().getDailyTimeSeries();
 
         ArrayList<StockPrice> stockPrices = new ArrayList<>();
@@ -102,9 +102,6 @@ public class StockDetailsRetriever {
             stockPrices.add(stockPrice);
         }
 
-        System.out.println("Finished mapping stock prices");
-        System.out.println(stockPrices);
-
         return stockPrices;
 
     }
@@ -120,7 +117,6 @@ public class StockDetailsRetriever {
                 .toEntity(Stock.class);
 
         ResponseEntity<Stock> response = responseMono.block();
-        System.out.println(response.getBody());
         return response.getBody();
     }
 }

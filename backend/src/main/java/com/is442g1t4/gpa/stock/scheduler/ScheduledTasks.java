@@ -44,12 +44,12 @@ public class ScheduledTasks {
     }
 
     // @Scheduled(cron = "0 30 20 * * MON-FRI")
-    @Scheduled(cron = "30 56 20 * * MON-SUN")
+    @Scheduled(cron = "30 30 22 * * MON-SUN")
     public void repopulateStockPriceDaily() {
         LocalDateTime start = LocalDateTime.now();
         System.out.println("Running Daily repopulate stock details CRON Job" + dateTimeFormatter.format(start));
 
-        List<StockPrice> stockDetails = stockDetailsRetriever.retrieveStockPriceDetails("AAPL");
+        List<StockPrice> stockDetails = stockDetailsRetriever.retrieveOneStockPriceDetails("AAPL");
         stockPriceRepository.saveAll(stockDetails);
 
         LocalDateTime end = LocalDateTime.now();

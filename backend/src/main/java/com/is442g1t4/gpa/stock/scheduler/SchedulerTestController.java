@@ -3,6 +3,7 @@ package com.is442g1t4.gpa.stock.scheduler;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -20,18 +21,27 @@ public class SchedulerTestController {
     @Autowired
     private StockDetailsRetriever stockDetailsRetriever;
 
+    @Autowired
+    private SchedulingService schedulingService;
+
     @GetMapping("/retrieve/all")
     public ResponseEntity<List<Stock>> getAllStocks() {
-        System.out.println("hitting endpoint");
         List<Stock> stocks = stockDetailsRetriever.retrieveAllStockDetails();
 
         return new ResponseEntity<List<Stock>>(stocks, HttpStatus.OK);
     }
 
     @GetMapping("/retrieve/stock-price")
-    public ResponseEntity<List<StockPrice>> getStockPrice() {
+    public ResponseEntity<List<StockPrice>> getAllStockPrice() {
+        schedulingService.saveStockPricesForAllStocks();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
-        List<StockPrice> prices = stockDetailsRetriever.retrieveStockPriceDetails("AAPL");
+    @GetMapping("/retrieve/one-stock-price")
+    public ResponseEntity<List<StockPrice>> getOneStockPrice() {
+
+        List<StockPrice> prices = stockDetailsRetriever.retrieveOneStockPriceDetails("AAPL");
         return new ResponseEntity<List<StockPrice>>(prices, HttpStatus.OK);
     }
+
 }
