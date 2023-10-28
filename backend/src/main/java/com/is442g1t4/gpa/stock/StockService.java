@@ -39,7 +39,7 @@ public class StockService {
     public double getPriceTodayByTicker(String stockSymbol) {
         Optional<Stock> retrievedStock = getStockByTicker(stockSymbol);
         if (retrievedStock.isPresent()) {
-            return retrievedStock.get().getPriceToday() != null ? : 50.0;
+            // return retrievedStock.get().getPriceToday() != null ? : 50.0;
             return 50.0; // hardcoding for now
         }
         return 0;
