@@ -4,13 +4,13 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.is442g1t4.gpa.portfolio.repository.PortfolioRepository;
-import com.is442g1t4.gpa.portfolio.service.PortfolioService;
 import com.is442g1t4.gpa.stock.StockService;
 import com.is442g1t4.gpa.user.User;
 import com.is442g1t4.gpa.user.UserRepository;
-import com.is442g1t4.gpa.portfolio.model.Portfolio;
 import com.is442g1t4.gpa.stock.model.Stock;
+import com.is442g1t4.gpa.portfolio.Portfolio;
+import com.is442g1t4.gpa.portfolio.PortfolioRepository;
+import com.is442g1t4.gpa.portfolio.PortfolioService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockRepository;
@@ -47,6 +47,7 @@ public class PortfolioCalculatorService {
                         portfolioCalculator.getAvgStockBuyPrice() + quantity * allocatedStock.getStockBuyPrice());
             }
         }
+
         for (String stockTicker : calculatedStock.keySet()) {
             PortfolioCalculator portfolioCalculator = calculatedStock.get(stockTicker);
             // Stock stock = stockService.getStockByTicker(stockTicker).get();
@@ -58,6 +59,7 @@ public class PortfolioCalculatorService {
             totalValue = totalValue + value;
             portfolioCalculator.setCurrentValue(value);
         }
+
         for (String stockTicker : calculatedStock.keySet()) {
             PortfolioCalculator portfolioCalculator = calculatedStock.get(stockTicker);
             portfolioCalculator.setWeight(portfolioCalculator.getCurrentValue() / totalValue);

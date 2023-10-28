@@ -1,18 +1,15 @@
-package com.is442g1t4.gpa.portfolio.service;
+package com.is442g1t4.gpa.portfolio;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.is442g1t4.gpa.portfolio.repository.PortfolioRepository;
-import com.is442g1t4.gpa.portfolio.service.PortfolioService;
 import com.is442g1t4.gpa.stock.StockService;
 import com.is442g1t4.gpa.stock.StockRepository;
 import com.is442g1t4.gpa.stock.model.Stock;
 import com.is442g1t4.gpa.user.User;
 import com.is442g1t4.gpa.user.UserRepository;
-
-import com.is442g1t4.gpa.portfolio.model.Portfolio;
+import com.is442g1t4.gpa.portfolio.PortfolioService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockRepository;
@@ -74,13 +71,15 @@ public class PortfolioService {
         return "Portfolio Deleted";
     }
 
-    // public Portfolio oldaddStockToPortfolio(ObjectId allocatedStockId, ObjectId portfolioId) {
-    //     Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
-    //     Optional<AllocatedStock> allocatedStock = allocatedStockRepository.findById(allocatedStockId);
-    //     if (portfolio.isPresent()) {
-    //         portfolio.get().getAllocatedStocks().add(allocatedStock.get());
-    //     }
-    //     return portfolioRepository.save(portfolio.get());
+    // public Portfolio oldaddStockToPortfolio(ObjectId allocatedStockId, ObjectId
+    // portfolioId) {
+    // Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
+    // Optional<AllocatedStock> allocatedStock =
+    // allocatedStockRepository.findById(allocatedStockId);
+    // if (portfolio.isPresent()) {
+    // portfolio.get().getAllocatedStocks().add(allocatedStock.get());
+    // }
+    // return portfolioRepository.save(portfolio.get());
     // }
     public Portfolio addStockToPortfolio(String symbol, int quantity, ObjectId portfolioId) {
         Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
