@@ -2,6 +2,7 @@ package com.is442g1t4.gpa.user;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.is442g1t4.gpa.portfolio.model.Portfolio;
@@ -18,6 +19,8 @@ public class UserService {
     @Autowired
     private PortfolioService PortfolioService;
 
+    private PasswordEncoder passwordEncoder;
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -33,6 +36,20 @@ public class UserService {
     public String deleteUser(ObjectId id) {
         userRepository.deleteById(id);
         return "User deleted";
+    }
+
+    public User changeUserPassword(ObjectId id, String password) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            String oldPassword = user.get().getPassword();
+            boolean isPasswordMatch = passwordEncoder.matches(password, oldPassword);
+            if (!isPasswordMatch) {
+                user.get().setPassword(password);
+            }
+            
+        }
+        return userRepository.save(user.get());
+
     }
 
     public User addPortfolioToUser(ObjectId id, ObjectId portfolioId) {
