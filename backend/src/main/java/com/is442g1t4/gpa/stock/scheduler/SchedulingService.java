@@ -2,6 +2,7 @@ package com.is442g1t4.gpa.stock.scheduler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,14 +77,21 @@ public class SchedulingService {
                     .retrieveCurrStockPrices(trackedStock.getSymbol());
 
             StockPrice priceToday = latestStockPrices.get(0);
-            // StockPrice priceYesterday = latestStockPrices.get(1);
+            StockPrice priceYesterday = latestStockPrices.get(1);
 
             StockPrice priceTodayFromDb = stockPriceRepository.findStockPriceByStockTickerAndDate(
-                    priceToday.getStockTicker(), priceToday.getDate(),
+                    priceToday.getStockTicker(),
+                    priceToday.getDate(),
                     priceToday.getDate());
 
             if (priceTodayFromDb == null) {
                 stockPriceRepository.save(priceToday);
+            }
+
+            Optional<Stock> stock = stockRepository.findStockBySymbol(trackedStock.getSymbol());
+            if (stock.isPresent()) {
+                stock.get().setPriceToday(priceToday.getAdjustedClose());
+                stock.get().setPriceYesterday(priceYesterday.getAdjustedClose());
             }
 
             System.out.println("Saved for" + trackedStock.getSymbol());
