@@ -29,4 +29,16 @@ public class StockPrice {
     // private long volume;
     // private double dividend;
     // private double splitCoefficient;
+
+    public StockPrice(String stockTicker, Date date, double open, double high, double close, double low,
+            double adjustedClose) {
+        this.id = new ObjectId(); // Set a new ObjectId internally
+        this.stockTicker = stockTicker;
+        this.date = date;
+        this.open = open;
+        this.high = high;
+        this.close = close;
+        this.low = low;
+        this.adjustedClose = adjustedClose;
+    }
 }

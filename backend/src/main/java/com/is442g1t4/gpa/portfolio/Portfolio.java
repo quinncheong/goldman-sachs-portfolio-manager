@@ -1,4 +1,4 @@
-package com.is442g1t4.gpa.portfolio.model;
+package com.is442g1t4.gpa.portfolio;
 
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 
@@ -26,6 +26,4 @@ public class Portfolio {
     private double initialValue;
     private List<AllocatedStock> allocatedStocks;
 
-
-    
 }

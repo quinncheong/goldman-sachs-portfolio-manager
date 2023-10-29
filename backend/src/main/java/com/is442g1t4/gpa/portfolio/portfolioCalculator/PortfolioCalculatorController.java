@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.is442g1t4.gpa.portfolio.Portfolio;
+import com.is442g1t4.gpa.portfolio.PortfolioService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
-import com.is442g1t4.gpa.portfolio.model.Portfolio;
-import com.is442g1t4.gpa.portfolio.service.PortfolioService;
 
 @RestController
 @RequestMapping("/api/v1/portfolio-calculator")
@@ -28,7 +28,8 @@ public class PortfolioCalculatorController {
     private PortfolioCalculatorService portfolioCalculatorService;
 
     @GetMapping("/{id}")
-    public ResponseEntity <Map<String, PortfolioCalculator>> getCalculatedStock (@PathVariable ObjectId id){
-        return new ResponseEntity<Map<String, PortfolioCalculator>>(portfolioCalculatorService.getCalculatedStockInPortfolio(id), HttpStatus.OK);
+    public ResponseEntity<Map<String, PortfolioCalculator>> getCalculatedStock(@PathVariable ObjectId id) {
+        return new ResponseEntity<Map<String, PortfolioCalculator>>(
+                portfolioCalculatorService.getCalculatedStockInPortfolio(id), HttpStatus.OK);
     }
 }

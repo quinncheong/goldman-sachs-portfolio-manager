@@ -73,21 +73,22 @@ public class StockPriceController {
     }
 
     @GetMapping("/{stockTicker}/{startDate}/{endDate}")
-    public ResponseEntity<?> getStockPriceByDateRange(@PathVariable String stockTicker, @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+    public ResponseEntity<?> getStockPriceByDateRange(@PathVariable String stockTicker,
+            @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
 
         StockPrice stockPriceStartDate = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, startDate);
         StockPrice stockPriceEndDate = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, endDate);
 
         if (stockPriceStartDate == null || stockPriceEndDate == null) {
             return new ResponseEntity<List<StockPrice>>(HttpStatus.NOT_FOUND);
-        }else{
-            List <StockPrice> stockPriceList = new ArrayList<>();
+        } else {
+            List<StockPrice> stockPriceList = new ArrayList<>();
             stockPriceList.add(stockPriceStartDate);
             stockPriceList.add(stockPriceEndDate);
             return new ResponseEntity<List<StockPrice>>(stockPriceList, HttpStatus.OK);
         }
     }
-
 
     // @GetMapping("/date/{date}")
     // public ResponseEntity<List<StockPrice>> getStockPriceByDateOnly(@PathVariable

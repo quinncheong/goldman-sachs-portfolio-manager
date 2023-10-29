@@ -21,8 +21,8 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
     // @Bean
     // public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    //     http.csrf(AbstractHttpConfigurer::disable);
-    //     return http.build();
+    // http.csrf(AbstractHttpConfigurer::disable);
+    // return http.build();
     // }
 
     private final JwtAuthenticationFilter jwtAuthFilter;
@@ -31,19 +31,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
-            .authorizeHttpRequests()
-            .requestMatchers("/api/v1/auth/**")
-            .permitAll()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authenticationProvider(authenticationProvider)
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-        
+                .csrf()
+                .disable()
+                .authorizeHttpRequests()
+                .requestMatchers("/api/v1/auth/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+
         return http.build();
     }
 }
