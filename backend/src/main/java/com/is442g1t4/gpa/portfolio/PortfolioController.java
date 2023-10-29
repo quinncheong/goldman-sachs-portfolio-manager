@@ -1,4 +1,4 @@
-package com.is442g1t4.gpa.portfolio.controller;
+package com.is442g1t4.gpa.portfolio;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,15 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import com.is442g1t4.gpa.portfolio.repository.PortfolioRepository;
-import com.is442g1t4.gpa.portfolio.service.PortfolioService;
 import com.is442g1t4.gpa.stock.StockService;
 import com.is442g1t4.gpa.stock.StockRepository;
 import com.is442g1t4.gpa.stock.model.Stock;
 import com.is442g1t4.gpa.user.User;
 import com.is442g1t4.gpa.user.UserRepository;
-import com.is442g1t4.gpa.portfolio.model.Portfolio;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockRepository;
@@ -82,16 +78,18 @@ public class PortfolioController {
         return new ResponseEntity<Portfolio>(portfolioService.delStocksFromPortfolio(portfolioId),
                 HttpStatus.OK);
     }
-    
+
     @PutMapping("/{portfolioId}/{symbol}/{quantity}")
-    public ResponseEntity<Portfolio> addStock(@PathVariable ObjectId portfolioId ,@PathVariable String symbol, @PathVariable int quantity) {
-    
+    public ResponseEntity<Portfolio> addStock(@PathVariable ObjectId portfolioId, @PathVariable String symbol,
+            @PathVariable int quantity) {
+
         return new ResponseEntity<Portfolio>(portfolioService.addStockToPortfolio(symbol, quantity, portfolioId),
                 HttpStatus.OK);
     }
 
     @GetMapping("/allocatedStock/{id}")
-    public ResponseEntity<List<AllocatedStock>> getAllocatedStocks(@PathVariable ObjectId id){
-        return new ResponseEntity<List<AllocatedStock>>(portfolioService.getAllAllocatedStocksInPortfolio(id), HttpStatus.OK);
+    public ResponseEntity<List<AllocatedStock>> getAllocatedStocks(@PathVariable ObjectId id) {
+        return new ResponseEntity<List<AllocatedStock>>(portfolioService.getAllAllocatedStocksInPortfolio(id),
+                HttpStatus.OK);
     }
 }

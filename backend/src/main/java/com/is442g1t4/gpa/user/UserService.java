@@ -4,8 +4,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.is442g1t4.gpa.portfolio.model.Portfolio;
-import com.is442g1t4.gpa.portfolio.service.PortfolioService;
+import com.is442g1t4.gpa.portfolio.Portfolio;
+import com.is442g1t4.gpa.portfolio.PortfolioService;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +38,7 @@ public class UserService {
     public User addPortfolioToUser(ObjectId id, ObjectId portfolioId) {
         Optional<User> user = userRepository.findById(id);
 
-        if (user.isPresent()){
+        if (user.isPresent()) {
             user.get().getPortfolioIds().add(portfolioId);
         }
 
@@ -48,17 +48,17 @@ public class UserService {
     public User addPortfolio(ObjectId id, Portfolio portfolio) {
         Optional<User> user = userRepository.findById(id);
 
-        if (user.isPresent()){
+        if (user.isPresent()) {
             user.get().getPortfolioIds().add(PortfolioService.createPortfolio(portfolio).getId());
         }
 
         return userRepository.save(user.get());
     }
 
-    public User addCash(ObjectId id, double cash){
+    public User addCash(ObjectId id, double cash) {
         Optional<User> user = userRepository.findById(id);
 
-        if (user.isPresent()){
+        if (user.isPresent()) {
             user.get().setCashBalance(user.get().getCashBalance() + cash);
         }
         return userRepository.save(user.get());

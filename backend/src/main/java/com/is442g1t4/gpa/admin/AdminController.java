@@ -24,4 +24,10 @@ public class AdminController {
                 HttpStatus.OK);
     }
 
+    @GetMapping("/seed/stock-price")
+    public ResponseEntity<?> seedStockPrice() {
+        return new ResponseEntity<List<TrackedStock>>(adminService.seedTrackedStocks(),
+                HttpStatus.OK);
+    }
+
 }
