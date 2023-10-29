@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PasswordRequest {
-    private String password;
+    private String newpassword;
+    private String oldpassword;
 }
