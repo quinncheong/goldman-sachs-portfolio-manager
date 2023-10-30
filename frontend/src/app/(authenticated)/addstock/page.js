@@ -37,10 +37,10 @@ export default function AddStock() {
                 <div className="container mx-auto p-4 text-white">
                     <div className="form-control w-full max-w-sm">
                         <label className="label">
-                            <span className="label-text">Select Portfolio</span>
+                            <span className="label-text text-black">Select Portfolio</span>
                         </label>
-                        <select className="select select-bordered" onChange={handlePortfolioChange}>
-                            <option disabled selected>Select Portfolio</option>
+                        <select className="select bg-white text-black select-bordered" onChange={handlePortfolioChange} value={selectedStock || ''}>
+                            <option disabled value="">Select Portfolio</option>
                             {data.map((portfolio) => (
                                 <option key={portfolio.id} value={portfolio.id}>
                                     {portfolio.name}
@@ -50,10 +50,10 @@ export default function AddStock() {
                     </div>
                     <div className="form-control w-full max-w-sm">
                         <label className="label">
-                            <span className="label-text">Select Stock</span>
+                            <span className="label-text text-black">Select Stock</span>
                         </label>
-                        <select className="select select-bordered" onChange={handleStockChange}>
-                            <option disabled selected={!selectedStock}>Select Stock</option>
+                        <select className="select bg-white text-black select-bordered" onChange={handleStockChange} value={selectedStock || ''}>
+                            <option disabled value="">Select Stock</option>
                             {selectedPortfolio &&
                                 selectedPortfolio.stocks.map((stock, index) => (
                                     <option key={index} value={stock.name}>
@@ -64,17 +64,17 @@ export default function AddStock() {
                     </div>
                     <div className="form-control max-w-xs">
                         <label className="label">
-                            <span className="label-text">Purchased Stock Price</span>
+                            <span className="label-text text-black">Purchased Stock Price</span>
                         </label>
-                        <input type="number" placeholder="Min Limit 0.01" className="input input-bordered [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+                        <input type="number" placeholder="Min Limit 0.01" className="input bg-white text-black input-bordered [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
                     </div>
                     <div className="form-control max-w-xs">
                         <label className="label">
-                            <span className="label-text">Purchased Stock Quantity</span>
+                            <span className="label-text text-black">Purchased Stock Quantity</span>
                         </label>
-                        <input type="number" placeholder="Min Unit 1" className="input input-bordered [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+                        <input type="number" placeholder="Min Unit 1" className="input bg-white text-black input-bordered [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
                     </div>
-                    <button className="btn btn-accent mt-5">Add to Portfolio</button>
+                    <button className="btn bg-primary-200 border-0 text-white mt-5">Add to Portfolio</button>
                 </div>
             </div>
         </div>
