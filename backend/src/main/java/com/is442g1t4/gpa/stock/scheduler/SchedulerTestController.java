@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,11 +38,54 @@ public class SchedulerTestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/retrieve/one-stock-price")
-    public ResponseEntity<List<StockPrice>> getOneStockPrice() {
+    @GetMapping("/retrieve/stock-price/latest")
+    public ResponseEntity<List<StockPrice>> updateLatestStockPrice() {
+        schedulingService.updateLatestStockPrices();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
-        List<StockPrice> prices = stockDetailsRetriever.retrieveFullStockPrices("AAPL");
-        return new ResponseEntity<List<StockPrice>>(prices, HttpStatus.OK);
+    @GetMapping("/retrieve/one-stock-price/{stockSymbol}")
+    public ResponseEntity<List<StockPrice>> getOneStockPrice(@PathVariable String stockSymbol) {
+        String[] dowSymbols = new String[] {
+                // "AAPL",
+                // "MSFT",
+                // "GOOGL",
+                // "AMZN",
+                // "META",
+                // "JPM",
+                // "V",
+                // "JNJ",
+                // "WMT",
+                // "PG",
+                // "UNH",
+                // "HD",
+                // "T",
+                // "PYPL",
+                // "VZ",
+                // "CSCO",
+                // "XOM",
+                // "CVX",
+                // "INTC",
+                // "KO",
+                // "MRK",
+                // "PEP",
+                // "BAC",
+                // "CMCSA",
+                // "DIS",
+                // "IBM",
+                // "ORCL",
+                // "GS",
+                // "NKE",
+                // "CRM"
+        };
+
+        for (String stock : dowSymbols) {
+            schedulingService.savePriceForOneStock(stock);
+        }
+
+        // List<StockPrice> prices =
+        // stockDetailsRetriever.retrieveFullStockPrices(stockSymbol);
+        return new ResponseEntity<List<StockPrice>>(HttpStatus.OK);
     }
 
 }
