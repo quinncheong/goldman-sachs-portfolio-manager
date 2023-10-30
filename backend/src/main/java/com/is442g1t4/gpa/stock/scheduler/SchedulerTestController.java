@@ -32,20 +32,20 @@ public class SchedulerTestController {
         return new ResponseEntity<List<Stock>>(stocks, HttpStatus.OK);
     }
 
+    @GetMapping("/retrieve/stock-details/{symbol}")
+    public ResponseEntity<Stock> getAllStocks(@PathVariable String symbol) {
+        schedulingService.saveStockDetailsForOneStock(symbol);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping("/retrieve/stock-price")
     public ResponseEntity<List<StockPrice>> getAllStockPrice() {
         schedulingService.saveStockPricesForAllStocks();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/retrieve/stock-price/latest")
-    public ResponseEntity<List<StockPrice>> updateLatestStockPrice() {
-        schedulingService.updateLatestStockPrices();
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping("/retrieve/one-stock-price/{stockSymbol}")
-    public ResponseEntity<List<StockPrice>> getOneStockPrice(@PathVariable String stockSymbol) {
+    @GetMapping("/retrieve/stock-price/{symbol}")
+    public ResponseEntity<List<StockPrice>> getOneStockPrice(@PathVariable String symbol) {
         String[] dowSymbols = new String[] {
                 // "AAPL",
                 // "MSFT",
@@ -88,4 +88,15 @@ public class SchedulerTestController {
         return new ResponseEntity<List<StockPrice>>(HttpStatus.OK);
     }
 
+    @GetMapping("/retrieve/stock-price/latest")
+    public ResponseEntity<List<StockPrice>> updateLatestStockPrice() {
+        schedulingService.updateLatestStockPrices();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/retrieve/stock-price/latest/{symbol}")
+    public ResponseEntity<List<StockPrice>> updateLatestStockPriceForOne(@PathVariable String symbol) {
+        schedulingService.updateLatestPriceForOneStock(symbol);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

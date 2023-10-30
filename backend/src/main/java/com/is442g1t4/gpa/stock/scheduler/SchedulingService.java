@@ -33,10 +33,7 @@ public class SchedulingService {
         List<TrackedStock> trackedStocks = trackedStockRepository.findAll();
 
         for (TrackedStock trackedStock : trackedStocks) {
-            Stock completedStockDetails = stockDetailsRetriever
-                    .retrieveOneStockDetails(trackedStock.getSymbol());
-            stockRepository.save(completedStockDetails);
-            System.out.println("Saved for" + trackedStock.getSymbol());
+            saveStockDetailsForOneStock(trackedStock.getSymbol());
 
             try {
                 Thread.sleep(30000);
@@ -47,6 +44,12 @@ public class SchedulingService {
         }
 
         return;
+    }
+
+    public void saveStockDetailsForOneStock(String symbol) {
+        Stock completedStockDetails = stockDetailsRetriever
+                .retrieveOneStockDetails(symbol);
+        stockRepository.save(completedStockDetails);
     }
 
     public void saveStockPricesForAllStocks() {
@@ -82,7 +85,7 @@ public class SchedulingService {
             updateLatestPriceForOneStock(trackedStock.getSymbol());
 
             try {
-                Thread.sleep(30000);
+                Thread.sleep(20000);
             } catch (InterruptedException e) {
                 // TODO Add to custom logger or DLQ
                 e.printStackTrace();
@@ -98,6 +101,8 @@ public class SchedulingService {
         StockPrice priceToday = latestStockPrices.get(0);
         StockPrice priceYesterday = latestStockPrices.get(1);
 
+        System.out.print(stockSymbol);
+
         StockPrice priceTodayFromDb = stockPriceRepository.findStockPriceByStockTickerAndDate(
                 priceToday.getStockTicker(),
                 priceToday.getDate(),
@@ -111,6 +116,7 @@ public class SchedulingService {
         if (stock.isPresent()) {
             stock.get().setPriceToday(priceToday.getAdjustedClose());
             stock.get().setPriceYesterday(priceYesterday.getAdjustedClose());
+            stockRepository.save(stock.get());
         }
 
         System.out.println("Saved for" + stockSymbol);
