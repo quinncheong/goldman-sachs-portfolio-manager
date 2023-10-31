@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetPortfolios } from "@api/portfolio.js";
+import { useGetPortfoliosByUserId } from "@api/portfolio.js";
 
 import PortfolioCard from "./PortfolioCard";
 import { useRouter } from "next/navigation";
@@ -9,7 +9,7 @@ const userId = localStorage.getItem("userId");
 
 export default function Portfolio(props) {
   console.log(props);
-  const { data, isLoading, isError, error } = useGetPortfolios(userId);
+  const { data, isLoading, isError, error } = useGetPortfoliosByUserId(userId);
   const router = useRouter();
 
   const addPortfolio = (e) => {

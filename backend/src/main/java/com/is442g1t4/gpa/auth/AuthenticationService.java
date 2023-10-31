@@ -16,6 +16,7 @@ import com.is442g1t4.gpa.user.Role;
 import com.is442g1t4.gpa.user.User;
 
 import lombok.RequiredArgsConstructor;
+import lombok.var;
 
 @Service
 @RequiredArgsConstructor
@@ -53,6 +54,10 @@ public class AuthenticationService {
                 return AuthenticationResponse.builder()
                                 .token(jwtToken)
                                 .build();
+        }
+
+        public User getUserFromToken(var jwtToken) {
+                Authentication authentication;
         }
 
 }

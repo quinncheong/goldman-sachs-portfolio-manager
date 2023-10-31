@@ -45,7 +45,7 @@ public class PortfolioController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Portfolio>> GetAllPortfoliosByUserId(@PathVariable ObjectId userId) {
+    public ResponseEntity<List<Portfolio>> getAllPortfoliosByUserId(@PathVariable ObjectId userId) {
         return new ResponseEntity<List<Portfolio>>(portfolioService.getPortfoliosByUserId(userId),
                 HttpStatus.OK);
     }

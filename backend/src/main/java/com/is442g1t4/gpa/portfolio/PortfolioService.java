@@ -54,6 +54,7 @@ public class PortfolioService {
     }
 
     public Portfolio createPortfolio(Portfolio portfolio) {
+        System.out.println(portfolio);
         if (portfolio.getId() != null && portfolioRepository.existsById(portfolio.getId())) {
             return null;
         }
