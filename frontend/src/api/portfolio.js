@@ -1,6 +1,8 @@
 import axios from "axios";
+import { redirect } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BASE_SERVER_URL, PORTFOLIO_API_PATH } from "./apiFactory";
+import { toast } from "react-toastify";
 
 const token = localStorage.getItem("token");
 
@@ -63,10 +65,11 @@ export const useCreatePortfolio = () => {
     onError: (error, variables, context) => {
       // An error happened!
       // console.log(`rolling back optimistic update with id ${context.id}`);
+      toast.error(error);
     },
     onSuccess: (data, variables, context) => {
+      toast.success("Portfolio Created!");
       console.log(data);
-      return data;
     },
     onSettled: (data, error, variables, context) => {
       // Error or success... doesn't matter!
