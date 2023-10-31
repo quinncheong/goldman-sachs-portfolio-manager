@@ -1,12 +1,11 @@
 import axios from "axios";
-import { redirect } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BASE_SERVER_URL, PORTFOLIO_API_PATH } from "./apiFactory";
 import { toast } from "react-toastify";
-import { useId } from "react";
 
+// import { useEffect } from "react";
 let token = "";
-if (typeof window !== undefined) {
+if (global?.window !== undefined) {
   token = localStorage.getItem("token");
 }
 
