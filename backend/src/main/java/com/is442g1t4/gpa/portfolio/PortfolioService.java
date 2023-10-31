@@ -123,6 +123,7 @@ public class PortfolioService {
                 if (userCashBalance >= allocatedStockValue){
 
                     user.get().setCashBalance(userCashBalance - allocatedStockValue);
+                    userRepository.save(user.get());
                     userCashBalance = user.get().getCashBalance();
 
                     portfolio.get().getAllocatedStocks().add(savedAllocatedStock);
