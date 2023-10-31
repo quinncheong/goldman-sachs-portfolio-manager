@@ -1,13 +1,11 @@
+"use client";
+
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BASE_SERVER_URL, PORTFOLIO_API_PATH } from "./apiFactory";
 import { toast } from "react-toastify";
 
-// import { useEffect } from "react";
-let token = "";
-if (global?.window !== undefined) {
-  token = localStorage.getItem("token");
-}
+let token = localStorage.getItem("token");
 
 const axiosInstance = axios.create({
   baseURL: BASE_SERVER_URL + PORTFOLIO_API_PATH,

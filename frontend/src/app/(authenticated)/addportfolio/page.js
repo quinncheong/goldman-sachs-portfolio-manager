@@ -3,12 +3,9 @@
 import { useCreatePortfolio } from "@/api/portfolio";
 import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
-import { toast } from "react-toastify";
 import { redirect, useRouter } from "next/navigation";
 
 export default function AddPortfolio() {
-  const router = useRouter();
-
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [stocks, setStocks] = useState([]);
