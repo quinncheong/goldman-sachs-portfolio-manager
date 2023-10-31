@@ -27,7 +27,7 @@ export const useGetPortfoliosByUserId = (userId) => {
 
 const getPortfoliosByUserId = async (userId) => {
   let response = await axiosInstance.get("/user/" + userId);
-  return response.data;
+  return response.data.toReversed();
 };
 
 export const useGetPortfolioByPortfolioId = (portfolioId) => {
