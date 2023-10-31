@@ -1,6 +1,7 @@
 "use client";
 
 import { useCreatePortfolio } from "@/api/portfolio";
+import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
 
 export default function AddPortfolio() {
@@ -34,8 +35,9 @@ export default function AddPortfolio() {
       allocatedStocks: stocks,
     };
 
-    console.log(name);
-    console.log(desc);
+    let token = localStorage.getItem("token");
+    let decoded = jwtDecode(token);
+    console.log(decoded);
 
     createNewPortfolio(portfolioData);
   };
