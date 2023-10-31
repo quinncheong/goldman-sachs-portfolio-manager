@@ -98,22 +98,15 @@ public class PortfolioController {
                 HttpStatus.OK);
     }
 
-    // @PostMapping("/addAllocatedStock/{portfolioId}")
-    // public ResponseEntity<?> createAllocatedStock(@RequestBody AllocatedStock allocatedStock, @PathVariable ObjectId portfolioId) {
-    //     AllocatedStock savedAllocatedStock = allocatedStockService.addAllocatedStock(allocatedStock);
-
-    //     double allocatedStockValue = savedAllocatedStock.getStockQuantity() * savedAllocatedStock.getStockBuyPrice();
-
-    //     return ResponseEntity.status(HttpStatus.CREATED).body(savedAllocatedStock);
-    // }
-
     @PostMapping("/addAllocatedStock/{portfolioId}/{userId}")
     public ResponseEntity<Portfolio> createAllocatedStock(@RequestBody AllocatedStock allocatedStock, @PathVariable ObjectId portfolioId, @PathVariable ObjectId userId) {
         Portfolio updatedPortfolio = portfolioService.addAllocatedStock(allocatedStock, portfolioId, userId);
 
+        if (updatedPortfolio == null) {
+            return new ResponseEntity<Portfolio>(HttpStatus.BAD_REQUEST);
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED).body(updatedPortfolio);
     }
-
-
 
 }

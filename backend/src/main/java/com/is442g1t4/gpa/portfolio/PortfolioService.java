@@ -127,7 +127,9 @@ public class PortfolioService {
                     userCashBalance = user.get().getCashBalance();
 
                     portfolio.get().getAllocatedStocks().add(savedAllocatedStock);
+                }else{
 
+                    return null;
                 }
             }
         }
