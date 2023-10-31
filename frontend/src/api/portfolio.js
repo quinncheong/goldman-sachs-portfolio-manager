@@ -5,7 +5,10 @@ import { BASE_SERVER_URL, PORTFOLIO_API_PATH } from "./apiFactory";
 import { toast } from "react-toastify";
 import { useId } from "react";
 
-const token = localStorage.getItem("token");
+let token = "";
+if (typeof window !== undefined) {
+  token = localStorage.getItem("token");
+}
 
 const axiosInstance = axios.create({
   baseURL: BASE_SERVER_URL + PORTFOLIO_API_PATH,
