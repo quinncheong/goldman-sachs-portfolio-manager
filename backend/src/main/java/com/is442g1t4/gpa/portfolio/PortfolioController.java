@@ -3,6 +3,8 @@ package com.is442g1t4.gpa.portfolio;
 import java.util.List;
 import java.util.Optional;
 
+import javax.sound.sampled.Port;
+
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -106,10 +108,10 @@ public class PortfolioController {
     // }
 
     @PostMapping("/addAllocatedStock/{portfolioId}/{userId}")
-    public ResponseEntity<?> createAllocatedStock(@RequestBody AllocatedStock allocatedStock, @PathVariable ObjectId portfolioId, @PathVariable ObjectId userId) {
-        double savedAllocatedStock = portfolioService.addAllocatedStock(allocatedStock, portfolioId, userId);
+    public ResponseEntity<Portfolio> createAllocatedStock(@RequestBody AllocatedStock allocatedStock, @PathVariable ObjectId portfolioId, @PathVariable ObjectId userId) {
+        Portfolio updatedPortfolio = portfolioService.addAllocatedStock(allocatedStock, portfolioId, userId);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedAllocatedStock);
+        return ResponseEntity.status(HttpStatus.CREATED).body(updatedPortfolio);
     }
 
 
