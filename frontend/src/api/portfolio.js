@@ -64,7 +64,10 @@ export const useCreatePortfolio = () => {
       // An error happened!
       // console.log(`rolling back optimistic update with id ${context.id}`);
     },
-    onSuccess: (data, variables, context) => {},
+    onSuccess: (data, variables, context) => {
+      console.log(data);
+      return data;
+    },
     onSettled: (data, error, variables, context) => {
       // Error or success... doesn't matter!
     },

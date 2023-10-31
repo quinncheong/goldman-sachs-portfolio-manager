@@ -25,21 +25,20 @@ export default function AddPortfolio() {
     setDesc(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    let token = localStorage.getItem("token");
+    let decoded = jwtDecode(token);
+
     let portfolioData = {
-      userId: "testuser",
+      userId: decoded.userId,
       name: name,
       description: desc,
       initialValue: 0,
       allocatedStocks: stocks,
     };
 
-    let token = localStorage.getItem("token");
-    let decoded = jwtDecode(token);
-    console.log(decoded);
-
-    createNewPortfolio(portfolioData);
+    await createNewPortfolio(portfolioData);
   };
 
   return (
