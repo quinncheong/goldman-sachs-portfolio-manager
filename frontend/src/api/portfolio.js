@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BASE_SERVER_URL, PORTFOLIO_API_PATH } from "./apiFactory";
 import { toast } from "react-toastify";
+import { useId } from "react";
 
 const token = localStorage.getItem("token");
 
@@ -15,31 +16,30 @@ const axiosInstance = axios.create({
   },
 });
 
-export const useGetPortfoliosByUserId = () => {
+export const useGetPortfoliosByUserId = (userId) => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["getPortfoliosByUserId"],
-    queryFn: (userId) => getPortfoliosByUserId("quinncheong"),
+    queryFn: () => getPortfoliosByUserId(userId),
   });
 
   return { data, isLoading, isError, error };
 };
 
 const getPortfoliosByUserId = async (userId) => {
-  // let response = await axiosInstance.get("/user/" + userId);
-  let response = await axiosInstance.get("/all");
+  let response = await axiosInstance.get("/user/" + userId);
   return response.data;
 };
 
 export const useGetPortfolioByPortfolioId = (portfolioId) => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["getPortfolioByPortfolioId", portfolioId],
-    queryFn: () => getPortfolioByPortfoliId(portfolioId),
+    queryFn: () => getPortfolioByPortfolioId(portfolioId),
   });
 
   return { data, isLoading, isError, error };
 };
 
-const getPortfolioByPortfoliId = async (portfolioId) => {
+const getPortfolioByPortfolioId = async (portfolioId) => {
   let response = await axiosInstance.get("/" + portfolioId);
   return response.data;
 };

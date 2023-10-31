@@ -4,12 +4,14 @@ import { useGetPortfoliosByUserId } from "@api/portfolio.js";
 
 import PortfolioCard from "./PortfolioCard";
 import { useRouter } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
 
-const userId = localStorage.getItem("userId");
+let decodedJwt = jwtDecode(localStorage.getItem("token"));
 
 export default function Portfolio(props) {
-  console.log(props);
-  const { data, isLoading, isError, error } = useGetPortfoliosByUserId(userId);
+  const { data, isLoading, isError, error } = useGetPortfoliosByUserId(
+    decodedJwt.userId
+  );
   const router = useRouter();
 
   const addPortfolio = (e) => {

@@ -7,7 +7,6 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,14 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.is442g1t4.gpa.stock.StockService;
-import com.is442g1t4.gpa.stock.StockRepository;
-import com.is442g1t4.gpa.stock.model.Stock;
-import com.is442g1t4.gpa.user.User;
-import com.is442g1t4.gpa.user.UserRepository;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
-import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
-import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockRepository;
 
 @RestController
 @RequestMapping("/api/v1/portfolio")
@@ -39,14 +31,14 @@ public class PortfolioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Portfolio>> getPortfolioByPortfolioId(@PathVariable ObjectId id) {
-        return new ResponseEntity<Optional<Portfolio>>(portfolioService.getPortfolioByPortfolioId(id),
+    public ResponseEntity<Optional<Portfolio>> getPortfolioByPortfolioId(@PathVariable String id) {
+        return new ResponseEntity<Optional<Portfolio>>(portfolioService.getPortfolioByPortfolioId(new ObjectId(id)),
                 HttpStatus.OK);
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Portfolio>> getAllPortfoliosByUserId(@PathVariable ObjectId userId) {
-        return new ResponseEntity<List<Portfolio>>(portfolioService.getPortfoliosByUserId(userId),
+    public ResponseEntity<List<Portfolio>> getAllPortfoliosByUserId(@PathVariable String userId) {
+        return new ResponseEntity<List<Portfolio>>(portfolioService.getPortfoliosByUserId(new ObjectId(userId)),
                 HttpStatus.OK);
     }
 
