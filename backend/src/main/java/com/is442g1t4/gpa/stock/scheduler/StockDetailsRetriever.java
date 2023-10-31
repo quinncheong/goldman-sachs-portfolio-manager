@@ -71,6 +71,20 @@ public class StockDetailsRetriever {
         return stockDetails;
     }
 
+    public Stock retrieveOneStockDetails(String stockSymbol) {
+        Mono<ResponseEntity<Stock>> responseMono = baseQueryClient.get()
+                .uri(builder -> builder
+                        .queryParam("function", "OVERVIEW")
+                        .queryParam("symbol", stockSymbol)
+                        .queryParam("apikey", ALPHAVANTAGE_API_KEY)
+                        .build())
+                .retrieve()
+                .toEntity(Stock.class);
+
+        ResponseEntity<Stock> response = responseMono.block();
+        return response.getBody();
+    }
+
     // https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&outputsize=full&apikey=demo
     public List<StockPrice> retrieveFullStockPrices(String stockSymbol) {
         Mono<ResponseEntity<AlphavantageResponse>> responseMono = baseQueryClient.get()
@@ -135,19 +149,5 @@ public class StockDetailsRetriever {
         }
 
         return stockPrices;
-    }
-
-    public Stock retrieveOneStockDetails(String stockSymbol) {
-        Mono<ResponseEntity<Stock>> responseMono = baseQueryClient.get()
-                .uri(builder -> builder
-                        .queryParam("function", "OVERVIEW")
-                        .queryParam("symbol", stockSymbol)
-                        .queryParam("apikey", ALPHAVANTAGE_API_KEY)
-                        .build())
-                .retrieve()
-                .toEntity(Stock.class);
-
-        ResponseEntity<Stock> response = responseMono.block();
-        return response.getBody();
     }
 }

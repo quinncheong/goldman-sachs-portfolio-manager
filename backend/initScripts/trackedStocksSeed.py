@@ -6,7 +6,7 @@ dow_symbols = [
     "MSFT",
     "GOOGL",
     "AMZN",
-    "FB",
+    "META",
     "JPM",
     "V",
     "JNJ",

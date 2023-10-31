@@ -16,7 +16,7 @@ public class ScheduledTasks {
     @Autowired
     SchedulingService schedulingService;
 
-    @Scheduled(cron = "0 00 05 * * MON-FRI")
+    // @Scheduled(cron = "0 00 05 * * MON-FRI")
     public void repopulateStockDetailsDaily() {
         LocalDateTime start = LocalDateTime.now();
         System.out.println("Running Daily repopulate stock details CRON Job" + dateTimeFormatter.format(start));
@@ -30,7 +30,7 @@ public class ScheduledTasks {
         System.out.println("Total duration: " + duration.toSeconds() + " seconds");
     }
 
-    @Scheduled(cron = "0 00 09 * * MON-FRI")
+    @Scheduled(cron = "0 00 08 * * MON-FRI")
     public void repopulateStockPriceDaily() {
         LocalDateTime start = LocalDateTime.now();
         System.out.println("Running daily Update Stock Price CRON Job" + dateTimeFormatter.format(start));

@@ -2,6 +2,7 @@ package com.is442g1t4.gpa.stock.scheduler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,10 +33,7 @@ public class SchedulingService {
         List<TrackedStock> trackedStocks = trackedStockRepository.findAll();
 
         for (TrackedStock trackedStock : trackedStocks) {
-            Stock completedStockDetails = stockDetailsRetriever
-                    .retrieveOneStockDetails(trackedStock.getSymbol());
-            stockRepository.save(completedStockDetails);
-            System.out.println("Saved for" + trackedStock.getSymbol());
+            saveStockDetailsForOneStock(trackedStock.getSymbol());
 
             try {
                 Thread.sleep(30000);
@@ -46,6 +44,12 @@ public class SchedulingService {
         }
 
         return;
+    }
+
+    public void saveStockDetailsForOneStock(String symbol) {
+        Stock completedStockDetails = stockDetailsRetriever
+                .retrieveOneStockDetails(symbol);
+        stockRepository.save(completedStockDetails);
     }
 
     public void saveStockPricesForAllStocks() {
@@ -68,28 +72,20 @@ public class SchedulingService {
         return;
     }
 
+    public void savePriceForOneStock(String stockSymbol) {
+        List<StockPrice> fullStockPrices = stockDetailsRetriever.retrieveFullStockPrices(stockSymbol);
+        stockPriceRepository.saveAll(fullStockPrices);
+        System.out.println("Saved for stock: " + stockSymbol);
+    }
+
     public void updateLatestStockPrices() {
         List<TrackedStock> trackedStocks = trackedStockRepository.findAll();
 
         for (TrackedStock trackedStock : trackedStocks) {
-            List<StockPrice> latestStockPrices = stockDetailsRetriever
-                    .retrieveCurrStockPrices(trackedStock.getSymbol());
-
-            StockPrice priceToday = latestStockPrices.get(0);
-            // StockPrice priceYesterday = latestStockPrices.get(1);
-
-            StockPrice priceTodayFromDb = stockPriceRepository.findStockPriceByStockTickerAndDate(
-                    priceToday.getStockTicker(), priceToday.getDate(),
-                    priceToday.getDate());
-
-            if (priceTodayFromDb == null) {
-                stockPriceRepository.save(priceToday);
-            }
-
-            System.out.println("Saved for" + trackedStock.getSymbol());
+            updateLatestPriceForOneStock(trackedStock.getSymbol());
 
             try {
-                Thread.sleep(30000);
+                Thread.sleep(20000);
             } catch (InterruptedException e) {
                 // TODO Add to custom logger or DLQ
                 e.printStackTrace();
@@ -98,4 +94,32 @@ public class SchedulingService {
         return;
     }
 
+    public void updateLatestPriceForOneStock(String stockSymbol) {
+        List<StockPrice> latestStockPrices = stockDetailsRetriever
+                .retrieveCurrStockPrices(stockSymbol);
+
+        StockPrice priceToday = latestStockPrices.get(0);
+        StockPrice priceYesterday = latestStockPrices.get(1);
+
+        System.out.print(stockSymbol);
+
+        StockPrice priceTodayFromDb = stockPriceRepository.findStockPriceByStockTickerAndDate(
+                priceToday.getStockTicker(),
+                priceToday.getDate(),
+                priceToday.getDate());
+
+        if (priceTodayFromDb == null) {
+            stockPriceRepository.save(priceToday);
+        }
+
+        Optional<Stock> stock = stockRepository.findStockBySymbol(stockSymbol);
+        if (stock.isPresent()) {
+            stock.get().setPriceToday(priceToday.getAdjustedClose());
+            stock.get().setPriceYesterday(priceYesterday.getAdjustedClose());
+            stockRepository.save(stock.get());
+        }
+
+        System.out.println("Saved for" + stockSymbol);
+
+    }
 }
