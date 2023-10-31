@@ -105,4 +105,21 @@ public class PortfolioService {
         List<AllocatedStock> allocatedStocks = retrievedPortfolio.getAllocatedStocks();
         return allocatedStocks;
     }
+    public double addAllocatedStock(AllocatedStock allocatedStock, ObjectId portfolioId, ObjectId userId){
+    // public AllocatedStock addAllocatedStock(AllocatedStock allocatedStock, ObjectId portfolioId){
+        AllocatedStock savedAllocatedStock = allocatedStockService.addAllocatedStock(allocatedStock);
+
+        double allocatedStockValue = 0.0;
+        Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
+        if (portfolio.isPresent()) {
+
+            Optional<User> user = userRepository.findById(userId);
+            if (user.isPresent()){
+                allocatedStockValue = savedAllocatedStock.getStockQuantity() * savedAllocatedStock.getStockBuyPrice();
+            }
+        }
+
+        return allocatedStockValue;
+    }
+
 }

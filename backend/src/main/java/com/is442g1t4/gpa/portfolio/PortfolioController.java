@@ -31,6 +31,9 @@ public class PortfolioController {
     @Autowired
     private PortfolioService portfolioService;
 
+    @Autowired
+    private AllocatedStockService allocatedStockService;
+
     @GetMapping("/all")
     public ResponseEntity<List<Portfolio>> getAllPortfolios() {
         return new ResponseEntity<List<Portfolio>>(portfolioService.getAllPortfolios(),
@@ -92,4 +95,23 @@ public class PortfolioController {
         return new ResponseEntity<List<AllocatedStock>>(portfolioService.getAllAllocatedStocksInPortfolio(id),
                 HttpStatus.OK);
     }
+
+    // @PostMapping("/addAllocatedStock/{portfolioId}")
+    // public ResponseEntity<?> createAllocatedStock(@RequestBody AllocatedStock allocatedStock, @PathVariable ObjectId portfolioId) {
+    //     AllocatedStock savedAllocatedStock = allocatedStockService.addAllocatedStock(allocatedStock);
+
+    //     double allocatedStockValue = savedAllocatedStock.getStockQuantity() * savedAllocatedStock.getStockBuyPrice();
+
+    //     return ResponseEntity.status(HttpStatus.CREATED).body(savedAllocatedStock);
+    // }
+
+    @PostMapping("/addAllocatedStock/{portfolioId}/{userId}")
+    public ResponseEntity<?> createAllocatedStock(@RequestBody AllocatedStock allocatedStock, @PathVariable ObjectId portfolioId, @PathVariable ObjectId userId) {
+        double savedAllocatedStock = portfolioService.addAllocatedStock(allocatedStock, portfolioId, userId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedAllocatedStock);
+    }
+
+
+
 }
