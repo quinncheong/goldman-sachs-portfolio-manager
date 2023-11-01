@@ -2,9 +2,13 @@
 
 import Dashboard from "@/app/(authenticated)/dashboard/page";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import secureLocalStorage from "react-secure-storage";
 
 export default function Navbar() {
+  const router = useRouter();
+
   let [menuItems, setMenu] = useState([
     "Dashboard",
     "Account",
@@ -26,6 +30,12 @@ export default function Navbar() {
         </ul>
       </div>
     );
+  }
+
+  function logout() {
+    secureLocalStorage.removeItem("token")
+    secureLocalStorage.removeItem("userId")
+    router.push("/")
   }
 
   return (
@@ -77,7 +87,7 @@ export default function Navbar() {
         {menu()}
       </div>
 
-      <button className="btn text-white bg-primary-100 ml-auto mr-3">
+      <button className="btn text-white bg-primary-100 ml-auto mr-3" onClick={logout}>
         Logout
       </button>
     </div>

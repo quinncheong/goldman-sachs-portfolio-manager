@@ -5,10 +5,11 @@ import { useGetPortfoliosByUserId } from "@api/portfolio.js";
 import PortfolioCard from "./PortfolioCard";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
+import secureLocalStorage from "react-secure-storage";
 
 export default function Portfolio(props) {
   const { data, isLoading, isError, error } = useGetPortfoliosByUserId(
-    jwtDecode(localStorage.getItem("token")).userId
+    jwtDecode(secureLocalStorage.getItem("token")).userId
   );
   const router = useRouter();
 

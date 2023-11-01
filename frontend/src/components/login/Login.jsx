@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { login } from "../../api/login";
+import secureLocalStorage from "react-secure-storage";
 
 export default function Login() {
   const router = useRouter();
@@ -11,8 +12,8 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = await login(username, password);
-    localStorage.setItem("token", token);
-    localStorage.setItem("userId", username);
+    secureLocalStorage.setItem("token", token);
+    secureLocalStorage.setItem("userId", username);
     router.push("/dashboard");
   };
 
