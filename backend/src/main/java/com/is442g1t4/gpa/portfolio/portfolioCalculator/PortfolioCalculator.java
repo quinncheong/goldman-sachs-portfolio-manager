@@ -22,5 +22,7 @@ public class PortfolioCalculator {
     private double avgStockBuyPrice;
     private double weight;
     private double currentValue;
+    private double pnl;
+    private double dpnl;
 
 }

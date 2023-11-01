@@ -50,11 +50,14 @@ public class PortfolioAnalyzerService {
             Instant instant = buyDate.toInstant();
 
             cost = cost + (allocatedStock.getStockBuyPrice() * quantity);
-            value  = value + (stock.priceToday() * quantity);
+            value  = value + (90 * quantity);
+            // value  = value + (stock.priceToday() * quantity);
 
             if(instant.atZone(ZoneId.systemDefault()).toLocalDate().equals(LocalDate.now()) ){
+                // previousValue = previousValue + (90 * quantity);
                 previousValue = previousValue + (stock.priceToday() * quantity);
             } else {
+                // previousValue = previousValue + (100 * quantity);
                 previousValue = previousValue + (stock.priceYesterday() * quantity);
             }
         }
