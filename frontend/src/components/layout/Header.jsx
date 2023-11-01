@@ -1,5 +1,6 @@
 "use client";
 
+import Dashboard from "@/app/(authenticated)/dashboard/page";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -70,7 +71,7 @@ export default function Navbar() {
             </li>
           </ul>
         </div>
-        <Link href={"/"} className="btn btn-ghost normal-case text-xl">
+        <Link href={"/dashboard"} className="btn btn-ghost normal-case text-xl">
           Goldman Portfolio Analyzer
         </Link>
         {menu()}

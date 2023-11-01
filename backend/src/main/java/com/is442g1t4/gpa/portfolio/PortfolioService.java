@@ -1,18 +1,16 @@
-package com.is442g1t4.gpa.portfolio.service;
+package com.is442g1t4.gpa.portfolio;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.is442g1t4.gpa.portfolio.repository.PortfolioRepository;
-import com.is442g1t4.gpa.portfolio.service.PortfolioService;
 import com.is442g1t4.gpa.stock.StockService;
 import com.is442g1t4.gpa.stock.StockRepository;
 import com.is442g1t4.gpa.stock.model.Stock;
 import com.is442g1t4.gpa.user.User;
 import com.is442g1t4.gpa.user.UserRepository;
-
-import com.is442g1t4.gpa.portfolio.model.Portfolio;
+import com.is442g1t4.gpa.user.UserService;
+import com.is442g1t4.gpa.portfolio.PortfolioService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockRepository;
@@ -30,12 +28,6 @@ public class PortfolioService {
     private UserRepository userRepository;
 
     @Autowired
-    private AllocatedStockRepository allocatedStockRepository;
-
-    @Autowired
-    private StockService stockRepository;
-
-    @Autowired
     private AllocatedStockService allocatedStockService;
 
     public List<Portfolio> getAllPortfolios() {
@@ -49,20 +41,19 @@ public class PortfolioService {
     public List<Portfolio> getPortfoliosByUserId(ObjectId userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
-            List<ObjectId> portfolioIds = user.get().getPortfolioIds();
-            return portfolioRepository.findAllById(portfolioIds);
+            System.out.println(user.get().getId());
+            return portfolioRepository.findByUserId(user.get().getId());
         } else {
             return Collections.<Portfolio>emptyList();
         }
     }
 
     public Portfolio createPortfolio(Portfolio portfolio) {
-        if (portfolio.getId() != null && portfolioRepository.existsById(portfolio.getId())) {
+        if (portfolio.getId() != null) {
             return null;
         }
-        Portfolio createdPortfolio = new Portfolio();
-        createdPortfolio.setAllocatedStocks(Collections.<AllocatedStock>emptyList());
-        return portfolioRepository.save(createdPortfolio);
+        portfolio.setId(new ObjectId());
+        return portfolioRepository.save(portfolio);
     }
 
     public Portfolio updatePortfolio(Portfolio portfolio) {
@@ -74,13 +65,15 @@ public class PortfolioService {
         return "Portfolio Deleted";
     }
 
-    // public Portfolio oldaddStockToPortfolio(ObjectId allocatedStockId, ObjectId portfolioId) {
-    //     Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
-    //     Optional<AllocatedStock> allocatedStock = allocatedStockRepository.findById(allocatedStockId);
-    //     if (portfolio.isPresent()) {
-    //         portfolio.get().getAllocatedStocks().add(allocatedStock.get());
-    //     }
-    //     return portfolioRepository.save(portfolio.get());
+    // public Portfolio oldaddStockToPortfolio(ObjectId allocatedStockId, ObjectId
+    // portfolioId) {
+    // Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
+    // Optional<AllocatedStock> allocatedStock =
+    // allocatedStockRepository.findById(allocatedStockId);
+    // if (portfolio.isPresent()) {
+    // portfolio.get().getAllocatedStocks().add(allocatedStock.get());
+    // }
+    // return portfolioRepository.save(portfolio.get());
     // }
     public Portfolio addStockToPortfolio(String symbol, int quantity, ObjectId portfolioId) {
         Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
@@ -106,4 +99,34 @@ public class PortfolioService {
         List<AllocatedStock> allocatedStocks = retrievedPortfolio.getAllocatedStocks();
         return allocatedStocks;
     }
+    public Portfolio addAllocatedStock(AllocatedStock allocatedStock, ObjectId portfolioId, ObjectId userId){
+
+        AllocatedStock savedAllocatedStock = allocatedStockService.addAllocatedStock(allocatedStock);
+
+        double allocatedStockValue = 0.0;
+        double userCashBalance = 0.0;
+        Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
+        if (portfolio.isPresent()) {
+
+            Optional<User> user = userRepository.findById(userId);
+            if (user.isPresent()){
+                allocatedStockValue = savedAllocatedStock.getStockQuantity() * savedAllocatedStock.getStockBuyPrice();
+
+                userCashBalance = user.get().getCashBalance();
+                if (userCashBalance >= allocatedStockValue){
+
+                    user.get().setCashBalance(userCashBalance - allocatedStockValue);
+                    userRepository.save(user.get());
+                    userCashBalance = user.get().getCashBalance();
+
+                    portfolio.get().getAllocatedStocks().add(savedAllocatedStock);
+                }else{
+
+                    return null;
+                }
+            }
+        }
+        return portfolioRepository.save(portfolio.get());
+    }
+
 }

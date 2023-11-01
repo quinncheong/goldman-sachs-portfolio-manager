@@ -1,19 +1,34 @@
 "use client";
-
-import { useGetPortfolios } from "@api/portfolio.js";
-
+import { useGetPortfoliosOfUser } from "@api/portfolio.js";
 import PortfolioCard from "./PortfolioCard";
+import { useRouter } from "next/navigation";
 
-export default function Portfolio() {
-  const { data, isLoading, isError, error } = useGetPortfolios();
+export default function Portfolio({}) {
+  const router = useRouter();
+  const { data, isLoading, isError, error } = useGetPortfoliosOfUser();
+
+  const addPortfolio = (e) => {
+    e.preventDefault();
+    router.push("/addportfolio");
+  };
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
     <div className="container flex flex-col m-auto p-5 h-screen">
-      <h2 className="text-xl sm:text-2xl font-semibold mb-5">Your Portfolio:</h2>
-      <div className="flex flex-wrap gap-5">{renderPortfolios()}</div>
+      <div className="rounded-md p-4 text-white bg-secondary-100 mb-5 items-center flex flex-row justify-between">
+        <h2 className="text-xl sm:text-2xl font-semibold text-white">
+          Your Portfolio:
+        </h2>
+        <button
+          className="btn bg-primary-200 text-white border-0"
+          onClick={addPortfolio}
+        >
+          Add Portfolio
+        </button>
+      </div>
+      <div className="flex flex-wrap justify-between">{renderPortfolios()}</div>
     </div>
   );
 

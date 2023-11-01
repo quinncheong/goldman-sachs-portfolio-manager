@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.is442g1t4.gpa.portfolio.Portfolio;
+import com.is442g1t4.gpa.portfolio.PortfolioService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
-import com.is442g1t4.gpa.portfolio.model.Portfolio;
 import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculator;
-import com.is442g1t4.gpa.portfolio.service.PortfolioService;
 import com.is442g1t4.gpa.portfolio.portfolioanalyzer.PortfolioAnalyzerService;
 
 @RestController
@@ -29,7 +29,7 @@ public class PortfolioAnalyzerController {
     private PortfolioAnalyzerService portfolioAnalyzer;
 
     @GetMapping("/{id}")
-    public ResponseEntity <Map<String, Double>> getPortfolioAnalysis (@PathVariable ObjectId id){
+    public ResponseEntity<Map<String, Double>> getPortfolioAnalysis(@PathVariable ObjectId id) {
         return new ResponseEntity<Map<String, Double>>(portfolioAnalyzer.getPortfolioAnalysis(id), HttpStatus.OK);
     }
 }

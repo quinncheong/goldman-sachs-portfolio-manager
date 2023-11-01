@@ -1,4 +1,4 @@
-package com.is442g1t4.gpa.portfolio.controller;
+package com.is442g1t4.gpa.portfolio;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,18 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import com.is442g1t4.gpa.portfolio.repository.PortfolioRepository;
-import com.is442g1t4.gpa.portfolio.service.PortfolioService;
-import com.is442g1t4.gpa.stock.StockService;
-import com.is442g1t4.gpa.stock.StockRepository;
-import com.is442g1t4.gpa.stock.model.Stock;
-import com.is442g1t4.gpa.user.User;
-import com.is442g1t4.gpa.user.UserRepository;
-import com.is442g1t4.gpa.portfolio.model.Portfolio;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
-import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
-import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockRepository;
 
 @RestController
 @RequestMapping("/api/v1/portfolio")
@@ -42,14 +31,14 @@ public class PortfolioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Portfolio>> getPortfolioByPortfolioId(@PathVariable ObjectId id) {
-        return new ResponseEntity<Optional<Portfolio>>(portfolioService.getPortfolioByPortfolioId(id),
+    public ResponseEntity<Optional<Portfolio>> getPortfolioByPortfolioId(@PathVariable String id) {
+        return new ResponseEntity<Optional<Portfolio>>(portfolioService.getPortfolioByPortfolioId(new ObjectId(id)),
                 HttpStatus.OK);
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Portfolio>> GetAllPortfoliosByUserId(@PathVariable ObjectId userId) {
-        return new ResponseEntity<List<Portfolio>>(portfolioService.getPortfoliosByUserId(userId),
+    public ResponseEntity<List<Portfolio>> getAllPortfoliosByUserId(@PathVariable String userId) {
+        return new ResponseEntity<List<Portfolio>>(portfolioService.getPortfoliosByUserId(new ObjectId(userId)),
                 HttpStatus.OK);
     }
 
@@ -82,16 +71,31 @@ public class PortfolioController {
         return new ResponseEntity<Portfolio>(portfolioService.delStocksFromPortfolio(portfolioId),
                 HttpStatus.OK);
     }
-    
+
     @PutMapping("/{portfolioId}/{symbol}/{quantity}")
-    public ResponseEntity<Portfolio> addStock(@PathVariable ObjectId portfolioId ,@PathVariable String symbol, @PathVariable int quantity) {
-    
+    public ResponseEntity<Portfolio> addStock(@PathVariable ObjectId portfolioId, @PathVariable String symbol,
+            @PathVariable int quantity) {
+
         return new ResponseEntity<Portfolio>(portfolioService.addStockToPortfolio(symbol, quantity, portfolioId),
                 HttpStatus.OK);
     }
 
     @GetMapping("/allocatedStock/{id}")
-    public ResponseEntity<List<AllocatedStock>> getAllocatedStocks(@PathVariable ObjectId id){
-        return new ResponseEntity<List<AllocatedStock>>(portfolioService.getAllAllocatedStocksInPortfolio(id), HttpStatus.OK);
+    public ResponseEntity<List<AllocatedStock>> getAllocatedStocks(@PathVariable ObjectId id) {
+        return new ResponseEntity<List<AllocatedStock>>(portfolioService.getAllAllocatedStocksInPortfolio(id),
+                HttpStatus.OK);
     }
+
+    @PostMapping("/addAllocatedStock/{portfolioId}/{userId}")
+    public ResponseEntity<Portfolio> createAllocatedStock(@RequestBody AllocatedStock allocatedStock,
+            @PathVariable ObjectId portfolioId, @PathVariable ObjectId userId) {
+        Portfolio updatedPortfolio = portfolioService.addAllocatedStock(allocatedStock, portfolioId, userId);
+
+        if (updatedPortfolio == null) {
+            return new ResponseEntity<Portfolio>(HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(updatedPortfolio);
+    }
+
 }
