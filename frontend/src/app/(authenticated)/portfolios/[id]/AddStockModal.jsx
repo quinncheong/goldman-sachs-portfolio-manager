@@ -1,11 +1,27 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useUpdatePortfolio } from "@/api/portfolio";
 import { useGetListOfStocks } from "@/api/stock";
-import { useState } from "react";
+import { useGetHistoricalStockPrice } from "@/api/stockPrice";
+import { toast } from "react-toastify";
 
 export default function AddStockModal({ portfolio, closeModal, openModal }) {
+  const [selectedStockSymbol, setSelectedStockSymbol] = useState("default");
+  const [date, setDate] = useState("");
+  const [quantity, setQuantity] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [cashBalance, setCashBalance] = useState();
+
   const { data, isLoading, isError, error } = useGetListOfStocks();
+  const {
+    data: historicalStockPrice,
+    isLoading: stockPriceLoading,
+    isError: stockPriceIsError,
+    error: stockPriceError,
+    refetch: refetchStockPrice,
+  } = useGetHistoricalStockPrice(selectedStockSymbol, date);
+
   const {
     isCreating,
     isSuccessCreating,
@@ -14,12 +30,12 @@ export default function AddStockModal({ portfolio, closeModal, openModal }) {
     mutate: updatePortfolio,
   } = useUpdatePortfolio();
 
-  const [selectedStock, setSelectedStock] = useState(null);
-  const [date, setDate] = useState("");
-  const [quantity, setQuantity] = useState(0);
+  useEffect(() => {
+    handleGetHistoricalStockPrice();
+  }, [selectedStockSymbol, date]);
 
   const handleStockChange = (e) => {
-    setSelectedStock(e.target.value);
+    setSelectedStockSymbol(e.target.value);
   };
 
   const handleDateChange = (e) => {
@@ -28,11 +44,43 @@ export default function AddStockModal({ portfolio, closeModal, openModal }) {
 
   const handleQuantityChange = (e) => {
     setQuantity(e.target.value);
+    if (e.target.value && historicalStockPrice !== null) {
+      let tmpPrice = (
+        e.target.value * historicalStockPrice?.adjustedClose
+      ).toFixed(2);
+
+      setTotalPrice(tmpPrice);
+      if (portfolio.initialValue < 1000) {
+        portfolio.initialValue = 1000;
+      }
+      setCashBalance((portfolio.initialValue - tmpPrice).toFixed(2));
+    }
+  };
+
+  const handleGetHistoricalStockPrice = () => {
+    if (!selectedStockSymbol || !date) {
+      return;
+    }
+    refetchStockPrice();
   };
 
   const addStock = (e) => {
-    console.log(selectedStock, date, quantity);
-    closeModal();
+    e.preventDefault();
+    if (cashBalance < 0 || totalPrice > portfolio.initialValue) {
+      toast.warn("You cannot have a negative portfolio balance");
+    } else if (quantity < 1) {
+      toast.warn("You must select at least 1 stock");
+    } else {
+      let newAllocatedStock = {
+        stockTicker: selectedStockSymbol,
+        stockQuantity: quantity,
+        stockBuyPrice: historicalStockPrice.adjustedClose,
+        stockBuyDate: date,
+      };
+      portfolio.allocatedStocks.push(newAllocatedStock);
+      updatePortfolio(portfolio);
+      closeModal();
+    }
   };
 
   return (
@@ -75,8 +123,13 @@ export default function AddStockModal({ portfolio, closeModal, openModal }) {
             <label className="label">
               <span className="label-text">Select Stock</span>
             </label>
-            <select className="select select-bordered max-w-xs">
-              <option disabled selected hidden>
+            <select
+              onChange={handleStockChange}
+              onBlur={handleGetHistoricalStockPrice}
+              value={selectedStockSymbol}
+              className="select select-bordered max-w-xs"
+            >
+              <option value={"default"} disabled hidden>
                 Select a stock
               </option>
               {renderOptions()}
@@ -90,6 +143,7 @@ export default function AddStockModal({ portfolio, closeModal, openModal }) {
               placeholder="Type here"
               className="input input-bordered w-full max-w-xs"
               onChange={handleDateChange}
+              onBlur={handleGetHistoricalStockPrice}
             />
           </div>
 
@@ -101,6 +155,7 @@ export default function AddStockModal({ portfolio, closeModal, openModal }) {
               type="number"
               placeholder="Type here"
               className="input input-bordered w-full max-w-xs"
+              onChange={handleQuantityChange}
               max={1000}
               min={1}
             />
@@ -112,7 +167,10 @@ export default function AddStockModal({ portfolio, closeModal, openModal }) {
               type="text"
               placeholder="Select a stock to retrieve price"
               className="input input-bordered w-full max-w-xs"
-              value={0}
+              value={
+                historicalStockPrice?.adjustedClose?.toFixed(2) ||
+                historicalStockPrice
+              }
               disabled
             />
           </div>
@@ -126,12 +184,13 @@ export default function AddStockModal({ portfolio, closeModal, openModal }) {
       <div className="flex justify-between gap-5 w-3/4">
         <div>
           <label className="label mt-3">
-            <span className="label-text">Total Stock Price</span>
+            <span className="label-text">Total Price</span>
           </label>
           <input
             type="number"
             placeholder="Type here"
             className="input input-bordered w-full max-w-xs"
+            value={totalPrice}
             disabled
           />
         </div>
@@ -145,6 +204,7 @@ export default function AddStockModal({ portfolio, closeModal, openModal }) {
             placeholder="Select a stock"
             className="input input-bordered w-full max-w-xs"
             disabled
+            value={portfolio.initialValue || 1000}
           />
         </div>
 
@@ -153,9 +213,10 @@ export default function AddStockModal({ portfolio, closeModal, openModal }) {
             <span className="label-text">Cash Balance after Purchase</span>
           </label>
           <input
-            type="number"
+            type="text"
             placeholder="Select a stock"
             className="input input-bordered w-full max-w-xs"
+            value={cashBalance}
             disabled
           />
         </div>
@@ -167,8 +228,10 @@ export default function AddStockModal({ portfolio, closeModal, openModal }) {
     if (!data) {
       return [];
     }
-    return data.map((stock) => (
-      <option>{stock.Symbol + " " + stock.Name}</option>
+    return data.map((stock, index) => (
+      <option key={index} value={stock.Symbol}>
+        {stock.Symbol + " " + stock.Name}
+      </option>
     ));
   }
 }

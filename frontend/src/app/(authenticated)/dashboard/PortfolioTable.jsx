@@ -17,27 +17,27 @@ const columns = [
 ];
 
 export default function PortfolioTable({ portfolios }) {
-  console.log(portfolios);
-  if (!portfolios) {
-    return <div>No Portfolios to display! Start creating </div>;
-  }
-
-  const [alteredPortfolios, setAlteredPortfolios] = useState(portfolios);
-
   useEffect(() => {
-    console.log(portfolios);
+    if (!portfolios) {
+      return;
+    }
     for (let p of portfolios) {
       p.view = <ViewMore portfolioId={p.id} />;
       p.PNL = 100;
     }
   }, [portfolios]);
 
-  const dynamicHeight = Math.min(alteredPortfolios.length * 6 + 10, 50) + "vh";
+  if (!portfolios) {
+    return <div>No Portfolios to display! Start creating </div>;
+  }
+
+  const dynamicHeight = Math.min(portfolios.length * 6 + 10, 50) + "vh";
+
   return (
     <DataGrid
       style={{ height: dynamicHeight }}
       columns={columns}
-      rows={alteredPortfolios.slice(0, 5)}
+      rows={portfolios.slice(0, 5)}
       rowHeight={85}
       sot
     />
