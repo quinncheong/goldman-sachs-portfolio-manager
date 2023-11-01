@@ -1,19 +1,22 @@
 "use client";
-
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { BASE_SERVER_URL, PORTFOLIO_API_PATH, USER_API_PATH } from "./apiFactory";
-import { toast } from "react-toastify";
-import secureLocalStorage from "react-secure-storage";
+import { getCookie } from "cookies-next";
 
-let token = secureLocalStorage.getItem("token");
+import {
+  BASE_SERVER_URL,
+  PORTFOLIO_API_PATH,
+  USER_API_PATH,
+} from "./apiFactory";
+import { toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
 
 const axiosInstance = axios.create({
   baseURL: BASE_SERVER_URL + PORTFOLIO_API_PATH,
   timeout: 3000,
   headers: {
     "Content-Type": "application/json",
-    Authorization: "Bearer " + token,
+    Authorization: "Bearer " + getCookie("token"),
   },
 });
 
@@ -26,19 +29,25 @@ const axiosUserInstance = axios.create({
   },
 });
 
-
 export const useGetPortfoliosByUserId = (userId) => {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["getPortfoliosByUserId"],
-    queryFn: () => getPortfoliosByUserId(userId),
+    queryKey: ["getPortfoliosOfUser"],
+    queryFn: () => getPortfoliosOfUser(),
   });
 
   return { data, isLoading, isError, error };
 };
 
-const getPortfoliosByUserId = async (userId) => {
-  let response = await axiosInstance.get("/user/" + userId);
-  return response.data.toReversed();
+const getPortfoliosOfUser = async () => {
+  try {
+    let userId = jwtDecode(getCookie("token")).userId;
+    console.log(userId);
+    let response = await axiosInstance.get("/user/" + userId);
+    return response.data.toReversed();
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
 };
 
 export const useGetPortfolioByPortfolioId = (portfolioId) => {
@@ -62,21 +71,21 @@ export const useGetPortfolios = (userId) => {
   });
 
   return { data, isLoading, isError, error };
-}
+};
 
 const getPortfolios = async (userId) => {
-  const userRes = await axiosUserInstance.get("/" + userId)
-  const userData = userRes.data
+  const userRes = await axiosUserInstance.get("/" + userId);
+  const userData = userRes.data;
 
   const portfolioPromises = userData.portfolioIds.map(async (portfolioId) => {
-    const portfolioRes = await axiosInstance.get("/" + portfolioId)
-    return portfolioRes.data
-  })
+    const portfolioRes = await axiosInstance.get("/" + portfolioId);
+    return portfolioRes.data;
+  });
 
-  const portfolioData = await Promise.all(portfolioPromises)
+  const portfolioData = await Promise.all(portfolioPromises);
 
-  return { userData, portfolioData }
-}
+  return { userData, portfolioData };
+};
 
 export const useCreatePortfolio = () => {
   const queryClient = useQueryClient();
@@ -89,7 +98,7 @@ export const useCreatePortfolio = () => {
   } = useMutation({
     mutationFn: (data) => createPortfolio(data),
     onSuccess: () => {
-      queryClient.invalidateQueries(["getPortfoliosByUserId"]);
+      queryClient.invalidateQueries(["getPortfoliosOfUser"]);
     },
     onMutate: (variables) => {
       // A mutation is about to happen!
@@ -119,7 +128,13 @@ export const useCreatePortfolio = () => {
   };
 };
 
-const createPortfolio = async (data) => {
-  let response = await axiosInstance.post("/", data);
-  return response.data;
+const createPortfolio = async (partialPortfolioData) => {
+  try {
+    partialPortfolioData.userId = jwtDecode(getCookie("token")).userId;
+    let response = await axiosInstance.post("/", partialPortfolioData);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
 };

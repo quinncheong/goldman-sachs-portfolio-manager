@@ -1,26 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
-
-import { useGetPortfolioByPortfolioId, useGetPortfolios, useGetPortfoliosByUserId } from "@api/portfolio.js";
+import { useGetPortfoliosOfUser } from "@api/portfolio.js";
 import PortfolioCard from "./PortfolioCard";
 import { useRouter } from "next/navigation";
-import { jwtDecode } from "jwt-decode";
-import secureLocalStorage from "react-secure-storage";
 
-
-
-export default function Portfolio(props) {
-  var portfolioData
-  const { data, isLoading, isError, error } = useGetPortfolios(
-    jwtDecode(secureLocalStorage.getItem("token")).userId
-  );
-
-  if (data) {
-    portfolioData = data.portfolioData
-  }
-
-
+export default function Portfolio({}) {
   const router = useRouter();
+  const { data, isLoading, isError, error } = useGetPortfoliosOfUser();
 
   const addPortfolio = (e) => {
     e.preventDefault();

@@ -1,8 +1,8 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { setCookie } from "cookies-next";
 import { login } from "../../api/login";
-import secureLocalStorage from "react-secure-storage";
 
 export default function Login() {
   const router = useRouter();
@@ -13,10 +13,9 @@ export default function Login() {
     e.preventDefault();
     const token = await login(username, password);
     if (token === 403) {
-      alert("Wrong username or password.")
+      alert("Wrong username or password.");
     } else {
-      secureLocalStorage.setItem("token", token);
-      secureLocalStorage.setItem("userId", username);
+      setCookie("token", token);
       router.push("/dashboard");
     }
   };
