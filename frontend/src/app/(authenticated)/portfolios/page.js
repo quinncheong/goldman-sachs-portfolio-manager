@@ -5,7 +5,12 @@ import { useRouter } from "next/navigation";
 
 export default function Portfolio({}) {
   const router = useRouter();
-  const { data, isLoading, isError, error } = useGetPortfoliosOfUser();
+  const {
+    data: portfolioData,
+    isLoading,
+    isError,
+    error,
+  } = useGetPortfoliosOfUser();
 
   const addPortfolio = (e) => {
     e.preventDefault();

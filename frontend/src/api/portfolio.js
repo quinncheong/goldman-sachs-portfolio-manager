@@ -25,11 +25,11 @@ const axiosUserInstance = axios.create({
   timeout: 3000,
   headers: {
     "Content-Type": "application/json",
-    Authorization: "Bearer " + token,
+    Authorization: "Bearer " + getCookie("token"),
   },
 });
 
-export const useGetPortfoliosByUserId = (userId) => {
+export const useGetPortfoliosOfUser = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["getPortfoliosOfUser"],
     queryFn: () => getPortfoliosOfUser(),

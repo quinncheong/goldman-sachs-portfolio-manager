@@ -1,10 +1,9 @@
 "use client";
 
-import Dashboard from "@/app/(authenticated)/dashboard/page";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import secureLocalStorage from "react-secure-storage";
+import { deleteCookie } from "cookies-next";
 
 export default function Navbar() {
   const router = useRouter();
@@ -33,9 +32,8 @@ export default function Navbar() {
   }
 
   function logout() {
-    secureLocalStorage.removeItem("token")
-    secureLocalStorage.removeItem("userId")
-    router.push("/")
+    deleteCookie("token");
+    router.push("/");
   }
 
   return (
@@ -87,7 +85,10 @@ export default function Navbar() {
         {menu()}
       </div>
 
-      <button className="btn text-white bg-primary-100 ml-auto mr-3" onClick={logout}>
+      <button
+        className="btn text-white bg-primary-100 ml-auto mr-3"
+        onClick={logout}
+      >
         Logout
       </button>
     </div>
