@@ -2,10 +2,7 @@
 
 import { useState } from "react";
 import { useCreatePortfolio } from "@/api/portfolio";
-import { jwtDecode } from "jwt-decode";
 import { redirect, useRouter } from "next/navigation";
-import { getCookie } from "cookies-next";
-import { toast } from "react-toastify";
 
 export default function AddPortfolio() {
   const [name, setName] = useState("");
