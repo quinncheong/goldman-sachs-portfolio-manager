@@ -76,7 +76,9 @@ export default function AddStockModal({ portfolio, closeModal, openModal }) {
               <span className="label-text">Select Stock</span>
             </label>
             <select className="select select-bordered max-w-xs">
-              <option disabled>Pick one</option>
+              <option disabled selected hidden>
+                Select a stock
+              </option>
               {renderOptions()}
             </select>
 
@@ -162,10 +164,11 @@ export default function AddStockModal({ portfolio, closeModal, openModal }) {
   }
 
   function renderOptions() {
-    return <option>hello</option>;
-    for (let stock of data) {
-      console.log(stock);
-      return <option>{stock.name}</option>;
+    if (!data) {
+      return [];
     }
+    return data.map((stock) => (
+      <option>{stock.Symbol + " " + stock.Name}</option>
+    ));
   }
 }
