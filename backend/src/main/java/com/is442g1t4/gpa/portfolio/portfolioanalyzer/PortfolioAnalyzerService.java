@@ -55,10 +55,10 @@ public class PortfolioAnalyzerService {
 
             if(instant.atZone(ZoneId.systemDefault()).toLocalDate().equals(LocalDate.now()) ){
                 // previousValue = previousValue + (90 * quantity);
-                previousValue = previousValue + (stock.priceToday() * quantity);
+                previousValue = previousValue + (stockService.getPriceTodayByTicker(stockTicker) * quantity);
             } else {
                 // previousValue = previousValue + (100 * quantity);
-                previousValue = previousValue + (stock.priceYesterday() * quantity);
+                previousValue = previousValue + (stockService.getPriceYesterdayByTicker(stockTicker) * quantity);
             }
         }
 
