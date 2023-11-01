@@ -1,19 +1,28 @@
 "use client";
 
+import { useState } from "react";
 import Loader from "@/components/loading/Loader";
 import { useRouter } from "next/navigation";
-import { useGetPortfolioByPortfolioId } from "@/api/portfolio";
 import PortfolioFinancials from "./PortfolioFinancials";
 import PortfolioAnalysis from "./PortfolioAnalysis";
 import StockHoldings from "./StockHoldings";
+import AddStockModal from "./AddStockModal";
+
+import { useGetPortfolioByPortfolioId } from "@/api/portfolio";
 
 export default function PortfolioPage({ params }) {
-  console.log(params);
   const router = useRouter();
   const { data, isLoading, isError, error } = useGetPortfolioByPortfolioId(
     params.id
   );
-  console.log(data);
+
+  function openModal() {
+    document.getElementById("add-stock-modal").showModal();
+  }
+
+  function closeModal() {
+    document.getElementById("add-stock-modal").close();
+  }
 
   if (isLoading) {
     return <Loader />;
@@ -27,11 +36,6 @@ export default function PortfolioPage({ params }) {
     );
   }
 
-  const addStock = (e) => {
-    e.preventDefault();
-    router.push("/addstock");
-  };
-
   return (
     <div className="container mx-auto p-4 text-black">
       <div className="flex flex-row justify-between items-center">
@@ -41,7 +45,7 @@ export default function PortfolioPage({ params }) {
         </div>
         <button
           className="btn bg-primary-200 p-4 text-white border-0"
-          onClick={addStock}
+          onClick={openModal}
         >
           Add Stocks
         </button>
@@ -57,6 +61,12 @@ export default function PortfolioPage({ params }) {
       </div>
       {/* <PortfolioAnalysis /> */}
       <StockHoldings />
+
+      <AddStockModal
+        portfolio={data}
+        openModal={openModal}
+        closeModal={closeModal}
+      />
     </div>
   );
 }
