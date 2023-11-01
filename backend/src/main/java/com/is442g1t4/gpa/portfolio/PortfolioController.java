@@ -24,9 +24,6 @@ public class PortfolioController {
     @Autowired
     private PortfolioService portfolioService;
 
-    @Autowired
-    private AllocatedStockService allocatedStockService;
-
     @GetMapping("/all")
     public ResponseEntity<List<Portfolio>> getAllPortfolios() {
         return new ResponseEntity<List<Portfolio>>(portfolioService.getAllPortfolios(),
