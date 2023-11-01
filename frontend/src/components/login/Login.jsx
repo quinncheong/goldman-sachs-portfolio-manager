@@ -12,9 +12,13 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = await login(username, password);
-    secureLocalStorage.setItem("token", token);
-    secureLocalStorage.setItem("userId", username);
-    router.push("/dashboard");
+    if (token === 403) {
+      alert("Wrong username or password.")
+    } else {
+      secureLocalStorage.setItem("token", token);
+      secureLocalStorage.setItem("userId", username);
+      router.push("/dashboard");
+    }
   };
 
   return (
