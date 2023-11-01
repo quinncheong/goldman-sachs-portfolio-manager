@@ -40,6 +40,18 @@ public class StockController {
                 HttpStatus.OK);
     }
 
+    @GetMapping("/priceToday/{stockTicker}")
+    public ResponseEntity<Double> getPriceTodayByTicker(@PathVariable String stockTicker) {
+        return new ResponseEntity<Double>(stockService.getPriceTodayByTicker(stockTicker),
+                HttpStatus.OK);
+    }
+
+    @GetMapping("/priceYesterday/{stockTicker}")
+    public ResponseEntity<Double> getPriceYesterdayByTicker(@PathVariable String stockTicker) {
+        return new ResponseEntity<Double>(stockService.getPriceYesterdayByTicker(stockTicker),
+                HttpStatus.OK);
+    }
+
     @PostMapping("/")
     public ResponseEntity<?> createStock(@RequestBody Stock stock) {
         Stock savedStock = stockService.addStock(stock);
@@ -49,35 +61,9 @@ public class StockController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedStock);
     }
 
-    // @Autowired
-    // public StockController(StockService stockService) {
-    // this.stockService = stockService;
-    // }
+    @PutMapping("/{stockTicker}")
+    public ResponseEntity<Stock> updateStock(@RequestBody Stock stock){
+        return new ResponseEntity<Stock>(stockService.updateStock(stock), HttpStatus.OK);
+    }
 
-    // @GetMapping
-    // public List<Stock> getAllStocks() {
-    // return stockService.getAllStocks();
-    // }
-
-    // @GetMapping("/{id}")
-    // public ResponseEntity<Stock> getStockById(@PathVariable Long id) {
-    // Stock stock = StockService.getStockById(id);
-    // if (stock != null) {
-    // return ResponseEntity.ok(stock);
-    // } else {
-    // return ResponseEntity.notFound().build();
-    // }
-    // }
-
-    // @PostMapping
-    // public ResponseEntity<Stock> createStock(@RequestBody Stock stock) {
-    // Stock savedStock = stockService.saveStock(stock);
-    // return ResponseEntity.status(HttpStatus.CREATED).body(savedStock);
-    // }
-
-    // @DeleteMapping("/{id}")
-    // public ResponseEntity<Void> deleteStock(@PathVariable Long id) {
-    // stockService.deleteStock(id);
-    // return ResponseEntity.noContent().build();
-    // }
 }

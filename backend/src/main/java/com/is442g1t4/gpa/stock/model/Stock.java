@@ -17,18 +17,20 @@ import lombok.NoArgsConstructor;
 @JsonNaming(PropertyNamingStrategy.UpperCamelCaseStrategy.class)
 public class Stock {
     @Id
-    public String symbol;
-    public String assetType;
-    public String name;
-    public String description;
-    public String CIK;
-    public String exchange;
-    public String currency;
-    public String country;
-    public String sector;
-    public String industry;
-    public String address;
-    public String fiscalYearEnd;
-    public String latestQuarter;
-    public Long marketCapitalization;
+    private String symbol;
+    private String assetType;
+    private String name;
+    private String description;
+    private String CIK;
+    private String exchange;
+    private String currency;
+    private String country;
+    private String sector;
+    private String industry;
+    private String address;
+    private String fiscalYearEnd;
+    private String latestQuarter;
+    private double priceYesterday;
+    private double priceToday;
 }
+ 

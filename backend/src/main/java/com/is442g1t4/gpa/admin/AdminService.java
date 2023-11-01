@@ -66,4 +66,7 @@ public class AdminService {
         return trackedStockRepository.saveAll(trackedStocks);
     }
 
+    public void seedStockPrice() {
+
+    }
 }

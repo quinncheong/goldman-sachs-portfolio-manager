@@ -4,13 +4,13 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.is442g1t4.gpa.portfolio.repository.PortfolioRepository;
-import com.is442g1t4.gpa.portfolio.service.PortfolioService;
 import com.is442g1t4.gpa.stock.StockService;
 import com.is442g1t4.gpa.stock.model.Stock;
 import com.is442g1t4.gpa.user.User;
 import com.is442g1t4.gpa.user.UserRepository;
-import com.is442g1t4.gpa.portfolio.model.Portfolio;
+import com.is442g1t4.gpa.portfolio.Portfolio;
+import com.is442g1t4.gpa.portfolio.PortfolioRepository;
+import com.is442g1t4.gpa.portfolio.PortfolioService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockRepository;
@@ -30,7 +30,7 @@ public class PortfolioAnalyzerService {
     @Autowired
     private StockService stockService;
 
-    public Map<String, Double> getPortfolioAnalysis(ObjectId id){
+    public Map<String, Double> getPortfolioAnalysis(ObjectId id) {
         Map<String, Double> result = new HashMap<>();
         DecimalFormat df = new DecimalFormat("#.##");
 
@@ -42,7 +42,7 @@ public class PortfolioAnalyzerService {
         Double pnl;
         Double dpnl;
 
-        for (AllocatedStock allocatedStock : allocatedStocks){
+        for (AllocatedStock allocatedStock : allocatedStocks) {
             String stockTicker = allocatedStock.getStockTicker();
             Stock stock = stockService.getStockByTicker(stockTicker).get();
             int quantity = allocatedStock.getStockQuantity();
@@ -62,12 +62,11 @@ public class PortfolioAnalyzerService {
             }
         }
 
-        dpnl = value/previousValue - 1;
-        pnl = value/cost - 1;
+        dpnl = value / previousValue - 1;
+        pnl = value / cost - 1;
 
         result.put("dpnl", Double.parseDouble(df.format(dpnl)));
         result.put("pnl", Double.parseDouble(df.format(pnl)));
-
 
         return result;
     }
