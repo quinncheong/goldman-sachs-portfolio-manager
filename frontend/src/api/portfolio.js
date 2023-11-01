@@ -2,10 +2,12 @@
 
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getCookie } from "cookies-next";
+
 import { BASE_SERVER_URL, PORTFOLIO_API_PATH } from "./apiFactory";
 import { toast } from "react-toastify";
 
-let token = localStorage.getItem("token");
+let token = getCookie("token");
 
 const axiosInstance = axios.create({
   baseURL: BASE_SERVER_URL + PORTFOLIO_API_PATH,

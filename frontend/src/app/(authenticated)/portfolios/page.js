@@ -1,14 +1,14 @@
 "use client";
-import { useEffect, useState } from "react";
-
 import { useGetPortfoliosByUserId } from "@api/portfolio.js";
 import PortfolioCard from "./PortfolioCard";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
+import { getCookie } from "cookies-next";
 
 export default function Portfolio(props) {
+  let token = getCookie("token");
   const { data, isLoading, isError, error } = useGetPortfoliosByUserId(
-    jwtDecode(localStorage.getItem("token")).userId
+    jwtDecode(token).userId
   );
   const router = useRouter();
 
