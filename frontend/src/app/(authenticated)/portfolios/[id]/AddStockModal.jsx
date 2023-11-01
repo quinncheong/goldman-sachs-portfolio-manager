@@ -1,9 +1,19 @@
 "use client";
 
+import { useUpdatePortfolio } from "@/api/portfolio";
+import { useGetListOfStocks } from "@/api/stock";
 import { useState } from "react";
 
 export default function AddStockModal({ portfolio, closeModal, openModal }) {
-  console.log("modal is open");
+  const { data, isLoading, isError, error } = useGetListOfStocks();
+  const {
+    isCreating,
+    isSuccessCreating,
+    isErrorCreating,
+    error: updateError,
+    mutate: updatePortfolio,
+  } = useUpdatePortfolio();
+
   const [selectedStock, setSelectedStock] = useState(null);
   const [date, setDate] = useState("");
   const [quantity, setQuantity] = useState(0);
@@ -151,5 +161,11 @@ export default function AddStockModal({ portfolio, closeModal, openModal }) {
     );
   }
 
-  function renderOptions() {}
+  function renderOptions() {
+    return <option>hello</option>;
+    for (let stock of data) {
+      console.log(stock);
+      return <option>{stock.name}</option>;
+    }
+  }
 }
