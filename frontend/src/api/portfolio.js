@@ -1,33 +1,40 @@
 "use client";
-
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getCookie } from "cookies-next";
+
 import { BASE_SERVER_URL, PORTFOLIO_API_PATH } from "./apiFactory";
 import { toast } from "react-toastify";
-
-let token = localStorage.getItem("token");
+import { jwtDecode } from "jwt-decode";
 
 const axiosInstance = axios.create({
   baseURL: BASE_SERVER_URL + PORTFOLIO_API_PATH,
   timeout: 3000,
   headers: {
     "Content-Type": "application/json",
-    Authorization: "Bearer " + token,
+    Authorization: "Bearer " + getCookie("token"),
   },
 });
 
-export const useGetPortfoliosByUserId = (userId) => {
+export const useGetPortfoliosOfUser = () => {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["getPortfoliosByUserId"],
-    queryFn: () => getPortfoliosByUserId(userId),
+    queryKey: ["getPortfoliosOfUser"],
+    queryFn: () => getPortfoliosOfUser(),
   });
 
   return { data, isLoading, isError, error };
 };
 
-const getPortfoliosByUserId = async (userId) => {
-  let response = await axiosInstance.get("/user/" + userId);
-  return response.data.toReversed();
+const getPortfoliosOfUser = async () => {
+  try {
+    let userId = jwtDecode(getCookie("token")).userId;
+    console.log(userId);
+    let response = await axiosInstance.get("/user/" + userId);
+    return response.data.toReversed();
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
 };
 
 export const useGetPortfolioByPortfolioId = (portfolioId) => {
@@ -55,7 +62,7 @@ export const useCreatePortfolio = () => {
   } = useMutation({
     mutationFn: (data) => createPortfolio(data),
     onSuccess: () => {
-      queryClient.invalidateQueries(["getPortfoliosByUserId"]);
+      queryClient.invalidateQueries(["getPortfoliosOfUser"]);
     },
     onMutate: (variables) => {
       // A mutation is about to happen!
@@ -85,7 +92,13 @@ export const useCreatePortfolio = () => {
   };
 };
 
-const createPortfolio = async (data) => {
-  let response = await axiosInstance.post("/", data);
-  return response.data;
+const createPortfolio = async (partialPortfolioData) => {
+  try {
+    partialPortfolioData.userId = jwtDecode(getCookie("token")).userId;
+    let response = await axiosInstance.post("/", partialPortfolioData);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
 };

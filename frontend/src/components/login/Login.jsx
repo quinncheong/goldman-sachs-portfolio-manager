@@ -1,6 +1,7 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { setCookie } from "cookies-next";
 import { login } from "../../api/login";
 
 export default function Login() {
@@ -11,8 +12,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = await login(username, password);
-    localStorage.setItem("token", token);
-    localStorage.setItem("userId", username);
+    setCookie("token", token);
     router.push("/dashboard");
   };
 

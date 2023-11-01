@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Loader from "@/components/loading/Loader";
-import { useGetPortfoliosByUserId } from "@/api/portfolio";
+import { useGetPortfoliosOfUser } from "@/api/portfolio";
 
 export default function AddStock() {
-  const { data, isLoading, isError, error } = useGetPortfoliosByUserId();
+  const { data, isLoading, isError, error } = useGetPortfoliosOfUser();
   const [selectedPortfolio, setSelectedPortfolio] = useState(null);
   const [selectedStock, setSelectedStock] = useState(null);
 

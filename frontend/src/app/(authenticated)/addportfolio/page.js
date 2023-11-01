@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { useCreatePortfolio } from "@/api/portfolio";
 import { jwtDecode } from "jwt-decode";
-import { useState } from "react";
 import { redirect, useRouter } from "next/navigation";
+import { getCookie } from "cookies-next";
+import { toast } from "react-toastify";
 
 export default function AddPortfolio() {
   const [name, setName] = useState("");
@@ -28,11 +30,7 @@ export default function AddPortfolio() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let token = localStorage.getItem("token");
-    let decoded = jwtDecode(token);
-
     let portfolioData = {
-      userId: decoded.userId,
       name: name,
       description: desc,
       initialValue: 0,
