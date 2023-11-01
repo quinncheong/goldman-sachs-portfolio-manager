@@ -27,12 +27,6 @@ public class PortfolioService {
     private UserRepository userRepository;
 
     @Autowired
-    private AllocatedStockRepository allocatedStockRepository;
-
-    @Autowired
-    private StockService stockRepository;
-
-    @Autowired
     private AllocatedStockService allocatedStockService;
 
     public List<Portfolio> getAllPortfolios() {
@@ -46,20 +40,19 @@ public class PortfolioService {
     public List<Portfolio> getPortfoliosByUserId(ObjectId userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
-            List<ObjectId> portfolioIds = user.get().getPortfolioIds();
-            return portfolioRepository.findAllById(portfolioIds);
+            System.out.println(user.get().getId());
+            return portfolioRepository.findByUserId(user.get().getId());
         } else {
             return Collections.<Portfolio>emptyList();
         }
     }
 
     public Portfolio createPortfolio(Portfolio portfolio) {
-        if (portfolio.getId() != null && portfolioRepository.existsById(portfolio.getId())) {
+        if (portfolio.getId() != null) {
             return null;
         }
-        Portfolio createdPortfolio = new Portfolio();
-        createdPortfolio.setAllocatedStocks(Collections.<AllocatedStock>emptyList());
-        return portfolioRepository.save(createdPortfolio);
+        portfolio.setId(new ObjectId());
+        return portfolioRepository.save(portfolio);
     }
 
     public Portfolio updatePortfolio(Portfolio portfolio) {

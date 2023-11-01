@@ -1,18 +1,19 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { login } from "../../api/login"
+import { login } from "../../api/login";
 
 export default function Login() {
   const router = useRouter();
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    const token = await login(username, password)
-    localStorage.setItem("token", token)
-    router.push("/dashboard")
+    e.preventDefault();
+    const token = await login(username, password);
+    localStorage.setItem("token", token);
+    localStorage.setItem("userId", username);
+    router.push("/dashboard");
   };
 
   return (

@@ -1,7 +1,9 @@
 package com.is442g1t4.gpa.auth;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bson.types.ObjectId;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties.Authentication;
@@ -16,6 +18,7 @@ import com.is442g1t4.gpa.user.Role;
 import com.is442g1t4.gpa.user.User;
 
 import lombok.RequiredArgsConstructor;
+import lombok.var;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +38,7 @@ public class AuthenticationService {
                                 .role(Role.USER)
                                 .build();
                 userRepository.save(user);
+
                 var jwtToken = jwtService.generateToken(user);
                 return AuthenticationResponse.builder()
                                 .token(jwtToken)
@@ -47,9 +51,13 @@ public class AuthenticationService {
                                                 request.getUsername(),
                                                 request.getPassword()));
                 // user and password is correct, authenticated
-                var user = userRepository.findByUsername(request.getUsername())
+                User user = userRepository.findByUsername(request.getUsername())
                                 .orElseThrow();
-                var jwtToken = jwtService.generateToken(user);
+
+                Map<String, Object> extraClaims = new HashMap<>();
+                extraClaims.put("userId", user.getId().toString());
+
+                String jwtToken = jwtService.generateToken(user.getUsername(), extraClaims);
                 return AuthenticationResponse.builder()
                                 .token(jwtToken)
                                 .build();
