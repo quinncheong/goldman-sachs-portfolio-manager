@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.is442g1t4.gpa.auth.PasswordRequest;
 import com.is442g1t4.gpa.auth.WrongPasswordException;
-import com.is442g1t4.gpa.portfolio.model.Portfolio;
-import com.is442g1t4.gpa.portfolio.service.PortfolioService;
 import com.is442g1t4.gpa.portfolio.Portfolio;
 import com.is442g1t4.gpa.portfolio.PortfolioService;
 
@@ -43,7 +41,7 @@ public class UserService {
         return "User deleted";
     }
 
-    public User changeUserPassword(ObjectId id, PasswordRequest request) throws WrongPasswordException{
+    public User changeUserPassword(ObjectId id, PasswordRequest request) throws WrongPasswordException {
         System.out.println("Old Password: " + request.getOldpassword());
         System.out.println("New Password: " + request.getNewpassword());
         Optional<User> user = userRepository.findById(id);
@@ -55,10 +53,9 @@ public class UserService {
                 System.out.println("Password match, changing password...");
                 user.get().setPassword(passwordEncoder.encode(request.getNewpassword()));
                 System.out.println("Password changed");
-            }
-            else{
+            } else {
                 throw new WrongPasswordException("Old password does not match");
-            }            
+            }
         }
         return userRepository.save(user.get());
 

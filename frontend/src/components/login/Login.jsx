@@ -12,8 +12,12 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = await login(username, password);
-    setCookie("token", token);
-    router.push("/dashboard");
+    if (token === 403) {
+      alert("Wrong username or password.");
+    } else {
+      setCookie("token", token);
+      router.push("/dashboard");
+    }
   };
 
   return (

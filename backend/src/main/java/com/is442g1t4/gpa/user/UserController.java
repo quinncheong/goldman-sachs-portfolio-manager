@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.is442g1t4.gpa.auth.PasswordRequest;
-import com.is442g1t4.gpa.portfolio.model.Portfolio;
 import com.is442g1t4.gpa.portfolio.Portfolio;
-import com.is442g1t4.gpa.user.User;
-import com.is442g1t4.gpa.user.UserService;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -46,8 +43,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}/changepassword")
-    public ResponseEntity<User> changeUserPassword(@PathVariable ObjectId id, @RequestBody PasswordRequest request){
-        return new ResponseEntity<User>(userService.changeUserPassword(id,request),
+    public ResponseEntity<User> changeUserPassword(@PathVariable ObjectId id, @RequestBody PasswordRequest request) {
+        return new ResponseEntity<User>(userService.changeUserPassword(id, request),
                 HttpStatus.OK);
     }
 
