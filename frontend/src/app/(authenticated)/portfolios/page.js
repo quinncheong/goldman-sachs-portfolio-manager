@@ -6,9 +6,8 @@ import { jwtDecode } from "jwt-decode";
 import { getCookie } from "cookies-next";
 
 export default function Portfolio(props) {
-  let token = getCookie("token");
   const { data, isLoading, isError, error } = useGetPortfoliosByUserId(
-    jwtDecode(token).userId
+    jwtDecode(getCookie("token")).userId
   );
   const router = useRouter();
 
