@@ -34,8 +34,6 @@ public class AllocatedStockService {
     private StockRepository stockRepository;
 
     public AllocatedStock addAllocatedStock(String symbol, int quantity) {
-        // AllocatedStock allcatedStock =
-        // allocatedStockRepository.findAllocatedStockByStockTicker(allocatedStock.getStockTicker());
         Optional<Stock> target = stockRepository.findStockBySymbol(symbol);
         if (!target.isPresent()) {
 
@@ -47,7 +45,11 @@ public class AllocatedStockService {
 
             return allocatedStockRepository.save(allocatedStock);
         }
+    }
 
+    public AllocatedStock addAllocatedStock(AllocatedStock allocatedStock){
+
+        return allocatedStockRepository.save(allocatedStock);
     }
 
     public List<AllocatedStock> getAllAllocatedStocks() {

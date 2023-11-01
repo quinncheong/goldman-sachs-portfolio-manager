@@ -9,6 +9,7 @@ import com.is442g1t4.gpa.stock.StockRepository;
 import com.is442g1t4.gpa.stock.model.Stock;
 import com.is442g1t4.gpa.user.User;
 import com.is442g1t4.gpa.user.UserRepository;
+import com.is442g1t4.gpa.user.UserService;
 import com.is442g1t4.gpa.portfolio.PortfolioService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
@@ -98,4 +99,34 @@ public class PortfolioService {
         List<AllocatedStock> allocatedStocks = retrievedPortfolio.getAllocatedStocks();
         return allocatedStocks;
     }
+    public Portfolio addAllocatedStock(AllocatedStock allocatedStock, ObjectId portfolioId, ObjectId userId){
+
+        AllocatedStock savedAllocatedStock = allocatedStockService.addAllocatedStock(allocatedStock);
+
+        double allocatedStockValue = 0.0;
+        double userCashBalance = 0.0;
+        Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
+        if (portfolio.isPresent()) {
+
+            Optional<User> user = userRepository.findById(userId);
+            if (user.isPresent()){
+                allocatedStockValue = savedAllocatedStock.getStockQuantity() * savedAllocatedStock.getStockBuyPrice();
+
+                userCashBalance = user.get().getCashBalance();
+                if (userCashBalance >= allocatedStockValue){
+
+                    user.get().setCashBalance(userCashBalance - allocatedStockValue);
+                    userRepository.save(user.get());
+                    userCashBalance = user.get().getCashBalance();
+
+                    portfolio.get().getAllocatedStocks().add(savedAllocatedStock);
+                }else{
+
+                    return null;
+                }
+            }
+        }
+        return portfolioRepository.save(portfolio.get());
+    }
+
 }

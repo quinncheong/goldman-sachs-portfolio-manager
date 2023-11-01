@@ -24,6 +24,9 @@ public class PortfolioController {
     @Autowired
     private PortfolioService portfolioService;
 
+    @Autowired
+    private AllocatedStockService allocatedStockService;
+
     @GetMapping("/all")
     public ResponseEntity<List<Portfolio>> getAllPortfolios() {
         return new ResponseEntity<List<Portfolio>>(portfolioService.getAllPortfolios(),
@@ -85,4 +88,16 @@ public class PortfolioController {
         return new ResponseEntity<List<AllocatedStock>>(portfolioService.getAllAllocatedStocksInPortfolio(id),
                 HttpStatus.OK);
     }
+
+    @PostMapping("/addAllocatedStock/{portfolioId}/{userId}")
+    public ResponseEntity<Portfolio> createAllocatedStock(@RequestBody AllocatedStock allocatedStock, @PathVariable ObjectId portfolioId, @PathVariable ObjectId userId) {
+        Portfolio updatedPortfolio = portfolioService.addAllocatedStock(allocatedStock, portfolioId, userId);
+
+        if (updatedPortfolio == null) {
+            return new ResponseEntity<Portfolio>(HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(updatedPortfolio);
+    }
+
 }
