@@ -1,16 +1,25 @@
 "use client";
 import { useEffect, useState } from "react";
 
-import { useGetPortfoliosByUserId } from "@api/portfolio.js";
+import { useGetPortfolioByPortfolioId, useGetPortfolios, useGetPortfoliosByUserId } from "@api/portfolio.js";
 import PortfolioCard from "./PortfolioCard";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import secureLocalStorage from "react-secure-storage";
 
+
+
 export default function Portfolio(props) {
-  const { data, isLoading, isError, error } = useGetPortfoliosByUserId(
+  var portfolioData
+  const { data, isLoading, isError, error } = useGetPortfolios(
     jwtDecode(secureLocalStorage.getItem("token")).userId
   );
+
+  if (data) {
+    portfolioData = data.portfolioData
+  }
+
+
   const router = useRouter();
 
   const addPortfolio = (e) => {
@@ -39,8 +48,8 @@ export default function Portfolio(props) {
   );
 
   function renderPortfolios() {
-    if (!data) return <div>Portfolios Loading</div>;
-    return data.map((portfolio, index) => {
+    if (!portfolioData) return <div>Portfolios Loading</div>;
+    return portfolioData.map((portfolio, index) => {
       return <PortfolioCard key={index} portfolio={portfolio} />;
     });
   }

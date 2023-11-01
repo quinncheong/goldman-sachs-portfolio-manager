@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { BASE_SERVER_URL, PORTFOLIO_API_PATH } from "./apiFactory";
+import { BASE_SERVER_URL, PORTFOLIO_API_PATH, USER_API_PATH } from "./apiFactory";
 import { toast } from "react-toastify";
 import secureLocalStorage from "react-secure-storage";
 
@@ -16,6 +16,16 @@ const axiosInstance = axios.create({
     Authorization: "Bearer " + token,
   },
 });
+
+const axiosUserInstance = axios.create({
+  baseURL: BASE_SERVER_URL + USER_API_PATH,
+  timeout: 3000,
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + token,
+  },
+});
+
 
 export const useGetPortfoliosByUserId = (userId) => {
   const { data, isLoading, isError, error } = useQuery({
@@ -44,6 +54,29 @@ const getPortfolioByPortfolioId = async (portfolioId) => {
   let response = await axiosInstance.get("/" + portfolioId);
   return response.data;
 };
+
+export const useGetPortfolios = (userId) => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getPortfolios", userId],
+    queryFn: () => getPortfolios(userId),
+  });
+
+  return { data, isLoading, isError, error };
+}
+
+const getPortfolios = async (userId) => {
+  const userRes = await axiosUserInstance.get("/" + userId)
+  const userData = userRes.data
+
+  const portfolioPromises = userData.portfolioIds.map(async (portfolioId) => {
+    const portfolioRes = await axiosInstance.get("/" + portfolioId)
+    return portfolioRes.data
+  })
+
+  const portfolioData = await Promise.all(portfolioPromises)
+
+  return { userData, portfolioData }
+}
 
 export const useCreatePortfolio = () => {
   const queryClient = useQueryClient();

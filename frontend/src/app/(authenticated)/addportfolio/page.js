@@ -4,6 +4,7 @@ import { useCreatePortfolio } from "@/api/portfolio";
 import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
 import { redirect, useRouter } from "next/navigation";
+import secureLocalStorage from "react-secure-storage";
 
 export default function AddPortfolio() {
   const [name, setName] = useState("");
@@ -28,7 +29,7 @@ export default function AddPortfolio() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let token = localStorage.getItem("token");
+    let token = secureLocalStorage.getItem("token");
     let decoded = jwtDecode(token);
 
     let portfolioData = {
