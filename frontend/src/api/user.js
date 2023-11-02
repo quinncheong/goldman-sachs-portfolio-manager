@@ -27,6 +27,7 @@ export const useGetAccessLogs = () => {
 
 const getAccessLogs = async () => {
   try {
+    let userId = jwtDecode(getCookie("token")).userId;
     let response = await axiosUserInstance.get("/" + userId + "/log");
     return response.data.toReversed();
   } catch (error) {
@@ -42,7 +43,7 @@ export const useCreateAccessLog = () => {
     isSuccess: isAccessLogSuccess,
     isError: isAccessLogError,
     error: accessLogError,
-    mutate: addAccessLog,
+    mutateAsync: addAccessLog,
   } = useMutation({
     mutationFn: (data) => createAccessLog(data),
     onSuccess: () => {
@@ -58,9 +59,7 @@ export const useCreateAccessLog = () => {
       // console.log(`rolling back optimistic update with id ${context.id}`);
       console.log(error);
     },
-    onSuccess: (data, variables, context) => {
-      console.log(data);
-    },
+    onSuccess: (data, variables, context) => {},
     onSettled: (data, error, variables, context) => {
       // Error or success... doesn't matter!
     },

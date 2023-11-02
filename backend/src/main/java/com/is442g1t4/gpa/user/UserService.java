@@ -71,8 +71,7 @@ public class UserService {
 
     public List<AccessLog> getAccessLogs(ObjectId userId) {
         Optional<User> user = userRepository.findById(userId);
-        System.out.println(user.get());
-        if (user.isPresent() && user.get().getRole() == RoleEnum.ADMIN) {
+        if (user.isPresent() && user.get().getRole() == RoleEnum.USER) {
             return accessLogRepository.findAll();
         }
 
@@ -80,7 +79,12 @@ public class UserService {
     }
 
     public AccessLog createAccessLog(AccessLog accessLog) {
+        System.out.println("Creating access log");
         accessLog.setDate(new Date());
+        Optional<User> user = userRepository.findById(accessLog.getUserId());
+        if (user.isPresent()) {
+            accessLog.setUserName(user.get().getUsername());
+        }
         return accessLogRepository.save(accessLog);
     }
 

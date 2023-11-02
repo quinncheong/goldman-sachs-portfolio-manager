@@ -18,6 +18,7 @@ public class AccessLog {
     @Id
     private ObjectId id;
     private ObjectId userId;
+    private String userName;
     private Date date;
 
     @Enumerated(EnumType.STRING)
