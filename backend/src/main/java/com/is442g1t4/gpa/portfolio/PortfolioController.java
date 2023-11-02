@@ -61,8 +61,8 @@ public class PortfolioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePortfolioByPortfolioId(@PathVariable ObjectId id) {
-        return new ResponseEntity<String>(portfolioService.deletePortfolioByPortfolioId(id),
+    public ResponseEntity<String> deletePortfolioByPortfolioId(@PathVariable String id) {
+        return new ResponseEntity<String>(portfolioService.deletePortfolioByPortfolioId(new ObjectId(id)),
                 HttpStatus.OK);
     }
 

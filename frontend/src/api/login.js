@@ -21,6 +21,7 @@ export const login = async (username, password) => {
   } catch (err) {
     if (err.response.status === 403) {
       console.log("Wrong username/password.");
+      return 403
     } else {
       console.log("Something went wrong.");
     }

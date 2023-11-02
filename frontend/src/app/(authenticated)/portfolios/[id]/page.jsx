@@ -3,6 +3,10 @@
 import { useState } from "react";
 import Loader from "@/components/loading/Loader";
 import { useRouter } from "next/navigation";
+import {
+  useDeletePortfolio,
+  useGetPortfolioByPortfolioId,
+} from "@/api/portfolio";
 import PortfolioFinancials from "./PortfolioFinancials";
 import PortfolioAnalysis from "./PortfolioAnalysis";
 import StockHoldings from "./StockHoldings";
@@ -23,6 +27,14 @@ export default function PortfolioPage({ params }) {
   function closeModal() {
     document.getElementById("add-stock-modal").close();
   }
+  const {
+    isDeleteing,
+    isSuccessDeleting,
+    isErrorDeleting,
+    deleteError,
+    delPortfolio,
+  } = useDeletePortfolio();
+  console.log(data);
 
   if (isLoading) {
     return <Loader />;
@@ -36,6 +48,21 @@ export default function PortfolioPage({ params }) {
     );
   }
 
+  const editPorfolio = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDeletePortfolio = (e) => {
+    e.preventDefault();
+    delPortfolio(params.id);
+    router.push("/portfolios");
+  };
+
+  const addStock = (e) => {
+    e.preventDefault();
+    router.push("/addstock");
+  };
+
   return (
     <div className="container mx-auto p-4 text-black">
       <div className="flex flex-row justify-between items-center">
@@ -43,6 +70,18 @@ export default function PortfolioPage({ params }) {
           <h2 className="text-4xl font-semibold">{data.name}</h2>
           <p className="text-xl">{data.description}</p>
         </div>
+        <button
+          className="btn btn-error p-4 text-white border-0"
+          onClick={handleDeletePortfolio}
+        >
+          Delete Portfolio
+        </button>
+        <button
+          className="btn btn-info p-4 text-white border-0"
+          onClick={editPorfolio}
+        >
+          Edit Portfolio
+        </button>
         <button
           className="btn bg-primary-200 p-4 text-white border-0"
           onClick={openModal}
