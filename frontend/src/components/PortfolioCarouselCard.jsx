@@ -1,4 +1,3 @@
-import IsPublicBadge from "@/components/IsPublicBadge";
 import { useRouter } from "next/navigation";
 
 export default function PortfolioCarouselCard({ portfolio }) {

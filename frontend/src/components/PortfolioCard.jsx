@@ -21,7 +21,7 @@ export default function PortfolioCard({ portfolio }) {
             <p className="pt-2">{portfolio.description}</p>
             <p className="text-xl mt-2">
               This Porfolio is:{" "}
-              <IsPublicBadge isPublic={portfolio.isPublic || false} />
+              <IsPublicBadge isPublic={portfolio.publiclyAccessible || false} />
             </p>
           </div>
           <div>

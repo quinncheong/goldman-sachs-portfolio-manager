@@ -71,7 +71,7 @@ export default function PortfolioPage({ params }) {
           <p className="text-xl mt-2">{data.description}</p>
           <p className="text-xl mt-2">
             This Porfolio is:{" "}
-            <IsPublicBadge isPublic={data.isPublic || false} />
+            <IsPublicBadge isPublic={data.publiclyAccessible || false} />
           </p>
         </div>
         <button
