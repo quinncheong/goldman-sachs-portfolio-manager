@@ -2,7 +2,6 @@ package com.is442g1t4.gpa.user;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.rsocket.RSocketSecurity.AuthorizePayloadsSpec.Access;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +9,6 @@ import com.is442g1t4.gpa.auth.PasswordRequest;
 import com.is442g1t4.gpa.auth.WrongPasswordException;
 import com.is442g1t4.gpa.portfolio.Portfolio;
 import com.is442g1t4.gpa.portfolio.PortfolioService;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -79,7 +76,6 @@ public class UserService {
     }
 
     public AccessLog createAccessLog(AccessLog accessLog) {
-        System.out.println("Creating access log");
         accessLog.setDate(new Date());
         Optional<User> user = userRepository.findById(accessLog.getUserId());
         if (user.isPresent()) {
