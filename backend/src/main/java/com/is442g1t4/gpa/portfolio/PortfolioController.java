@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
+import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
 
 @RestController
 @RequestMapping("/api/v1/portfolio")
