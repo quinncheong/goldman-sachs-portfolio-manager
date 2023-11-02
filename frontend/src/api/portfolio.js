@@ -51,7 +51,7 @@ export const getPublicPortfolios = async () => {
         final.push(portfolio);
       }
     }
-    return final;
+    return final.toReversed();
   } catch (error) {
     console.log(error);
     return [];
