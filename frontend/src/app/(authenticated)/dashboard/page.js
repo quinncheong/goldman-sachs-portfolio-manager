@@ -48,7 +48,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div style={{ height: "1300px" }} className="min-w-full">
+    <div style={{ height: "1600px" }} className="min-w-full">
       <div className="container flex flex-col gap-5 mx-auto p-4 text-black">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FinancialInfo title="Your Account Financials:" items={financials} />
@@ -60,7 +60,7 @@ export default function Dashboard() {
         <div className="h-86">
           <PortfolioTable portfolios={data} />
         </div>
-        <div className="rounded-md p-4 text-white bg-success">
+        <div className="rounded-md p-4 text-white bg-secondary-100">
           <h2 className="text-2xl font-semibold">
             See Portfolios from other Analysts
           </h2>

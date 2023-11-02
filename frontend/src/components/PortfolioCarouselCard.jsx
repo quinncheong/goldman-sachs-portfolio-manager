@@ -9,13 +9,55 @@ export default function PortfolioCarouselCard({ portfolio }) {
   };
 
   return (
-    <div className="card w-96 glass flex flex-col items-center">
+    <div className="card w-100 glass flex flex-col items-center">
       <CardAvatar />
-      <div className="card-body">
-        <h2 className="card-title">Life hack</h2>
-        <p>How to park your car at your garage?</p>
-        <div className="card-actions justify-end">
-          <button className="btn btn-primary">Learn now!</button>
+      <div className="card-body items-center">
+        <h2 className="card-title">
+          Portfolio Owner: <span className="font-normal">John Doe</span>
+        </h2>
+        <h2 className="card-title">
+          Title: <span className="font-normal">{portfolio.name}</span>
+        </h2>
+        <h2 className="card-title">
+          Description:{" "}
+          <span className="font-normal">{portfolio.description}</span>
+        </h2>
+        <h2 className="card-title mt-3">Portfolio Statistics</h2>
+        <div className="container flex border-double border-4 border-black rounded p-3">
+          <div className="card-actions flex flex-col items-end">
+            <div>
+              <p>
+                <span className="text-gray-400">Total Assets: </span>
+                <span className="font-bold text-gray-700">$25,000</span>
+              </p>
+            </div>
+            <div>
+              <span>Daily P&L: </span>
+              <div className="badge badge-error text-white font-bold">
+                -0.50%
+              </div>
+            </div>
+            <div>
+              <span>Total P&L: </span>
+              <div className="badge badge-success text-white font-bold">
+                +11.07%
+              </div>
+            </div>
+            <div>
+              <span>RoR: </span>
+              <div className="badge badge-success text-white font-bold">
+                +22.14%
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="card-actions mt-3 justify-end">
+          <button
+            onClick={viewPortfolioDetails}
+            className="btn bg-secondary-100 text-white"
+          >
+            View Portfolio!
+          </button>
         </div>
       </div>
     </div>
@@ -28,46 +70,8 @@ export default function PortfolioCarouselCard({ portfolio }) {
       </figure>
       <div className="card-title">This Porfolio is owned by</div>
       <div className="card-body text-black">
-        <div className="flex flex-row justify-between">
-          <div>
-            <h2 className="card-title">{portfolio.name}</h2>
-            <p>
-              <span className="text-gray-400">Total Assets: </span>
-              <span className="font-bold text-gray-700">$25,000</span>
-            </p>
-            <p className="pt-2">{portfolio.description}</p>
-            <p className="text-xl mt-2">
-              This Porfolio is:{" "}
-              <IsPublicBadge isPublic={portfolio.isPublic || false} />
-            </p>
-          </div>
-          <div>
-            <div className="card-actions flex flex-col items-end">
-              <div>
-                <span>Daily P&L: </span>
-                <div className="badge badge-error text-white font-bold">
-                  -0.50%
-                </div>
-              </div>
-              <div>
-                <span>Total P&L: </span>
-                <div className="badge badge-success text-white font-bold">
-                  +11.07%
-                </div>
-              </div>
-              <div>
-                <span>RoR: </span>
-                <div className="badge badge-success text-white font-bold">
-                  +22.14%
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button
-          className="btn bg-secondary-100 text-white"
-          onClick={viewPortfolioDetails}
-        >
+        <div className="flex flex-row justify-between"></div>
+        <button className="btn bg-secondary-100 text-white">
           View Portfolio Details
         </button>
       </div>
@@ -81,13 +85,13 @@ function CardAvatar() {
   const number = Math.floor(Math.random() * 10);
 
   return number < 5 ? (
-    <div className="avatar offline">
+    <div className="avatar offline mt-5">
       <div className="w-24 rounded-full">
         <img src={imageSrc} />
       </div>
     </div>
   ) : (
-    <div className="avatar online">
+    <div className="avatar online mt-5">
       <div className="w-24 rounded-full">
         <img src={imageSrc} />
       </div>
