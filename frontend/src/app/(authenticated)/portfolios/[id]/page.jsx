@@ -1,28 +1,37 @@
 "use client";
 
+import { useState } from "react";
 import Loader from "@/components/loading/Loader";
 import { useRouter } from "next/navigation";
 import {
-  useDeltePortfolio,
+  useDeletePortfolio,
   useGetPortfolioByPortfolioId,
 } from "@/api/portfolio";
 import PortfolioFinancials from "./PortfolioFinancials";
 import PortfolioAnalysis from "./PortfolioAnalysis";
 import StockHoldings from "./StockHoldings";
+import AddStockModal from "./AddStockModal";
 
 export default function PortfolioPage({ params }) {
-  console.log(params);
   const router = useRouter();
   const { data, isLoading, isError, error } = useGetPortfolioByPortfolioId(
     params.id
   );
+
+  function openModal() {
+    document.getElementById("add-stock-modal").showModal();
+  }
+
+  function closeModal() {
+    document.getElementById("add-stock-modal").close();
+  }
   const {
     isDeleteing,
     isSuccessDeleting,
     isErrorDeleting,
     deleteError,
     delPortfolio,
-  } = useDeltePortfolio();
+  } = useDeletePortfolio();
   console.log(data);
 
   if (isLoading) {
@@ -73,7 +82,7 @@ export default function PortfolioPage({ params }) {
         </button>
         <button
           className="btn bg-primary-200 p-4 text-white border-0"
-          onClick={addStock}
+          onClick={openModal}
         >
           Add Stocks
         </button>
@@ -89,6 +98,12 @@ export default function PortfolioPage({ params }) {
       </div>
       {/* <PortfolioAnalysis /> */}
       <StockHoldings />
+
+      <AddStockModal
+        portfolio={data}
+        openModal={openModal}
+        closeModal={closeModal}
+      />
     </div>
   );
 }

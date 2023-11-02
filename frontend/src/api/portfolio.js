@@ -139,7 +139,59 @@ const createPortfolio = async (partialPortfolioData) => {
   }
 };
 
-export const useDeltePortfolio = () => {
+export const useUpdatePortfolio = () => {
+  const queryClient = useQueryClient();
+  const {
+    isLoading: isCreating,
+    isSuccess: isSuccessCreating,
+    isError: isErrorCreating,
+    error,
+    mutate,
+  } = useMutation({
+    mutationFn: (data) => updatePortfolio(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["savePortfolio"]);
+    },
+    onMutate: (variables) => {
+      // A mutation is about to happen!
+      // Optionally return a context containing data to use when for example rolling back
+      // return { id: 1 };
+    },
+    onError: (error, variables, context) => {
+      // An error happened!
+      // console.log(`rolling back optimistic update with id ${context.id}`);
+      toast.error(error);
+    },
+    onSuccess: (data, variables, context) => {
+      toast.success("Portfolio has been saved!");
+      console.log(data);
+    },
+    onSettled: (data, error, variables, context) => {
+      // Error or success... doesn't matter!
+    },
+  });
+
+  return {
+    isCreating,
+    isSuccessCreating,
+    isErrorCreating,
+    error,
+    mutate,
+  };
+};
+
+const updatePortfolio = async (portfolioData) => {
+  try {
+    console.log(portfolioData);
+    let response = await axiosInstance.put("/", portfolioData);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+export const useDeletePortfolio = () => {
   const queryClient = useQueryClient();
   const {
     isLoading: isDeleteing,
