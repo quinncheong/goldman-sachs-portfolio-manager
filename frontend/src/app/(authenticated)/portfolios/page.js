@@ -1,6 +1,6 @@
 "use client";
 import { useGetPortfoliosOfUser } from "@api/portfolio.js";
-import PortfolioCard from "./PortfolioCard";
+import PortfolioCard from "../../../components/PortfolioCard";
 import { useRouter } from "next/navigation";
 
 export default function Portfolio({}) {

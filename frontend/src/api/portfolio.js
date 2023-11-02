@@ -29,6 +29,36 @@ const axiosUserInstance = axios.create({
   },
 });
 
+export const useGetPublicPortfolios = () => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getPublicPortfolios"],
+    queryFn: () => getPublicPortfolios(),
+  });
+
+  return { data, isLoading, isError, error };
+};
+
+export const getPublicPortfolios = async () => {
+  try {
+    let response = await axiosInstance.get("/all");
+    let final = [];
+    if (!response.data) {
+      return final;
+    }
+    return response.data;
+
+    for (let portfolio of response.data) {
+      if (portfolio.isPublic) {
+        final.push(portfolio);
+      }
+    }
+    return final;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
 export const useGetPortfoliosOfUser = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["getPortfoliosOfUser"],

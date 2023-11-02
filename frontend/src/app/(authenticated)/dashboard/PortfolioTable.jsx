@@ -31,7 +31,7 @@ export default function PortfolioTable({ portfolios }) {
     return <div>No Portfolios to display! Start creating </div>;
   }
 
-  const dynamicHeight = Math.min(portfolios.length * 6 + 40, 60) + "vh";
+  const dynamicHeight = Math.min(portfolios.length * 6 + 30, 40) + "vh";
 
   return (
     <DataGrid

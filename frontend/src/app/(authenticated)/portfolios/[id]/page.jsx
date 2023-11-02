@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import Loader from "@/components/loading/Loader";
 import { useRouter } from "next/navigation";
 import {
   useDeletePortfolio,
   useGetPortfolioByPortfolioId,
 } from "@/api/portfolio";
+
+import Loader from "@/components/loading/Loader";
+import IsPublicBadge from "@/components/IsPublicBadge";
+
 import PortfolioFinancials from "./PortfolioFinancials";
 import PortfolioAnalysis from "./PortfolioAnalysis";
 import StockHoldings from "./StockHoldings";
@@ -64,9 +66,13 @@ export default function PortfolioPage({ params }) {
   return (
     <div className="container mx-auto p-4 text-black">
       <div className="flex flex-row justify-between items-center">
-        <div className="containeer p-4 text-black">
-          <h2 className="text-4xl font-semibold">{data.name}</h2>
-          <p className="text-xl">{data.description}</p>
+        <div className="container p-4 text-black">
+          <h2 className="text-4xl mt-2 font-semibold">{data.name}</h2>
+          <p className="text-xl mt-2">{data.description}</p>
+          <p className="text-xl mt-2">
+            This Porfolio is:{" "}
+            <IsPublicBadge isPublic={data.isPublic || false} />
+          </p>
         </div>
         <button
           className="btn btn-error p-4 text-white border-0"
