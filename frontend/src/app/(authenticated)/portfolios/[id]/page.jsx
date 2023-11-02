@@ -2,7 +2,10 @@
 
 import Loader from "@/components/loading/Loader";
 import { useRouter } from "next/navigation";
-import { useGetPortfolioByPortfolioId } from "@/api/portfolio";
+import {
+  useDeltePortfolio,
+  useGetPortfolioByPortfolioId,
+} from "@/api/portfolio";
 import PortfolioFinancials from "./PortfolioFinancials";
 import PortfolioAnalysis from "./PortfolioAnalysis";
 import StockHoldings from "./StockHoldings";
@@ -13,6 +16,13 @@ export default function PortfolioPage({ params }) {
   const { data, isLoading, isError, error } = useGetPortfolioByPortfolioId(
     params.id
   );
+  const {
+    isDeleteing,
+    isSuccessDeleting,
+    isErrorDeleting,
+    deleteError,
+    delPortfolio,
+  } = useDeltePortfolio();
   console.log(data);
 
   if (isLoading) {
@@ -27,6 +37,16 @@ export default function PortfolioPage({ params }) {
     );
   }
 
+  const editPorfolio = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDeletePortfolio = (e) => {
+    e.preventDefault();
+    delPortfolio(params.id);
+    router.push("/portfolios");
+  };
+
   const addStock = (e) => {
     e.preventDefault();
     router.push("/addstock");
@@ -39,6 +59,18 @@ export default function PortfolioPage({ params }) {
           <h2 className="text-4xl font-semibold">{data.name}</h2>
           <p className="text-xl">{data.description}</p>
         </div>
+        <button
+          className="btn btn-error p-4 text-white border-0"
+          onClick={handleDeletePortfolio}
+        >
+          Delete Portfolio
+        </button>
+        <button
+          className="btn btn-info p-4 text-white border-0"
+          onClick={editPorfolio}
+        >
+          Edit Portfolio
+        </button>
         <button
           className="btn bg-primary-200 p-4 text-white border-0"
           onClick={addStock}

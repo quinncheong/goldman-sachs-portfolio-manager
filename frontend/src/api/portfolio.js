@@ -138,3 +138,54 @@ const createPortfolio = async (partialPortfolioData) => {
     return [];
   }
 };
+
+export const useDeltePortfolio = () => {
+  const queryClient = useQueryClient();
+  const {
+    isLoading: isDeleteing,
+    isSuccess: isSuccessDeleting,
+    isError: isErrorDeleting,
+    error: deleteError,
+    mutate: delPortfolio,
+  } = useMutation({
+    mutationFn: (data) => deletePortfolio(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["getPortfoliosOfUser"]);
+    },
+    onMutate: (variables) => {
+      // A mutation is about to happen!
+      // Optionally return a context containing data to use when for example rolling back
+      // return { id: 1 };
+    },
+    onError: (error, variables, context) => {
+      // An error happened!
+      // console.log(`rolling back optimistic update with id ${context.id}`);
+      toast.error(error);
+    },
+    onSuccess: (data, variables, context) => {
+      toast.success("Portfolio Successfully Delete!");
+      console.log(data);
+    },
+    onSettled: (data, error, variables, context) => {
+      // Error or success... doesn't matter!
+    },
+  });
+
+  return {
+    isDeleteing,
+    isSuccessDeleting,
+    isErrorDeleting,
+    deleteError,
+    delPortfolio,
+  };
+};
+
+const deletePortfolio = async (portfolioId) => {
+  console.log(portfolioId);
+  try {
+    let response = await axiosInstance.delete("/" + portfolioId);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
