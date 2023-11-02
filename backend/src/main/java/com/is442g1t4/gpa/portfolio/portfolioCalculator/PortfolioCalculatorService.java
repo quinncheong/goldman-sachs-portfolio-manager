@@ -41,36 +41,39 @@ public class PortfolioCalculatorService {
             int quantity = allocatedStock.getStockQuantity();
 
             if (!calculatedStock.containsKey(stockTicker)){
-                PortfolioCalculator portfolioCalculator = new PortfolioCalculator(stockTicker, quantity, quantity * allocatedStock.getStockBuyPrice(), 0.0, 0.0, 0.0, 0.0);
+                PortfolioCalculator portfolioCalculator = new PortfolioCalculator(stockTicker, quantity, quantity * allocatedStock.getStockBuyPrice());
                 PortfolioCalculatorUtility.setProfitsAndLosses(instant, portfolioCalculator, quantity, 1);
                 calculatedStock.put(stockTicker, portfolioCalculator);
             }else{
                 PortfolioCalculator portfolioCalculator = calculatedStock.get(stockTicker);
-                portfolioCalculator.setStockQuantity(portfolioCalculator.getStockQuantity() + quantity);
-                portfolioCalculator.setAvgStockBuyPrice(portfolioCalculator.getAvgStockBuyPrice() + quantity * allocatedStock.getStockBuyPrice());
+                portfolioCalculator.setPosition(portfolioCalculator.getPosition() + quantity);
+                portfolioCalculator.setCost(portfolioCalculator.getCost() + quantity * allocatedStock.getStockBuyPrice());
                 PortfolioCalculatorUtility.setProfitsAndLosses(instant, portfolioCalculator, quantity, 0);
             }
         }
         for (String stockTicker : calculatedStock.keySet()){
+            Stock stock = stockService.getStockByTicker(stockTicker).get();
             PortfolioCalculator portfolioCalculator = calculatedStock.get(stockTicker);
-            double priceToday = stockService.getPriceTodayByTicker(stockTicker);
-            // Stock stock = stockService.getStockByTicker(stockTicker).get();
-            // double value = portfolioCalculator.getStockQuantity() *90;
-            double value = portfolioCalculator.getStockQuantity() * priceToday;
-            double quantity = portfolioCalculator.getStockQuantity();
-            // double previousValue = portfolioCalculator.getPnl() * 90 + portfolioCalculator.getDpnl() * 100;
-            double previousValue = portfolioCalculator.getPnl() * priceToday + portfolioCalculator.getDpnl() * stockService.getPriceYesterdayByTicker(stockTicker);
-            portfolioCalculator.setAvgStockBuyPrice(portfolioCalculator.getAvgStockBuyPrice() / quantity);
+            double priceToday = stock.getPriceToday();
+            double value = portfolioCalculator.getPosition() * priceToday;
+            double quantity = portfolioCalculator.getPosition();
+            double previousValue = portfolioCalculator.getPnlp() * priceToday + portfolioCalculator.getDpnlp() * stock.getPriceYesterday();
+            portfolioCalculator.setCost(portfolioCalculator.getCost() / quantity);
             totalValue = totalValue + value;
-            portfolioCalculator.setDpnl(value/previousValue - 1);
-            portfolioCalculator.setCurrentValue(value);
-            
-            portfolioCalculator.setPnl(value/ (portfolioCalculator.getAvgStockBuyPrice() * quantity) - 1);
+            portfolioCalculator.setLast(priceToday);
+            portfolioCalculator.setDpnla(PortfolioCalculatorUtility.round(value - previousValue));
+            portfolioCalculator.setDpnlp(PortfolioCalculatorUtility.round(value/previousValue - 1) * 100);
+            portfolioCalculator.setMarket(PortfolioCalculatorUtility.round(value));
+            portfolioCalculator.setPnlp(PortfolioCalculatorUtility.round(value/ (portfolioCalculator.getCost() * quantity) - 1) * 100);
+            portfolioCalculator.setPnla(PortfolioCalculatorUtility.round(value - portfolioCalculator.getCost() * quantity));
+            portfolioCalculator.setCountry(stock.getCountry());
+            portfolioCalculator.setStockName(stock.getName());
         }
+
         for (String stockTicker : calculatedStock.keySet()){
 
             PortfolioCalculator portfolioCalculator = calculatedStock.get(stockTicker);
-            portfolioCalculator.setWeight(portfolioCalculator.getCurrentValue() / totalValue);
+            portfolioCalculator.setPositionsRatio(PortfolioCalculatorUtility.round(portfolioCalculator.getMarket() / totalValue) * 100);
         }
         return calculatedStock;
     }
