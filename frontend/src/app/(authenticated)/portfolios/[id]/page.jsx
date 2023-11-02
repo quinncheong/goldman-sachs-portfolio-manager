@@ -12,8 +12,6 @@ import PortfolioAnalysis from "./PortfolioAnalysis";
 import StockHoldings from "./StockHoldings";
 import AddStockModal from "./AddStockModal";
 
-import { useGetPortfolioByPortfolioId } from "@/api/portfolio";
-
 export default function PortfolioPage({ params }) {
   const router = useRouter();
   const { data, isLoading, isError, error } = useGetPortfolioByPortfolioId(

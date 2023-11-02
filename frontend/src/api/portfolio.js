@@ -224,11 +224,11 @@ export const useDeletePortfolio = () => {
   });
 
   return {
-    isCreating,
-    isSuccessCreating,
-    isErrorCreating,
-    error,
-    mutate,
+    isDeleteing,
+    isSuccessDeleting,
+    isErrorDeleting,
+    deleteError,
+    delPortfolio,
   };
 };
 
