@@ -1,22 +1,29 @@
 "use client";
 
-import { useState } from "react";
-import Loader from "@/components/loading/Loader";
 import { useRouter } from "next/navigation";
 import {
   useDeletePortfolio,
   useGetPortfolioByPortfolioId,
 } from "@/api/portfolio";
+
+import Loader from "@/components/loading/Loader";
+import IsPublicBadge from "@/components/IsPublicBadge";
+
 import PortfolioFinancials from "./PortfolioFinancials";
 import PortfolioAnalysis from "./PortfolioAnalysis";
 import StockHoldings from "./StockHoldings";
 import AddStockModal from "./AddStockModal";
+import { getCookie } from "cookies-next";
+import { jwtDecode } from "jwt-decode";
 
 export default function PortfolioPage({ params }) {
   const router = useRouter();
-  const { data, isLoading, isError, error } = useGetPortfolioByPortfolioId(
-    params.id
-  );
+  const {
+    data: portfolio,
+    isLoading,
+    isError,
+    error,
+  } = useGetPortfolioByPortfolioId(params.id);
 
   function openModal() {
     document.getElementById("add-stock-modal").showModal();
@@ -32,7 +39,6 @@ export default function PortfolioPage({ params }) {
     deleteError,
     delPortfolio,
   } = useDeletePortfolio();
-  console.log(data);
 
   if (isLoading) {
     return <Loader />;
@@ -64,10 +70,44 @@ export default function PortfolioPage({ params }) {
   return (
     <div className="container mx-auto p-4 text-black">
       <div className="flex flex-row justify-between items-center">
-        <div className="containeer p-4 text-black">
-          <h2 className="text-4xl font-semibold">{data.name}</h2>
-          <p className="text-xl">{data.description}</p>
+        <div className="container p-4 text-black">
+          <h2 className="text-4xl mt-2 font-semibold">{portfolio.name}</h2>
+          <p className="text-xl mt-2">{portfolio.description}</p>
+          <p className="text-xl mt-2">
+            This Porfolio is:{" "}
+            <IsPublicBadge isPublic={portfolio.publiclyAccessible || false} />
+          </p>
         </div>
+        <RenderButtonsWithAccessControl portfolioUserId={portfolio.userId} />
+      </div>
+
+      <div className="rounded-md p-4 text-white bg-secondary-100">
+        <h2 className="text-2xl font-semibold">Portfolio Analysis</h2>
+      </div>
+      <PortfolioAnalysis />
+
+      <div className="rounded-md p-4 text-white bg-secondary-100">
+        <h2 className="text-2xl font-semibold">Holdings</h2>
+      </div>
+      {/* <PortfolioAnalysis /> */}
+      <StockHoldings />
+
+      <AddStockModal
+        portfolio={portfolio}
+        openModal={openModal}
+        closeModal={closeModal}
+      />
+    </div>
+  );
+
+  function RenderButtonsWithAccessControl({ portfolioUserId }) {
+    let userId = jwtDecode(getCookie("token")).userId;
+    if (!(userId === portfolioUserId)) {
+      return;
+    }
+
+    return (
+      <>
         <button
           className="btn btn-error p-4 text-white border-0"
           onClick={handleDeletePortfolio}
@@ -86,24 +126,7 @@ export default function PortfolioPage({ params }) {
         >
           Add Stocks
         </button>
-      </div>
-
-      <div className="rounded-md p-4 text-white bg-secondary-100">
-        <h2 className="text-2xl font-semibold">Portfolio Analysis</h2>
-      </div>
-      <PortfolioAnalysis />
-
-      <div className="rounded-md p-4 text-white bg-secondary-100">
-        <h2 className="text-2xl font-semibold">Holdings</h2>
-      </div>
-      {/* <PortfolioAnalysis /> */}
-      <StockHoldings />
-
-      <AddStockModal
-        portfolio={data}
-        openModal={openModal}
-        closeModal={closeModal}
-      />
-    </div>
-  );
+      </>
+    );
+  }
 }

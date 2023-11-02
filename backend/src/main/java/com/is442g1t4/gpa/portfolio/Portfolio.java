@@ -25,5 +25,6 @@ public class Portfolio {
     private String description;
     private double initialValue;
     private List<AllocatedStock> allocatedStocks;
+    private boolean publiclyAccessible;
 
 }

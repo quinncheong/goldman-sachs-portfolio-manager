@@ -29,6 +29,35 @@ const axiosUserInstance = axios.create({
   },
 });
 
+export const useGetPublicPortfolios = () => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getPublicPortfolios"],
+    queryFn: () => getPublicPortfolios(),
+  });
+
+  return { data, isLoading, isError, error };
+};
+
+export const getPublicPortfolios = async () => {
+  try {
+    let response = await axiosInstance.get("/all");
+    let final = [];
+    if (!response.data) {
+      return final;
+    }
+
+    for (let portfolio of response.data) {
+      if (portfolio.publiclyAccessible) {
+        final.push(portfolio);
+      }
+    }
+    return final.toReversed();
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
 export const useGetPortfoliosOfUser = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["getPortfoliosOfUser"],
@@ -41,7 +70,6 @@ export const useGetPortfoliosOfUser = () => {
 const getPortfoliosOfUser = async () => {
   try {
     let userId = jwtDecode(getCookie("token")).userId;
-    console.log(userId);
     let response = await axiosInstance.get("/user/" + userId);
     return response.data.toReversed();
   } catch (error) {
@@ -182,7 +210,6 @@ export const useUpdatePortfolio = () => {
 
 const updatePortfolio = async (portfolioData) => {
   try {
-    console.log(portfolioData);
     let response = await axiosInstance.put("/", portfolioData);
     return response.data;
   } catch (error) {
