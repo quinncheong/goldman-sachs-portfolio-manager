@@ -64,17 +64,16 @@ const getPortfolioByPortfolioId = async (portfolioId) => {
   return response.data;
 };
 
-export const useGetPortfolios = () => {
+export const useGetPortfolios = (userId) => {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["getPortfolios"],
-    queryFn: () => getPortfolios(),
+    queryKey: ["getPortfolios", userId],
+    queryFn: () => getPortfolios(userId),
   });
 
   return { data, isLoading, isError, error };
 };
 
-const getPortfolios = async () => {
-  let userId = jwtDecode(getCookie("token")).userId;
+const getPortfolios = async (userId) => {
   const userRes = await axiosUserInstance.get("/" + userId);
   const userData = userRes.data;
 

@@ -1,10 +1,10 @@
 "use client";
 // import Portfolio from "../portfolios/page";
-import { useGetPortfolios, useGetPortfoliosOfUser } from "@api/portfolio.js";
+import { useGetPortfoliosOfUser } from "@api/portfolio.js";
 import PortfolioTable from "./PortfolioTable";
 
 export default function Dashboard() {
-  const { data, isLoading, isError, error } = useGetPortfolios();
+  const { data, isLoading, isError, error } = useGetPortfoliosOfUser();
 
   const financials = [
     {
@@ -49,7 +49,7 @@ export default function Dashboard() {
           <h2 className="text-2xl font-semibold">Top Performing Portfolios</h2>
         </div>
         <div className="h-96">
-          {data ? <PortfolioTable portfolios={data.portfolioData} /> : <></>}
+          <PortfolioTable portfolios={data} />
         </div>
       </div>
     </div>

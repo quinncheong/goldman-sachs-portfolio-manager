@@ -1,5 +1,5 @@
 "use client";
-import { useGetPortfolios, useGetPortfoliosOfUser } from "@api/portfolio.js";
+import { useGetPortfoliosOfUser } from "@api/portfolio.js";
 import PortfolioCard from "./PortfolioCard";
 import { useRouter } from "next/navigation";
 
@@ -10,7 +10,7 @@ export default function Portfolio({}) {
     isLoading,
     isError,
     error,
-  } = useGetPortfolios();
+  } = useGetPortfoliosOfUser();
 
   const addPortfolio = (e) => {
     e.preventDefault();
@@ -39,7 +39,7 @@ export default function Portfolio({}) {
 
   function renderPortfolios() {
     if (!portfolioData) return <div>Portfolios Loading</div>;
-    return portfolioData.portfolioData.map((portfolio, index) => {
+    return portfolioData.map((portfolio, index) => {
       return <PortfolioCard key={index} portfolio={portfolio} />;
     });
   }
