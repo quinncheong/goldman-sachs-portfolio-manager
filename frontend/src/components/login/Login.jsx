@@ -3,11 +3,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
 import { login } from "../../api/login";
+import { useCreateAccessLog } from "@/api/user";
 
 export default function Login() {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const { accessLogError, addAccessLog } = useCreateAccessLog();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,6 +19,7 @@ export default function Login() {
       alert("Wrong username or password.");
     } else {
       setCookie("token", token);
+      addAccessLog("LOGIN");
       router.push("/dashboard");
     }
   };

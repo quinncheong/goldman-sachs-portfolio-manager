@@ -4,9 +4,11 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { deleteCookie } from "cookies-next";
+import { useCreateAccessLog } from "@/api/user";
 
 export default function Navbar() {
   const router = useRouter();
+  const { accessLogError, addAccessLog } = useCreateAccessLog();
 
   let [menuItems, setMenu] = useState([
     "Dashboard",
@@ -32,6 +34,7 @@ export default function Navbar() {
   }
 
   function logout() {
+    addAccessLog("LOGOUT");
     deleteCookie("token");
     router.push("/");
   }
