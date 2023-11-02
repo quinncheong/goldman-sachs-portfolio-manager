@@ -2,6 +2,7 @@ package com.is442g1t4.gpa.user;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.rsocket.RSocketSecurity.AuthorizePayloadsSpec.Access;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,9 @@ import com.is442g1t4.gpa.auth.PasswordRequest;
 import com.is442g1t4.gpa.auth.WrongPasswordException;
 import com.is442g1t4.gpa.portfolio.Portfolio;
 import com.is442g1t4.gpa.portfolio.PortfolioService;
-
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +20,9 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AccessLogRepository accessLogRepository;
 
     @Autowired
     private PortfolioService PortfolioService;
@@ -41,13 +47,15 @@ public class UserService {
         return "User deleted";
     }
 
-    public User changeUserPassword(ObjectId id, PasswordRequest request) throws WrongPasswordException {
+    public User changeUserPassword(ObjectId id, PasswordRequest request)
+            throws WrongPasswordException {
         System.out.println("Old Password: " + request.getOldpassword());
         System.out.println("New Password: " + request.getNewpassword());
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             String oldPassword = user.get().getPassword();
-            boolean isPasswordMatch = passwordEncoder.matches(request.getOldpassword(), oldPassword);
+            boolean isPasswordMatch =
+                    passwordEncoder.matches(request.getOldpassword(), oldPassword);
             System.out.println(isPasswordMatch);
             if (isPasswordMatch) {
                 System.out.println("Password match, changing password...");
@@ -59,6 +67,21 @@ public class UserService {
         }
         return userRepository.save(user.get());
 
+    }
+
+    public List<AccessLog> getAccessLogs(ObjectId userId) {
+        Optional<User> user = userRepository.findById(userId);
+        System.out.println(user.get());
+        if (user.isPresent() && user.get().getRole() == RoleEnum.ADMIN) {
+            return accessLogRepository.findAll();
+        }
+
+        return null;
+    }
+
+    public AccessLog createAccessLog(AccessLog accessLog) {
+        accessLog.setDate(new Date());
+        return accessLogRepository.save(accessLog);
     }
 
     public User addPortfolioToUser(ObjectId id, ObjectId portfolioId) {
