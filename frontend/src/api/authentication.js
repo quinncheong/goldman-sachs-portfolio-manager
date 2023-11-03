@@ -1,11 +1,11 @@
 "use client";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 
 import { BASE_SERVER_URL, AUTH_API_PATH } from "./apiFactory";
 import { toast } from "react-toastify";
-import { jwtDecode } from "jwt-decode";
+import { createAccessLog, createLogWithToken } from "./user";
 
 const axiosAuthInstance = axios.create({
   baseURL: BASE_SERVER_URL + AUTH_API_PATH,
@@ -19,6 +19,13 @@ export const useRegister = () => {
   const { data, isLoading, isSuccess, isError, error, mutateAsync } =
     useMutation({
       mutationFn: (data) => register(data),
+      onSuccess: async (tokenData) => {
+        await setCookie("token", tokenData.token);
+        createAccessLog("REGISTER");
+      },
+      onError: (error) => {
+        alert(error);
+      },
     });
 
   return {
@@ -34,7 +41,6 @@ export const useRegister = () => {
 const register = async (userData) => {
   try {
     let response = await axiosAuthInstance.post("/register", userData);
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -49,6 +55,7 @@ export const login = async (username, password) => {
   };
   try {
     let response = await axiosAuthInstance.post("/authenticate", json);
+    console.log(response);
     return response.data.token;
   } catch (err) {
     if (err.response.status === 403) {

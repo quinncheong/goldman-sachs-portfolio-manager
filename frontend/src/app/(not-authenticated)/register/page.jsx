@@ -1,11 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
-import { setCookie } from "cookies-next";
 import { useRegister } from "@/api/authentication";
-import { useCreateAccessLog } from "@/api/user";
+import { setCookie } from "cookies-next";
 
 export default function Register() {
   const router = useRouter();
@@ -21,8 +19,13 @@ export default function Register() {
   const [confirmPasswordErrors, setConfirmPasswordErrors] = useState([]);
   const [emailErrors, setEmailErrors] = useState([]);
 
-  const { accessLogError, addAccessLog } = useCreateAccessLog();
-  const { data, isLoading, mutateAsync } = useRegister();
+  const {
+    data,
+    isLoading,
+    isError: isRegisterError,
+    error: registerError,
+    mutateAsync,
+  } = useRegister();
 
   const handleRegisterUser = async (e) => {
     e.preventDefault();
@@ -52,16 +55,9 @@ export default function Register() {
     };
 
     await mutateAsync(newUser);
-    console.log(data);
-    if (!data?.token) {
-      alert("there was an error");
-      return;
-    }
-    if (data.token === 403) {
-      alert("Wrong username or password.");
+    if (isRegisterError) {
+      alert(registerError);
     } else {
-      await setCookie("token", data.token);
-      await addAccessLog("REGISTER");
       router.push("/dashboard");
     }
   };
