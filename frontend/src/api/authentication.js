@@ -16,9 +16,10 @@ const axiosAuthInstance = axios.create({
 });
 
 export const useRegister = () => {
-  const { data, isLoading, isSuccess, isError, error, mutate } = useMutation({
-    mutationFn: (data) => register(data),
-  });
+  const { data, isLoading, isSuccess, isError, error, mutateAsync } =
+    useMutation({
+      mutationFn: (data) => register(data),
+    });
 
   return {
     data,
@@ -26,7 +27,7 @@ export const useRegister = () => {
     isSuccess,
     isError,
     error,
-    mutate,
+    mutateAsync,
   };
 };
 

@@ -27,5 +27,5 @@ public class AccessLog {
 
 
 enum Action {
-    LOGIN, LOGOUT
+    LOGIN, LOGOUT, REGISTER, RESET_PASSWORD, VERIFY_EMAIL
 }

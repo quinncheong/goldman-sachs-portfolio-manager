@@ -9,25 +9,68 @@ import { useCreateAccessLog } from "@/api/user";
 
 export default function Register() {
   const router = useRouter();
+
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
 
   const [errors, setErrors] = useState([]);
+  const [passwordErrors, setPasswordErrors] = useState([]);
+  const [confirmPasswordErrors, setConfirmPasswordErrors] = useState([]);
+  const [emailErrors, setEmailErrors] = useState([]);
 
   const { accessLogError, addAccessLog } = useCreateAccessLog();
-  const { data, isLoading, mutate } = useRegister();
-
-  //   useEffect(() => {
-  //     validateForm();
-  //     function validateForm() {}
-  //   }, [name, username, password, email]);
+  const { data, isLoading, mutateAsync } = useRegister();
 
   const handleRegisterUser = async (e) => {
     e.preventDefault();
-    let errors = [];
 
+    if (
+      passwordErrors.length > 0 ||
+      confirmPasswordErrors.length > 0 ||
+      emailErrors.length > 0
+    ) {
+      return;
+    }
+
+    if (
+      password.length === 0 ||
+      confirmPassword.length === 0 ||
+      email.length === 0 ||
+      name.length === 0
+    ) {
+      return;
+    }
+
+    let newUser = {
+      name,
+      username,
+      password,
+      email,
+    };
+
+    await mutateAsync(newUser);
+    console.log(data);
+    if (!data?.token) {
+      alert("there was an error");
+      return;
+    }
+    if (data.token === 403) {
+      alert("Wrong username or password.");
+    } else {
+      await setCookie("token", data.token);
+      await addAccessLog("REGISTER");
+      router.push("/dashboard");
+    }
+  };
+
+  //   Todo make a call to the server and check if the username is already present
+  const validateUsername = (e) => {};
+
+  const validatePassword = async (e) => {
+    let errors = [];
     if (password.length < 8 || password.length > 25) {
       errors.push("Password must be between 8 - 25 characters");
     }
@@ -50,24 +93,33 @@ export default function Register() {
       errors.push("Password must contain at least 1 symbol");
     }
 
-    if (errors.length > 0) {
-      setErrors(errors);
-      return;
+    setPasswordErrors(errors);
+
+    return errors;
+  };
+
+  const validateConfirmPassword = (e) => {
+    let errors = [];
+
+    if (password !== confirmPassword) {
+      errors.push("Passwords do not match!");
     }
 
-    // let token = await mutate();
-    // if (token === 403) {
-    //   alert("Wrong username or password.");
-    // } else {
-    //   await setCookie("token", token);
-    //   await addAccessLog("LOGIN");
-    //   router.push("/dashboard");
-    // }
+    setConfirmPasswordErrors(errors);
+    return errors;
+  };
+
+  const validateEmail = (e) => {
+    let errors = [];
+    if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+      errors.push("Email is invalid!");
+    }
+    setEmailErrors(errors);
   };
 
   return (
-    <section className="bg-gray-50 dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <section style={{ height: 1700 }} className="bg-gray-50 dark:bg-gray-900">
+      <div className="flex flex-col items-center justify-center p-8 m-auto">
         <a
           href="#"
           className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
@@ -97,12 +149,12 @@ export default function Register() {
                 <input
                   type="text"
                   name="name"
-                  id="username"
+                  id="name"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="username"
+                  placeholder="Enter your name"
                   required
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </div>
               <div>
@@ -139,32 +191,55 @@ export default function Register() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onBlur={validatePassword}
                 />
-                {errors.length > 0 && <RenderFormErrors errors={errors} />}
+                <RenderFormErrors errors={passwordErrors} />
               </div>
               <div>
                 <label
-                  htmlFor="password"
+                  htmlFor="confirmPassword"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  id="confirmPassword"
+                  placeholder="••••••••"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onBlur={validateConfirmPassword}
+                />
+                <RenderFormErrors errors={confirmPasswordErrors} />
+              </div>
+              <div>
+                <label
+                  htmlFor="email"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Email
                 </label>
                 <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="••••••••"
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder="Enter your Email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onBlur={validateEmail}
                 />
+                <RenderFormErrors errors={emailErrors} />
               </div>
 
               <button
                 onClick={handleRegisterUser}
                 type="submit"
-                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="w-full text-white btn bg-primary-300 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
                 Create Account
               </button>
@@ -178,8 +253,11 @@ export default function Register() {
 }
 
 function RenderFormErrors({ errors }) {
+  if (!errors || errors.length === 0) {
+    return;
+  }
   return (
-    <div className="container flex flex-col gap-3 p-3 m-auto border-3 border-bg-green">
+    <div className="container flex flex-col gap-3 p-3 my-5 border-2 border-error">
       {errors.map((err, index) => (
         <div key={index} className="alert alert-error">
           <svg
