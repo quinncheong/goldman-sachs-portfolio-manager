@@ -18,8 +18,8 @@ export default function Login() {
     if (token === 403) {
       alert("Wrong username or password.");
     } else {
-      setCookie("token", token);
-      addAccessLog("LOGIN");
+      await setCookie("token", token);
+      await addAccessLog("LOGIN");
       router.push("/dashboard");
     }
   };
