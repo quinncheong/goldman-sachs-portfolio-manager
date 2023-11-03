@@ -1,14 +1,45 @@
+"use client";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { BASE_SERVER_URL, LOGIN_API_PATH } from "./apiFactory";
+import { getCookie } from "cookies-next";
 
-const axiosLoginInstance = axios.create({
-  baseURL: BASE_SERVER_URL + LOGIN_API_PATH,
+import { BASE_SERVER_URL, AUTH_API_PATH } from "./apiFactory";
+import { toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
+
+const axiosAuthInstance = axios.create({
+  baseURL: BASE_SERVER_URL + AUTH_API_PATH,
   timeout: 3000,
   headers: {
     "Content-Type": "application/json",
   },
 });
+
+export const useRegister = () => {
+  const { data, isLoading, isSuccess, isError, error, mutate } = useMutation({
+    mutationFn: (data) => register(data),
+  });
+
+  return {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    mutate,
+  };
+};
+
+const register = async (userData) => {
+  try {
+    let response = await axiosAuthInstance.post("/register", userData);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
 
 export const login = async (username, password) => {
   const json = {
@@ -16,12 +47,12 @@ export const login = async (username, password) => {
     password: password,
   };
   try {
-    let response = await axiosLoginInstance.post("/authenticate", json);
+    let response = await axiosAuthInstance.post("/authenticate", json);
     return response.data.token;
   } catch (err) {
     if (err.response.status === 403) {
       console.log("Wrong username/password.");
-      return 403
+      return 403;
     } else {
       console.log("Something went wrong.");
     }
@@ -40,7 +71,7 @@ export const useGetLoginStatus = () => {
 const getLoginStatus = async () => {
   let isLoggedIn = false;
   if (process.env.NODE_ENV === "production") {
-    let response = await axiosLoginInstance.get("/all");
+    let response = await axiosAuthInstance.get("/all");
     isLoggedIn = response.data;
   }
 
@@ -50,26 +81,3 @@ const getLoginStatus = async () => {
     }, 1000);
   });
 };
-
-// export const useLogin = () => {
-//   const queryClient = useQueryClient();
-//   const {
-//     isLoading: isCreating,
-//     isSuccess: isSuccessCreating,
-//     isError: isErrorCreating,
-//     error: errorCreateing,
-//     mutate: CreateTodo,
-//   } = useMutation((data) => postTodoFn(data), {
-//     onSuccess: () => {
-//       queryClient.invalidateQueries(["todos"]);
-//     },
-//   });
-// };
-
-// const getPortfolios = async () => {
-//   if (process.env.NODE_ENV !== "production") {
-//     return mockPortfolios;
-//   }
-//   let response = await axiosInstance.get("/all");
-//   return response.data;
-// };

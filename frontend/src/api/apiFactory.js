@@ -9,4 +9,4 @@ export const PORTFOLIO_API_PATH =
   process.env.PORTFOLIO_API_PATH || "/api/v1/portfolio";
 
 export const USER_API_PATH = process.env.USER_API_PATH || "/api/v1/user";
-export const LOGIN_API_PATH = process.env.LOGIN_API_PATH || "/api/v1/auth";
+export const AUTH_API_PATH = process.env.AUTH_API_PATH || "/api/v1/auth";
