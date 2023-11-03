@@ -1,19 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { deleteCookie } from "cookies-next";
+import { deleteCookie, getCookie } from "cookies-next";
+import { useCreateAccessLog } from "@/api/user";
+import { jwtDecode } from "jwt-decode";
 
 export default function Navbar() {
   const router = useRouter();
+  let [menuItems, setMenu] = useState([]);
+  const { accessLogError, addAccessLog } = useCreateAccessLog();
 
-  let [menuItems, setMenu] = useState([
-    "Dashboard",
-    "Account",
-    "Portfolios",
-    "Stocks",
-  ]);
+  useEffect(() => {
+    let items = ["Dashboard", "Account", "Portfolios", "Stocks"];
+    if (jwtDecode(getCookie("token")).role === "ADMIN") {
+      items.push("Logging");
+    }
+    setMenu(items);
+  }, []);
 
   function menu() {
     return (
@@ -31,7 +36,9 @@ export default function Navbar() {
     );
   }
 
-  function logout() {
+  async function handleLogout(e) {
+    e.preventDefault();
+    await addAccessLog("LOGOUT");
     deleteCookie("token");
     router.push("/");
   }
@@ -87,7 +94,7 @@ export default function Navbar() {
 
       <button
         className="btn text-white bg-primary-100 ml-auto mr-3"
-        onClick={logout}
+        onClick={handleLogout}
       >
         Logout
       </button>
