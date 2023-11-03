@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 
 export const withAuth = (Component) => {
-  return (props) => {
+  return function AuthenticatedComponent(props) {
     const router = useRouter();
     const [isAuth, setIsAuth] = useState(false);
 
