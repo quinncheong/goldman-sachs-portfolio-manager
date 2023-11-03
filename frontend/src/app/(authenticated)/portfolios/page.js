@@ -2,8 +2,9 @@
 import { useGetPortfoliosOfUser } from "@api/portfolio.js";
 import PortfolioCard from "../../../components/PortfolioCard";
 import { useRouter } from "next/navigation";
+import withAuth from "@/middleware/authentication";
 
-export default function Portfolio({}) {
+function Portfolio({}) {
   const router = useRouter();
   const {
     data: portfolioData,
@@ -44,3 +45,5 @@ export default function Portfolio({}) {
     });
   }
 }
+
+export default withAuth(Portfolio);
