@@ -68,7 +68,7 @@ public class UserService {
 
     public List<AccessLog> getAccessLogs(ObjectId userId) {
         Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent() && user.get().getRole() == RoleEnum.USER) {
+        if (user.isPresent() && user.get().getRole() == RoleEnum.ADMIN) {
             return accessLogRepository.findAll();
         }
 
