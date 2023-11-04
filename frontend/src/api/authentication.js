@@ -89,3 +89,13 @@ const getLoginStatus = async () => {
     }, 1000);
   });
 };
+
+export const sendResetPasswordMail = async (email) => {
+  try {
+    let response = await axiosAuthInstance.post("/reset-password", email);
+    return response.data.token;
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+};
