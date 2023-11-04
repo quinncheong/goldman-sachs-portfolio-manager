@@ -1,68 +1,43 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useResetPassword } from "@/api/authentication";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { useRegister } from "@/api/authentication";
-import { setCookie } from "cookies-next";
-
-export default function Register() {
-  const router = useRouter();
-
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
+function TokenVerified({ token }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [email, setEmail] = useState("");
 
   const [passwordErrors, setPasswordErrors] = useState([]);
   const [confirmPasswordErrors, setConfirmPasswordErrors] = useState([]);
-  const [emailErrors, setEmailErrors] = useState([]);
+
+  const router = useRouter();
 
   const {
     data,
     isLoading,
-    isError: isRegisterError,
-    error: registerError,
+    isError: isResetPasswordError,
+    error: resetPasswordError,
     mutateAsync,
-  } = useRegister();
+  } = useResetPassword();
 
   const handleRegisterUser = async (e) => {
     e.preventDefault();
 
-    if (
-      passwordErrors.length > 0 ||
-      confirmPasswordErrors.length > 0 ||
-      emailErrors.length > 0
-    ) {
+    if (passwordErrors.length > 0 || confirmPasswordErrors.length > 0) {
       return;
     }
 
-    if (
-      password.length === 0 ||
-      confirmPassword.length === 0 ||
-      email.length === 0 ||
-      name.length === 0
-    ) {
+    if (password.length === 0 || confirmPassword.length === 0) {
       return;
     }
 
-    let newUser = {
-      name,
-      username,
-      password,
-      email,
-    };
-
-    await mutateAsync(newUser);
-    if (isRegisterError) {
-      alert(registerError);
+    await mutateAsync(token, password);
+    if (isResetPasswordError) {
+      alert(resetPasswordError);
     } else {
       router.push("/dashboard");
     }
   };
-
-  //   Todo make a call to the server and check if the username is already present
-  const validateUsername = (e) => {};
 
   const validatePassword = async (e) => {
     let errors = [];
@@ -103,15 +78,6 @@ export default function Register() {
     setConfirmPasswordErrors(errors);
     return errors;
   };
-
-  const validateEmail = (e) => {
-    let errors = [];
-    if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-      errors.push("Email is invalid!");
-    }
-    setEmailErrors(errors);
-  };
-
   return (
     <section style={{ height: 1700 }} className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center p-8 m-auto">
@@ -129,47 +95,11 @@ export default function Register() {
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-2xl xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Register for a new account
+              Reset your password
             </h1>
 
             {/* Form */}
             <form className="space-y-4 md:space-y-6" action="#">
-              <div>
-                <label
-                  htmlFor="username"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  What is your name
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Enter your name"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="username"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Your username
-                </label>
-                <input
-                  type="text"
-                  name="username"
-                  id="username"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="username"
-                  required
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </div>
               <div>
                 <label
                   htmlFor="password"
@@ -209,26 +139,6 @@ export default function Register() {
                   onBlur={validateConfirmPassword}
                 />
                 <RenderFormErrors errors={confirmPasswordErrors} />
-              </div>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder="Enter your Email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  onBlur={validateEmail}
-                />
-                <RenderFormErrors errors={emailErrors} />
               </div>
 
               <button
@@ -274,3 +184,5 @@ function RenderFormErrors({ errors }) {
     </div>
   );
 }
+
+export default TokenVerified;

@@ -99,3 +99,46 @@ export const sendResetPasswordMail = async (email) => {
     return "";
   }
 };
+
+export const verifyResetPwToken = async (token) => {
+  try {
+    let response = await axiosAuthInstance.post("/verify-token", token);
+    return true;
+    return response.data.token;
+  } catch (err) {
+    console.log(err);
+    return true;
+  }
+};
+
+export const useResetPassword = () => {
+  const { data, isLoading, isSuccess, isError, error, mutateAsync } =
+    useMutation({
+      mutationFn: (data) => resetPassword(data),
+      onSuccess: async (tokenData) => {
+        createAccessLog("RESET_PASSWORD");
+      },
+      onError: (error) => {
+        alert(error);
+      },
+    });
+
+  return {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    mutateAsync,
+  };
+};
+
+const resetPassword = async (token, password) => {
+  try {
+    let response = await axiosAuthInstance.post("/reset/" + token, password);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
