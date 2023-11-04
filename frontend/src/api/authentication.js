@@ -116,7 +116,7 @@ export const useResetPassword = () => {
     useMutation({
       mutationFn: (data) => resetPassword(data),
       onSuccess: async (tokenData) => {
-        createAccessLog("RESET_PASSWORD");
+        createAccessLog("RESET_PASSWORD_SUCCESS");
       },
       onError: (error) => {
         alert(error);
