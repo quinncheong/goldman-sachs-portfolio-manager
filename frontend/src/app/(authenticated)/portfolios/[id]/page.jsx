@@ -52,7 +52,7 @@ function PortfolioPage({ params }) {
   }
 
   function closeModal() {
-    document.getElementById("add-stock-modal").closest()
+    document.getElementById("add-stock-modal").close()
   }
   const {
     isDeleteing,
