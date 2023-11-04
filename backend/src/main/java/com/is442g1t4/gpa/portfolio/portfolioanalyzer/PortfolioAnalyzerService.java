@@ -42,6 +42,8 @@ public class PortfolioAnalyzerService {
         double previousValue = 0;
         Double pnl;
         Double dpnl;
+        Double dpnla;
+        Double pnla;
 
         for (AllocatedStock allocatedStock : allocatedStocks) {
             String stockTicker = allocatedStock.getStockTicker();
@@ -66,9 +68,13 @@ public class PortfolioAnalyzerService {
 
         dpnl = Double.parseDouble(df.format((value / previousValue - 1) * 100));
         pnl = Double.parseDouble(df.format((value / cost - 1) * 100));
+        dpnla = Double.parseDouble(df.format((value - previousValue)));
+        pnla = Double.parseDouble(df.format(value - cost));
 
         result.put("dpnl", Double.parseDouble(df.format(dpnl)));
         result.put("pnl", Double.parseDouble(df.format(pnl)));
+        result.put("dpnla", dpnla);
+        result.put("pnla", pnla);
 
         return result;
     }
