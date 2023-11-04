@@ -5,8 +5,9 @@ import {
 } from "@api/portfolio.js";
 import PortfolioTable from "./PortfolioTable";
 import PortfolioCarousel from "./PortfolioCarousel";
+import { withAuth } from "@/middleware/authentication";
 
-export default function Dashboard() {
+function Dashboard() {
   const { data, isLoading, isError, error } = useGetPortfoliosOfUser();
   const {
     data: publicPortfolios,
@@ -72,6 +73,8 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default withAuth(Dashboard);
 
 const FinancialInfo = ({ title, items, badge }) => (
   <div className="bg-white p-4 rounded shadow flex flex-col pb-10">

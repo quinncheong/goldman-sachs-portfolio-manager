@@ -1,7 +1,6 @@
 package com.is442g1t4.gpa.portfolio;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +16,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
+import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
+import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculator;
+import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculatorService;
 
 @RestController
 @RequestMapping("/api/v1/portfolio")
 public class PortfolioController {
     @Autowired
     private PortfolioService portfolioService;
+
+    @Autowired
+    private PortfolioCalculatorService portfolioCalculatorService;
 
     @GetMapping("/all")
     public ResponseEntity<List<Portfolio>> getAllPortfolios() {
@@ -98,4 +103,10 @@ public class PortfolioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(updatedPortfolio);
     }
 
+
+    @GetMapping("/{id}/stock")
+    public ResponseEntity<Map<String, PortfolioCalculator>> getCalculatedStock(@PathVariable ObjectId id) {
+        return new ResponseEntity<Map<String, PortfolioCalculator>>(
+                portfolioCalculatorService.getCalculatedStockInPortfolio(id), HttpStatus.OK);
+    }
 }

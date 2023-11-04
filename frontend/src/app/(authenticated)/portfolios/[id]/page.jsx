@@ -8,15 +8,16 @@ import {
 
 import Loader from "@/components/loading/Loader";
 import IsPublicBadge from "@/components/IsPublicBadge";
-
 import PortfolioFinancials from "./PortfolioFinancials";
 import PortfolioAnalysis from "./PortfolioAnalysis";
 import StockHoldings from "./StockHoldings";
 import AddStockModal from "./AddStockModal";
+import UpdatePortfolioModal from "./UpdatePortfolioModal";
 import { getCookie } from "cookies-next";
 import { jwtDecode } from "jwt-decode";
+import withAuth from "@/middleware/authentication";
 
-export default function PortfolioPage({ params }) {
+function PortfolioPage({ params }) {
   const router = useRouter();
   const {
     data: portfolio,
@@ -24,14 +25,24 @@ export default function PortfolioPage({ params }) {
     isError,
     error,
   } = useGetPortfolioByPortfolioId(params.id);
-
+   
   function openModal() {
-    document.getElementById("add-stock-modal").showModal();
+    document.getElementById("add-stock-modal").showModal()
+    console.log(portfolio)
   }
 
   function closeModal() {
-    document.getElementById("add-stock-modal").close();
+    document.getElementById("add-stock-modal").close()
   }
+
+  function openUpdateModal() {
+    document.getElementById("update-portfolio-modal").showModal()
+  }
+
+  function closeUpdateModal() {
+    document.getElementById("update-portfolio-modal").close()
+  }
+
   const {
     isDeleteing,
     isSuccessDeleting,
@@ -39,7 +50,7 @@ export default function PortfolioPage({ params }) {
     deleteError,
     delPortfolio,
   } = useDeletePortfolio();
-
+  
   if (isLoading) {
     return <Loader />;
   }
@@ -52,27 +63,20 @@ export default function PortfolioPage({ params }) {
     );
   }
 
-  const editPorfolio = (e) => {
-    e.preventDefault();
-  };
-
   const handleDeletePortfolio = (e) => {
-    e.preventDefault();
-    delPortfolio(params.id);
-    router.push("/portfolios");
-  };
-
-  const addStock = (e) => {
-    e.preventDefault();
-    router.push("/addstock");
-  };
+    e.preventDefault()
+    delPortfolio(params.id)
+    router.push("/portfolios")
+  }
 
   return (
     <div className="container mx-auto p-4 text-black">
       <div className="flex flex-row justify-between items-center">
         <div className="container p-4 text-black">
-          <h2 className="text-4xl mt-2 font-semibold">{portfolio.name}</h2>
-          <p className="text-xl mt-2">{portfolio.description}</p>
+          <h2 className="text-4xl font-semibold border-none outline-none w-fit">
+            {portfolio.name}
+          </h2>
+          <p className="text-xl border-none outline-none w-fit">{portfolio.description}</p>     
           <p className="text-xl mt-2">
             This Porfolio is:{" "}
             <IsPublicBadge isPublic={portfolio.publiclyAccessible || false} />
@@ -97,6 +101,12 @@ export default function PortfolioPage({ params }) {
         openModal={openModal}
         closeModal={closeModal}
       />
+
+      <UpdatePortfolioModal
+        portfolio={portfolio}
+        openModal={openUpdateModal}
+        closeModal={closeUpdateModal}
+      />
     </div>
   );
 
@@ -116,7 +126,7 @@ export default function PortfolioPage({ params }) {
         </button>
         <button
           className="btn btn-info p-4 text-white border-0"
-          onClick={editPorfolio}
+          onClick={openUpdateModal}
         >
           Edit Portfolio
         </button>
@@ -130,3 +140,5 @@ export default function PortfolioPage({ params }) {
     );
   }
 }
+
+export default withAuth(PortfolioPage);
