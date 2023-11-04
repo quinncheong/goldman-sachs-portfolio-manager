@@ -6,14 +6,26 @@ import { useGetPortfolioByPortfolioId, useUpdatePortfolio } from "@/api/portfoli
 import PortfolioFinancials from "./PortfolioFinancials";
 import PortfolioAnalysis from "./PortfolioAnalysis";
 import StockHoldings from "./StockHoldings";
+import { useEffect, useRef } from "react";
 
 export default function PortfolioPage({ params }) {
-  const router = useRouter();
+  const router = useRouter()
+  const nameRef = useRef(null)
   const { data, isLoading, isError, error } = useGetPortfolioByPortfolioId(
     params.id
-  );
+  )
 
-  const { isCreating, isSuccessCreating, isErrorCreating, error: updateError, mutate } = useUpdatePortfolio();
+  const keyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault()
+    }
+    if (e.target.textContent.length > 20 && e.key != "Backspace") {
+      e.preventDefault()
+    }
+  }
+
+  const { isCreating, isSuccessCreating, isErrorCreating, error: updateError, mutate } = useUpdatePortfolio()
+  
 
   const handleBlur = async (e) => {
     const updated = { ...data, name: e.target.innerText }
@@ -47,10 +59,10 @@ export default function PortfolioPage({ params }) {
     <div className="container mx-auto p-4 text-black">
       <div className="flex flex-row justify-between items-center">
         <div className="container p-4 text-black">
-          <h2 className="text-4xl font-semibold border-none outline-none" contentEditable="true" suppressContentEditableWarning={true} onBlur={handleBlur}>
+          <h2 className="text-4xl font-semibold border-none outline-none w-fit" contentEditable="true" suppressContentEditableWarning={true} onBlur={handleBlur} onKeyDown={keyPress}>
             {data.name}
           </h2>
-          <p className="text-xl border-none outline-none" contentEditable="true" suppressContentEditableWarning={true} onBlur={handleDescBlur}>{data.description}</p>
+          <p className="text-xl border-none outline-none w-fit" contentEditable="true" suppressContentEditableWarning={true} onBlur={handleDescBlur} onKeyDown={keyPress}>{data.description}</p>
         </div>
         <button
           className="btn bg-primary-200 p-4 text-white border-0"
