@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 import TokenVerified from "./TokenVerified";
 
-function page() {
+function Page() {
   const searchParams = useSearchParams();
   const [verified, setVerified] = useState(false);
 
@@ -47,4 +47,4 @@ function RenderUnverified() {
   return <></>;
 }
 
-export default page;
+export default Page;
