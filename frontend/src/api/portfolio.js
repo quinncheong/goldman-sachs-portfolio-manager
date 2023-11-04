@@ -20,14 +20,34 @@ const axiosInstance = axios.create({
   },
 });
 
-const axiosUserInstance = axios.create({
-  baseURL: BASE_SERVER_URL + USER_API_PATH,
-  timeout: 3000,
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: "Bearer " + getCookie("token"),
-  },
-});
+export const useGetPublicPortfolios = () => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getPublicPortfolios"],
+    queryFn: () => getPublicPortfolios(),
+  });
+
+  return { data, isLoading, isError, error };
+};
+
+export const getPublicPortfolios = async () => {
+  try {
+    let response = await axiosInstance.get("/all");
+    let final = [];
+    if (!response.data) {
+      return final;
+    }
+
+    for (let portfolio of response.data) {
+      if (portfolio.publiclyAccessible) {
+        final.push(portfolio);
+      }
+    }
+    return final.toReversed();
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
 
 export const useGetPortfoliosOfUser = () => {
   const { data, isLoading, isError, error } = useQuery({
@@ -41,7 +61,6 @@ export const useGetPortfoliosOfUser = () => {
 const getPortfoliosOfUser = async () => {
   try {
     let userId = jwtDecode(getCookie("token")).userId;
-    console.log(userId);
     let response = await axiosInstance.get("/user/" + userId);
     return response.data.toReversed();
   } catch (error) {
@@ -62,29 +81,6 @@ export const useGetPortfolioByPortfolioId = (portfolioId) => {
 const getPortfolioByPortfolioId = async (portfolioId) => {
   let response = await axiosInstance.get("/" + portfolioId);
   return response.data;
-};
-
-export const useGetPortfolios = (userId) => {
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["getPortfolios", userId],
-    queryFn: () => getPortfolios(userId),
-  });
-
-  return { data, isLoading, isError, error };
-};
-
-const getPortfolios = async (userId) => {
-  const userRes = await axiosUserInstance.get("/" + userId);
-  const userData = userRes.data;
-
-  const portfolioPromises = userData.portfolioIds.map(async (portfolioId) => {
-    const portfolioRes = await axiosInstance.get("/" + portfolioId);
-    return portfolioRes.data;
-  });
-
-  const portfolioData = await Promise.all(portfolioPromises);
-
-  return { userData, portfolioData };
 };
 
 export const useCreatePortfolio = () => {
@@ -182,7 +178,6 @@ export const useUpdatePortfolio = () => {
 
 const updatePortfolio = async (portfolioData) => {
   try {
-    console.log(portfolioData);
     let response = await axiosInstance.put("/", portfolioData);
     return response.data;
   } catch (error) {

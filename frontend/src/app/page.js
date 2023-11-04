@@ -3,8 +3,9 @@
 import { useRouter } from "next/navigation";
 
 import Login from "@/components/login/Login";
-import { useGetLoginStatus } from "@/api/login";
 import Loader from "@/components/loading/Loader";
+
+import { useGetLoginStatus } from "@/api/authentication";
 
 export default function App({ children }) {
   const router = useRouter();

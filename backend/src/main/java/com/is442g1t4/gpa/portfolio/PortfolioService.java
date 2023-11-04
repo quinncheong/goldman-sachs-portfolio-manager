@@ -4,17 +4,11 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.is442g1t4.gpa.stock.StockService;
-import com.is442g1t4.gpa.stock.StockRepository;
-import com.is442g1t4.gpa.stock.model.Stock;
 import com.is442g1t4.gpa.user.User;
 import com.is442g1t4.gpa.user.UserRepository;
-import com.is442g1t4.gpa.user.UserService;
 import com.is442g1t4.gpa.portfolio.PortfolioService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
-import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockRepository;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -99,7 +93,8 @@ public class PortfolioService {
         List<AllocatedStock> allocatedStocks = retrievedPortfolio.getAllocatedStocks();
         return allocatedStocks;
     }
-    public Portfolio addAllocatedStock(AllocatedStock allocatedStock, ObjectId portfolioId, ObjectId userId){
+
+    public Portfolio addAllocatedStock(AllocatedStock allocatedStock, ObjectId portfolioId, ObjectId userId) {
 
         AllocatedStock savedAllocatedStock = allocatedStockService.addAllocatedStock(allocatedStock);
 
@@ -109,18 +104,18 @@ public class PortfolioService {
         if (portfolio.isPresent()) {
 
             Optional<User> user = userRepository.findById(userId);
-            if (user.isPresent()){
+            if (user.isPresent()) {
                 allocatedStockValue = savedAllocatedStock.getStockQuantity() * savedAllocatedStock.getStockBuyPrice();
 
                 userCashBalance = user.get().getCashBalance();
-                if (userCashBalance >= allocatedStockValue){
+                if (userCashBalance >= allocatedStockValue) {
 
                     user.get().setCashBalance(userCashBalance - allocatedStockValue);
                     userRepository.save(user.get());
                     userCashBalance = user.get().getCashBalance();
 
                     portfolio.get().getAllocatedStocks().add(savedAllocatedStock);
-                }else{
+                } else {
 
                     return null;
                 }

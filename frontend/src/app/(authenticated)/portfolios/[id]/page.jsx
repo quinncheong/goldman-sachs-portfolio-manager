@@ -1,19 +1,29 @@
 "use client";
 
-import Loader from "@/components/loading/Loader";
 import { useRouter } from "next/navigation";
-import { useGetPortfolioByPortfolioId, useUpdatePortfolio } from "@/api/portfolio";
+import {
+  useDeletePortfolio,
+  useGetPortfolioByPortfolioId,
+} from "@/api/portfolio";
+
+import Loader from "@/components/loading/Loader";
+import IsPublicBadge from "@/components/IsPublicBadge";
 import PortfolioFinancials from "./PortfolioFinancials";
 import PortfolioAnalysis from "./PortfolioAnalysis";
 import StockHoldings from "./StockHoldings";
-import { useEffect, useRef } from "react";
+import AddStockModal from "./AddStockModal";
+import { getCookie } from "cookies-next";
+import { jwtDecode } from "jwt-decode";
+import withAuth from "@/middleware/authentication";
 
-export default function PortfolioPage({ params }) {
-  const router = useRouter()
-  const nameRef = useRef(null)
-  const { data, isLoading, isError, error } = useGetPortfolioByPortfolioId(
-    params.id
-  )
+function PortfolioPage({ params }) {
+  const router = useRouter();
+  const {
+    data: portfolio,
+    isLoading,
+    isError,
+    error,
+  } = useGetPortfolioByPortfolioId(params.id);
 
   const keyPress = (e) => {
     if (e.key === "Enter") {
@@ -28,16 +38,23 @@ export default function PortfolioPage({ params }) {
   
 
   const handleBlur = async (e) => {
-    const updated = { ...data, name: e.target.innerText }
+    const updated = { ...portfolio, name: e.target.innerText }
     await mutate(updated)
   };
 
   const handleDescBlur = async (e) => {
-    const updated = { ...data, description: e.target.innerText }
+    const updated = { ...portfolio, description: e.target.innerText }
     await mutate(updated)
   }
-
-
+  
+  const {
+    isDeleteing,
+    isSuccessDeleting,
+    isErrorDeleting,
+    deleteError,
+    delPortfolio,
+  } = useDeletePortfolio();
+  
   if (isLoading) {
     return <Loader />;
   }
@@ -60,16 +77,15 @@ export default function PortfolioPage({ params }) {
       <div className="flex flex-row justify-between items-center">
         <div className="container p-4 text-black">
           <h2 className="text-4xl font-semibold border-none outline-none w-fit" contentEditable="true" suppressContentEditableWarning={true} onBlur={handleBlur} onKeyDown={keyPress}>
-            {data.name}
+            {portfolio.name}
           </h2>
-          <p className="text-xl border-none outline-none w-fit" contentEditable="true" suppressContentEditableWarning={true} onBlur={handleDescBlur} onKeyDown={keyPress}>{data.description}</p>
+          <p className="text-xl border-none outline-none w-fit" contentEditable="true" suppressContentEditableWarning={true} onBlur={handleDescBlur} onKeyDown={keyPress}>{portfolio.description}</p>     
+          <p className="text-xl mt-2">
+            This Porfolio is:{" "}
+            <IsPublicBadge isPublic={portfolio.publiclyAccessible || false} />
+          </p>
         </div>
-        <button
-          className="btn bg-primary-200 p-4 text-white border-0"
-          onClick={addStock}
-        >
-          Add Stocks
-        </button>
+        <RenderButtonsWithAccessControl portfolioUserId={portfolio.userId} />
       </div>
 
       <div className="rounded-md p-4 text-white bg-secondary-100">
@@ -82,6 +98,44 @@ export default function PortfolioPage({ params }) {
       </div>
       {/* <PortfolioAnalysis /> */}
       <StockHoldings />
+
+      <AddStockModal
+        portfolio={portfolio}
+        openModal={openModal}
+        closeModal={closeModal}
+      />
     </div>
   );
+
+  function RenderButtonsWithAccessControl({ portfolioUserId }) {
+    let userId = jwtDecode(getCookie("token")).userId;
+    if (!(userId === portfolioUserId)) {
+      return;
+    }
+
+    return (
+      <>
+        <button
+          className="btn btn-error p-4 text-white border-0"
+          onClick={handleDeletePortfolio}
+        >
+          Delete Portfolio
+        </button>
+        <button
+          className="btn btn-info p-4 text-white border-0"
+          onClick={editPorfolio}
+        >
+          Edit Portfolio
+        </button>
+        <button
+          className="btn bg-primary-200 p-4 text-white border-0"
+          onClick={openModal}
+        >
+          Add Stocks
+        </button>
+      </>
+    );
+  }
 }
+
+export default withAuth(PortfolioPage);

@@ -1,7 +1,9 @@
+"use client";
 import Header from "@components/layout/Header";
 import Footer from "@components/layout/Footer";
+import { withAuth } from "@/middleware/authentication";
 
-export default function AuthenticatedLayout({ children }) {
+function AuthenticatedLayout({ children }) {
   return (
     <>
       <Header />
@@ -10,3 +12,5 @@ export default function AuthenticatedLayout({ children }) {
     </>
   );
 }
+
+export default withAuth(AuthenticatedLayout);

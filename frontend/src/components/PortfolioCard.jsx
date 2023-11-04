@@ -1,3 +1,4 @@
+import IsPublicBadge from "@/components/IsPublicBadge";
 import { useRouter } from "next/navigation";
 
 export default function PortfolioCard({ portfolio }) {
@@ -18,6 +19,10 @@ export default function PortfolioCard({ portfolio }) {
               <span className="font-bold text-gray-700">$25,000</span>
             </p>
             <p className="pt-2">{portfolio.description}</p>
+            <p className="text-xl mt-2">
+              This Porfolio is:{" "}
+              <IsPublicBadge isPublic={portfolio.publiclyAccessible || false} />
+            </p>
           </div>
           <div>
             <div className="card-actions flex flex-col items-end">

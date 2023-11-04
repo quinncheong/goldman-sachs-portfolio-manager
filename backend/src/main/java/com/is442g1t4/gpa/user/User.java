@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class User implements UserDetails{
+public class User implements UserDetails {
     @Id
     private ObjectId id;
     private String name;
@@ -35,7 +35,8 @@ public class User implements UserDetails{
     private List<ObjectId> portfolioIds;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    @Column(name = "role")
+    private RoleEnum role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -52,18 +53,25 @@ public class User implements UserDetails{
         return password;
     }
 
+    public RoleEnum getRole() {
+        return role;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
+
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
+
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
     @Override
     public boolean isEnabled() {
         return true;

@@ -1,10 +1,20 @@
 "use client";
-// import Portfolio from "../portfolios/page";
-import { useGetPortfoliosOfUser } from "@api/portfolio.js";
+import {
+  useGetPortfoliosOfUser,
+  useGetPublicPortfolios,
+} from "@api/portfolio.js";
 import PortfolioTable from "./PortfolioTable";
+import PortfolioCarousel from "./PortfolioCarousel";
+import { withAuth } from "@/middleware/authentication";
 
-export default function Dashboard() {
+function Dashboard() {
   const { data, isLoading, isError, error } = useGetPortfoliosOfUser();
+  const {
+    data: publicPortfolios,
+    isLoading: isPublicPorfoliosLoading,
+    isError: isPublicPorfoliosError,
+    error: publicPortfoliosError,
+  } = useGetPublicPortfolios();
 
   const financials = [
     {
@@ -39,22 +49,32 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-w-full h-screen">
+    <div style={{ height: "1600px" }} className="min-w-full">
       <div className="container flex flex-col gap-5 mx-auto p-4 text-black">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FinancialInfo title="Your Account Financials:" items={financials} />
           <FinancialInfo title="Your Account Analysis:" items={analysis} />
         </div>
         <div className="rounded-md p-4 text-white bg-secondary-100">
-          <h2 className="text-2xl font-semibold">Top Performing Portfolios</h2>
+          <h2 className="text-2xl font-semibold">Your Latest Portfolios</h2>
+        </div>
+        <div className="h-86">
+          <PortfolioTable portfolios={data} />
+        </div>
+        <div className="rounded-md p-4 text-white bg-secondary-100">
+          <h2 className="text-2xl font-semibold">
+            See Portfolios from other Analysts
+          </h2>
         </div>
         <div className="h-96">
-          <PortfolioTable portfolios={data} />
+          <PortfolioCarousel publicPortfolios={publicPortfolios} />
         </div>
       </div>
     </div>
   );
 }
+
+export default withAuth(Dashboard);
 
 const FinancialInfo = ({ title, items, badge }) => (
   <div className="bg-white p-4 rounded shadow flex flex-col pb-10">
