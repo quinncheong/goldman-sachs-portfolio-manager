@@ -40,6 +40,7 @@ public class User implements UserDetails {
     
     private double cashBalance;
     private List<ObjectId> portfolioIds;
+    private boolean isVerified;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
