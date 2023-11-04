@@ -30,9 +30,10 @@ public class PortfolioAnalyzerService {
     @Autowired
     private StockService stockService;
 
+    private static final DecimalFormat df = new DecimalFormat("0.00");
+
     public Map<String, Double> getPortfolioAnalysis(ObjectId id) {
         Map<String, Double> result = new HashMap<>();
-        DecimalFormat df = new DecimalFormat("#.##");
 
         List<AllocatedStock> allocatedStocks = portfolioService.getAllAllocatedStocksInPortfolio(id);
 
@@ -50,17 +51,21 @@ public class PortfolioAnalyzerService {
             Instant instant = buyDate.toInstant();
 
             cost = cost + (allocatedStock.getStockBuyPrice() * quantity);
-            value = value + (stock.getPriceToday() * quantity);
+            // value  = value + (90 * quantity);
+            double priceToday = stock.getPriceToday();
+            value  = value + (priceToday * quantity);
 
-            if (instant.atZone(ZoneId.systemDefault()).toLocalDate().equals(LocalDate.now())) {
-                previousValue = previousValue + (stock.getPriceToday() * quantity);
+            if(instant.atZone(ZoneId.systemDefault()).toLocalDate().equals(LocalDate.now()) ){
+                // previousValue = previousValue + (90 * quantity);
+                previousValue = previousValue + (priceToday * quantity);
             } else {
+                // previousValue = previousValue + (100 * quantity);
                 previousValue = previousValue + (stock.getPriceYesterday() * quantity);
             }
         }
 
-        dpnl = value / previousValue - 1;
-        pnl = value / cost - 1;
+        dpnl = Double.parseDouble(df.format((value / previousValue - 1) * 100));
+        pnl = Double.parseDouble(df.format((value / cost - 1) * 100));
 
         result.put("dpnl", Double.parseDouble(df.format(dpnl)));
         result.put("pnl", Double.parseDouble(df.format(pnl)));
