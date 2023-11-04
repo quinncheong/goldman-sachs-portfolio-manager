@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import {
   useDeletePortfolio,
   useGetPortfolioByPortfolioId,
+  useUpdatePortfolio
 } from "@/api/portfolio";
 
 import Loader from "@/components/loading/Loader";
@@ -36,7 +37,6 @@ function PortfolioPage({ params }) {
 
   const { isCreating, isSuccessCreating, isErrorCreating, error: updateError, mutate } = useUpdatePortfolio()
   
-
   const handleBlur = async (e) => {
     const updated = { ...portfolio, name: e.target.innerText }
     await mutate(updated)
@@ -47,6 +47,13 @@ function PortfolioPage({ params }) {
     await mutate(updated)
   }
   
+  function openModal() {
+    document.getElementById("add-stock-modal").showModal()
+  }
+
+  function closeModal() {
+    document.getElementById("add-stock-modal").closest()
+  }
   const {
     isDeleteing,
     isSuccessDeleting,
@@ -65,6 +72,12 @@ function PortfolioPage({ params }) {
         <p>Error: {error}</p>
       </div>
     );
+  }
+
+  const handleDeletePortfolio = (e) => {
+    e.preventDefault()
+    delPortfolio(params.id)
+    router.push("/portfolios")
   }
 
   const addStock = (e) => {
@@ -120,12 +133,6 @@ function PortfolioPage({ params }) {
           onClick={handleDeletePortfolio}
         >
           Delete Portfolio
-        </button>
-        <button
-          className="btn btn-info p-4 text-white border-0"
-          onClick={editPorfolio}
-        >
-          Edit Portfolio
         </button>
         <button
           className="btn bg-primary-200 p-4 text-white border-0"
