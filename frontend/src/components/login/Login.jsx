@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
-import { login } from "../../api/login";
+import { login } from "@api/authentication";
 import { useCreateAccessLog } from "@/api/user";
+import Link from "next/link";
 
 export default function Login() {
   const router = useRouter();
@@ -18,8 +19,8 @@ export default function Login() {
     if (token === 403) {
       alert("Wrong username or password.");
     } else {
-      setCookie("token", token);
-      addAccessLog("LOGIN");
+      await setCookie("token", token);
+      await addAccessLog("LOGIN");
       router.push("/dashboard");
     }
   };
@@ -100,12 +101,12 @@ export default function Login() {
                     </label>
                   </div>
                 </div>
-                <a
-                  href="#"
+                <Link
+                  href="/forget-password"
                   className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Forgot password?
-                </a>
+                </Link>
               </div>
               <button
                 onClick={handleSubmit}
@@ -116,12 +117,12 @@ export default function Login() {
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}
-                <a
-                  href="#"
+                <Link
+                  href="/register"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Sign up
-                </a>
+                </Link>
               </p>
             </form>
           </div>

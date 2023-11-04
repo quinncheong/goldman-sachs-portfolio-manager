@@ -4,8 +4,9 @@ import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { useGetAccessLogs } from "@/api/user";
+import withAuth from "@/middleware/authentication";
 
-export default function Logging() {
+function Logging() {
   const router = useRouter();
   const { data, isLoading, isError, error } = useGetAccessLogs();
 
@@ -49,3 +50,5 @@ export default function Logging() {
     });
   }
 }
+
+export default withAuth(Logging);

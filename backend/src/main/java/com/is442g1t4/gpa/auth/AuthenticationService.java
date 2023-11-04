@@ -32,7 +32,12 @@ public class AuthenticationService {
                                 .role(RoleEnum.USER).build();
                 userRepository.save(user);
 
-                String jwtToken = jwtService.generateToken(user);
+                Map<String, Object> extraClaims = new HashMap<>();
+                extraClaims.put("userId", user.getId().toString());
+                extraClaims.put("role", user.getRole().toString());
+
+                String jwtToken = jwtService.generateToken(user.getUsername(), extraClaims);
+
                 return AuthenticationResponse.builder().token(jwtToken).build();
         }
 

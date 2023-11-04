@@ -74,9 +74,23 @@ export const useCreateAccessLog = () => {
   };
 };
 
-const createAccessLog = async (action) => {
+export const createLogWithToken = async (token, action) => {
   try {
-    let userId = jwtDecode(getCookie("token")).userId;
+    let userId = jwtDecode(token).userId;
+    console.log(userId);
+    let response = await axiosUserInstance.post("/log", { userId, action });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return "";
+  }
+};
+
+export const createAccessLog = async (action) => {
+  try {
+    let token = getCookie("token");
+    let userId = jwtDecode(token).userId;
     let response = await axiosUserInstance.post("/log", { userId, action });
     return response.data;
   } catch (error) {

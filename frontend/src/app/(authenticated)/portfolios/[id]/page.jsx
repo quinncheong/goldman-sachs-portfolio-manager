@@ -15,8 +15,9 @@ import StockHoldings from "./StockHoldings";
 import AddStockModal from "./AddStockModal";
 import { getCookie } from "cookies-next";
 import { jwtDecode } from "jwt-decode";
+import withAuth from "@/middleware/authentication";
 
-export default function PortfolioPage({ params }) {
+function PortfolioPage({ params }) {
   const router = useRouter();
   const {
     data: portfolio,
@@ -130,3 +131,5 @@ export default function PortfolioPage({ params }) {
     );
   }
 }
+
+export default withAuth(PortfolioPage);
