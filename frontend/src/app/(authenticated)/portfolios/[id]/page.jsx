@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import {
   useDeletePortfolio,
   useGetPortfolioByPortfolioId,
+  useGetStockDetails,
 } from "@/api/portfolio";
 
 import Loader from "@/components/loading/Loader";
@@ -25,7 +26,17 @@ function PortfolioPage({ params }) {
     isError,
     error,
   } = useGetPortfolioByPortfolioId(params.id);
-   
+
+  const {
+    data: stockDetails,
+    isLoading: stockDetailsLoading,
+    isError: stockDetailsIsError,
+    error: stockDetailsError,
+  } = useGetStockDetails(params.id);
+
+
+  console.log(stockDetails)
+
   function openModal() {
     document.getElementById("add-stock-modal").showModal()
     console.log(portfolio)
@@ -50,7 +61,9 @@ function PortfolioPage({ params }) {
     deleteError,
     delPortfolio,
   } = useDeletePortfolio();
-  
+
+
+
   if (isLoading) {
     return <Loader />;
   }
@@ -76,7 +89,7 @@ function PortfolioPage({ params }) {
           <h2 className="text-4xl font-semibold border-none outline-none w-fit">
             {portfolio.name}
           </h2>
-          <p className="text-xl border-none outline-none w-fit">{portfolio.description}</p>     
+          <p className="text-xl border-none outline-none w-fit">{portfolio.description}</p>
           <p className="text-xl mt-2">
             This Porfolio is:{" "}
             <IsPublicBadge isPublic={portfolio.publiclyAccessible || false} />
@@ -94,7 +107,9 @@ function PortfolioPage({ params }) {
         <h2 className="text-2xl font-semibold">Holdings</h2>
       </div>
       {/* <PortfolioAnalysis /> */}
-      <StockHoldings />
+      <StockHoldings 
+        stockDetails={stockDetails}
+      />
 
       <AddStockModal
         portfolio={portfolio}
@@ -109,6 +124,7 @@ function PortfolioPage({ params }) {
       />
     </div>
   );
+
 
   function RenderButtonsWithAccessControl({ portfolioUserId }) {
     let userId = jwtDecode(getCookie("token")).userId;

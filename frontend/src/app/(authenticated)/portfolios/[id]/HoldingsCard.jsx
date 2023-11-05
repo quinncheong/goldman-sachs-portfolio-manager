@@ -1,54 +1,51 @@
-export default function HoldingsCard() {
+export default function HoldingsCard({ stock }) {
+    console.log(stock)
     return (
         <div className="w-full p-2 mb-2 bg-blue-100 rounded-md flex flex-row items-center h-16">
-            <div className="w-2/12 font-semibold">
+            <div className="w-[25%] font-semibold">
                 <span>
-                    Apple
+                    {stock.stockName}
                 </span>
                 <div className="flex flex-row items-center">
-                    <div className="w-6 h-6 p-1 bg-blue-600 rounded-md text-white flex items-center justify-center text-xs">US</div>
-                    <span className="ml-2 text-gray-500">APPL</span>
+                    <div className="w-6 h-6 p-1 bg-blue-600 rounded-md text-white flex items-center justify-center text-xs">{stock.country}</div>
+                    <span className="ml-2 text-gray-500">{stock.stockTicker}</span>
                 </div>
             </div>
-            <div className="w-1/12 font-semibold flex flex-col">
+            <div className="w-[10%] font-semibold flex flex-col">
                 <span>
-                    50
+                    {stock.position}
                 </span>
                 <span className="text-gray-500 text-xs">
-                    8779.00
+                    {stock.market}
                 </span>
             </div>
-            <div className="w-1/12 font-semibold flex flex-col">
+            <div className="w-[10%] font-semibold flex flex-col">
                 <span>
-                    178.58
+                    {stock.last}
                 </span>
                 <span className="text-gray-500 text-xs">
-                    130.23
+                    {stock.cost}
                 </span>
             </div>
-            <div className="w-1/12 font-semibold text-green-600">
-                <span>
-                    2417.50
-                </span>
+            <div className={`w-[14%] font-semibold ${stock.pnla > 0 ? "text-green-600" : "text-red-500"}`}>
+                <span>{stock.pnla}</span>
             </div>
-            <div className="w-1/12 font-semibold text-red-500">
-                <span>
-                    -1.50
-                </span>
+            <div className={`w-[14%] font-semibold ${stock.dpnla > 0 ? "text-green-600" : "text-red-500"}`}>
+                <span>{stock.dpnla}</span>
             </div>
-            <div className="w-2/12 font-semibold">
+            <div className="w-[10%] font-semibold">
                 <span>
                     ???
                 </span>
             </div>
-            <div className="w-2/12 font-semibold">
+            <div className="w-[10%] font-semibold">
                 <span>
                     ???
                 </span>
             </div>
-            <div className="w-2/12 font-semibold">
+            <div className={`w-[7%] font-semibold ${stock.positionsRatio > 0 ? "text-green-600" : "text-red-500"}`}>
                 <span>
-                    35.11%
+                    {stock.positionsRatio}%
                 </span>
             </div>
         </div>
