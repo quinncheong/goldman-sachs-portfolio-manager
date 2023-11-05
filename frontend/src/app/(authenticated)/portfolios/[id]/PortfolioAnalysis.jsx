@@ -3,7 +3,7 @@ import PortfolioMarketChart from "./PortfolioMarketChart";
 import PortfolioSectorChart from "./PortfolioSectorChart";
 import MonetaryAnalysis from "./MonetaryAnalysis";
 
-export default function PortfolioAnalysis({ stockData, stockDetails, analysisData }) {
+export default function PortfolioAnalysis({ stockData, stockDetails, analysisData, portfolioData }) {
   const renderAnalysis = () => {
     if (analysisData===undefined) return <div><h1 className="m-3 text-xl font-semibold text-red-600">Loading Error</h1></div>;
     return <MonetaryAnalysis analysisData={analysisData} />;
@@ -16,9 +16,17 @@ export default function PortfolioAnalysis({ stockData, stockDetails, analysisDat
   }
 
   function renderTotal() {
+
     if (analysisData===undefined) return <div><h1 className="m-3 text-xl font-semibold text-red-600">Loading Error</h1></div>;
     if (Object.keys(analysisData).length == 0) return <div><h1 className="m-3 text-xl font-semibold text-red-600">No stocks added!</h1></div>;
-    return analysisData.value;
+    const securitiesValue = new Intl.NumberFormat('en-US', {
+      style: 'decimal',
+    }).format(analysisData.value);
+    const cashBalance = new Intl.NumberFormat('en-US', {
+      style: 'decimal',
+    }).format(portfolioData.initialValue);
+    
+    return {"total":securitiesValue,"cash":cashBalance};
   }
   
   return (
@@ -30,12 +38,18 @@ export default function PortfolioAnalysis({ stockData, stockDetails, analysisDat
 
       <div className="col-span-4 conatainer p-5 bg-white rounded-md">
         <h1 className="mb-1 text-xl text-black font-semibold">
-          Asset Value
+          Total Asset Value
         </h1>
-        <span className="text-xl text-black">${renderTotal()}</span>
         <span className="text-sm sm:text-md text-gray-400">
-              Daily P&amp;L:
-            </span>
+              Securities Value:
+        </span>
+        <span className="text-xl text-black">&emsp;${renderTotal().total}</span>
+        <br></br>
+        <span className="text-sm sm:text-md text-gray-400">
+              Cash Balance:
+        </span>
+        <span className="text-xl text-black">&emsp;${renderTotal().cash}</span>
+
       </div>
 
       <div className="col-span-8 p-5 bg-white rounded-md">

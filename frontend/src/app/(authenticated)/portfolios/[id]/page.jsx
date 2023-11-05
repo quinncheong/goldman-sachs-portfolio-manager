@@ -118,6 +118,7 @@ function PortfolioPage({ params }) {
         stockData={stockData}
         stockDetails={stockDetails}
         analysisData={analysisData}
+        portfolioData={portfolio}
       />
 
       <div className="rounded-md p-4 text-white bg-secondary-100">
