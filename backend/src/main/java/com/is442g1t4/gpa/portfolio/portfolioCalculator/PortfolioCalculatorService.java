@@ -68,9 +68,9 @@ public class PortfolioCalculatorService {
             totalValue = totalValue + value;
             portfolioCalculator.setLast(priceToday);
             portfolioCalculator.setDpnla(PortfolioCalculatorUtility.round(value - previousValue));
-            portfolioCalculator.setDpnlp(PortfolioCalculatorUtility.round(value/previousValue - 1) * 100);
+            portfolioCalculator.setDpnlp(PortfolioCalculatorUtility.round((value/previousValue - 1) * 100));
             portfolioCalculator.setMarket(PortfolioCalculatorUtility.round(value));
-            portfolioCalculator.setPnlp(PortfolioCalculatorUtility.round(value/ (portfolioCalculator.getCost() * quantity) - 1) * 100);
+            portfolioCalculator.setPnlp(PortfolioCalculatorUtility.round((value/ (portfolioCalculator.getCost() * quantity) - 1) * 100));
             portfolioCalculator.setPnla(PortfolioCalculatorUtility.round(value - portfolioCalculator.getCost() * quantity));
             portfolioCalculator.setCountry(stock.getCountry());
             portfolioCalculator.setStockName(stock.getName());

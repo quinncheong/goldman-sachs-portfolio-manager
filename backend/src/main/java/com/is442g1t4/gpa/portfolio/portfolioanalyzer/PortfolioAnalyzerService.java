@@ -34,8 +34,16 @@ public class PortfolioAnalyzerService {
 
     public Map<String, Double> getPortfolioAnalysis(ObjectId id) {
         Map<String, Double> result = new HashMap<>();
-
+        
         List<AllocatedStock> allocatedStocks = portfolioService.getAllAllocatedStocksInPortfolio(id);
+        if (allocatedStocks.size() == 0) {
+            result.put("dpnl", 0.0);
+            result.put("pnl", 0.0);
+            result.put("dpnla", 0.0);
+            result.put("pnla", 0.0);
+            result.put("value", 0.0);
+            return result;
+        }
 
         double cost = 0;
         double value = 0;

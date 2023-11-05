@@ -16,17 +16,9 @@ export default function PortfolioAnalysis({ stockData, stockDetails, analysisDat
   }
 
   function renderTotal() {
-    if (stockDetails===undefined) return <div><h1 className="m-3 text-xl font-semibold text-red-600">Loading Error</h1></div>;
-    if (Object.keys(stockDetails).length == 0) return <div><h1 className="m-3 text-xl font-semibold text-red-600">No stocks added!</h1></div>;
-    let total = 0;
-    const keys = Object.keys(stockDetails)
-    
-    keys.map((key) => {
-        const amount = stockDetails[key].market;
-      
-        total+=amount;
-    });
-    return total;
+    if (analysisData===undefined) return <div><h1 className="m-3 text-xl font-semibold text-red-600">Loading Error</h1></div>;
+    if (Object.keys(analysisData).length == 0) return <div><h1 className="m-3 text-xl font-semibold text-red-600">No stocks added!</h1></div>;
+    return analysisData.value;
   }
   
   return (
@@ -38,9 +30,12 @@ export default function PortfolioAnalysis({ stockData, stockDetails, analysisDat
 
       <div className="col-span-4 conatainer p-5 bg-white rounded-md">
         <h1 className="mb-1 text-xl text-black font-semibold">
-          Total Securities Value
+          Asset Value
         </h1>
         <span className="text-xl text-black">${renderTotal()}</span>
+        <span className="text-sm sm:text-md text-gray-400">
+              Daily P&amp;L:
+            </span>
       </div>
 
       <div className="col-span-8 p-5 bg-white rounded-md">
