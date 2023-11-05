@@ -69,13 +69,49 @@ public class PortfolioCalculatorService {
             portfolioCalculator.setCountry(stock.getCountry());
             portfolioCalculator.setStockName(stock.getName());
         }
-
+        // positions ratio and sector analysis
         for (String stockTicker : calculatedStock.keySet()){
-
             PortfolioCalculator portfolioCalculator = calculatedStock.get(stockTicker);
             portfolioCalculator.setPositionsRatio(PortfolioCalculatorUtility.round(portfolioCalculator.getMarket() / totalValue) * 100);
         }
         return calculatedStock;
     }
+
+    public Map<String, Map<String,Double>> getStockData(Map<String,PortfolioCalculator> calculated) {
+        Map<String, Map<String,Double>> data = new HashMap<>();
+        Map<String,Double> countryData = new HashMap<>();
+        Map<String,Double> sectorData = new HashMap<>();
+
+        for (String stockTicker : calculated.keySet()) {
+            Stock stock = stockService.getStockByTicker(stockTicker).get();
+            String sector = stock.getSector();
+            String country = stock.getCountry();
+
+            PortfolioCalculator portfolioCalculator = calculated.get(stockTicker);
+            double positionsRatio = portfolioCalculator.getPositionsRatio();
+
+            if (!(countryData.containsKey(country))) {
+                countryData.put(country, positionsRatio);
+            }
+            else {
+                double previous = countryData.get(country);
+                countryData.put(country, previous + positionsRatio);
+            }
+            if (!(sectorData.containsKey(sector))) {
+                sectorData.put(sector, positionsRatio);
+            }
+            else {
+                double previous = sectorData.get(sector);
+                sectorData.put(sector, previous + positionsRatio);
+            }
+
+        }
+
+        data.put("sector",sectorData);
+        data.put("country",countryData);
+
+
+        return data;
+    }   
 
 }

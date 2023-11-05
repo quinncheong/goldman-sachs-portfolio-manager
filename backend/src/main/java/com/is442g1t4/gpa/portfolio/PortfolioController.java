@@ -109,4 +109,10 @@ public class PortfolioController {
         return new ResponseEntity<Map<String, PortfolioCalculator>>(
                 portfolioCalculatorService.getCalculatedStockInPortfolio(id), HttpStatus.OK);
     }
+
+    @GetMapping("/{id}/stockData")
+    public ResponseEntity<Map<String, Map<String,Double>>> getStockData(@PathVariable ObjectId id) {
+        return new ResponseEntity<Map<String, Map<String,Double>>>(
+                portfolioCalculatorService.getStockData(portfolioCalculatorService.getCalculatedStockInPortfolio(id)), HttpStatus.OK);
+    }
 }
