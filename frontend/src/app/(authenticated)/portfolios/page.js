@@ -39,6 +39,7 @@ function Portfolio({}) {
   );
 
   function renderPortfolios() {
+    console.log(portfolioData)
     if (!portfolioData) return <div>Portfolios Loading</div>;
     return portfolioData.map((portfolio, index) => {
       return <PortfolioCard key={index} portfolio={portfolio} />;
