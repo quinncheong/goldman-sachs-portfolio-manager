@@ -31,8 +31,7 @@ public class PortfolioCalculatorService {
     @Autowired
     private StockService stockService;
 
-    @Autowired
-    private PortfolioAnalyzerService portfolioAnalyzer;
+
     
 
     public Map<String, PortfolioCalculator> getCalculatedStockInPortfolio(ObjectId id) {
@@ -121,8 +120,5 @@ public class PortfolioCalculatorService {
         return data;
     }   
 
-    @GetMapping("/{id}/portfolio")
-    public ResponseEntity<Map<String, Double>> getPortfolioTotal(@PathVariable ObjectId id) {
-        return new ResponseEntity<Map<String, Double>>(portfolioAnalyzer.getPortfolioAnalysis(id), HttpStatus.OK);
-    }
+
 }
