@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import {
   useDeletePortfolio,
   useGetPortfolioByPortfolioId,
+  useGetStockData,
   useGetStockDetails,
 } from "@/api/portfolio";
 
@@ -34,12 +35,16 @@ function PortfolioPage({ params }) {
     error: stockDetailsError,
   } = useGetStockDetails(params.id);
 
+  const {
+    data: stockData,
+    isLoading: stockDataIsLoading,
+    isError: stockDataIsError,
+    error: stockDataError
+  } = useGetStockData(params.id);
 
-  console.log(stockDetails)
 
   function openModal() {
     document.getElementById("add-stock-modal").showModal()
-    console.log(portfolio)
   }
 
   function closeModal() {
@@ -101,14 +106,16 @@ function PortfolioPage({ params }) {
       <div className="rounded-md p-4 text-white bg-secondary-100">
         <h2 className="text-2xl font-semibold">Portfolio Analysis</h2>
       </div>
-      <PortfolioAnalysis />
+      <PortfolioAnalysis
+        stockData={stockData}
+      />
 
       <div className="rounded-md p-4 text-white bg-secondary-100">
         <h2 className="text-2xl font-semibold">Holdings</h2>
       </div>
-      {/* <PortfolioAnalysis /> */}
       <StockHoldings 
         stockDetails={stockDetails}
+        stockData={stockData}
       />
 
       <AddStockModal

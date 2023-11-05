@@ -2,7 +2,7 @@ import React from "react";
 import PortfolioMarketChart from "./PortfolioMarketChart";
 import PortfolioSectorChart from "./PortfolioSectorChart";
 
-export default function PortfolioAnalysis() {
+export default function PortfolioAnalysis({ stockData }) {
   const portfolioMonetaryAnalysis = () => {
     return (
       <div className="flex sm:flex-row justify-between">
@@ -34,6 +34,12 @@ export default function PortfolioAnalysis() {
     );
   };
 
+  function renderSectorChart(type) {
+    if (!stockData) return <div>Chart Loading</div>;
+    return <PortfolioSectorChart stockData={stockData} type={type} />;
+  }
+
+  
   return (
     <div className="grid gap-5 p-5 grid-cols-12">
       <div className="col-span-12 p-5 bg-white rounded-md">
@@ -47,7 +53,7 @@ export default function PortfolioAnalysis() {
         </h1>
         <span className="text-xl text-black">$25,000</span>
       </div>
-      
+
       <div className="col-span-8 p-5 bg-white rounded-md">
         <h1 className="mb-1 text-black text-xl font-semibold">
           Portfolio Analysis
@@ -57,12 +63,12 @@ export default function PortfolioAnalysis() {
 
       <div className="col-span-6 p-5 h-96 bg-white rounded-md">
         <h1 className="m-3 text-xl font-semibold">Sector Market Data</h1>
-        <PortfolioSectorChart />
+        {renderSectorChart("sector")}
       </div>
-      
+
       <div className="col-span-6 p-5 h-96 bg-white rounded-md">
         <h1 className="m-3 text-xl font-semibold">Country Segregated Data</h1>
-        <PortfolioSectorChart />
+        {renderSectorChart("country")}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import HoldingsCard from "./HoldingsCard";
 import MarketSector from "./MarketSector";
 
-export default function StockHoldings({stockDetails}) {
+export default function StockHoldings({stockDetails, stockData}) {
 
     function renderStocks() {
         if (!stockDetails) return <div>Stocks Loading</div>;
@@ -11,6 +11,16 @@ export default function StockHoldings({stockDetails}) {
             return <HoldingsCard key={key} stock={stock} />;
         });
     }
+    
+    function renderMarketSector() {
+        if (!stockData) return <div>Market Sector Loading</div>;
+        const keys = Object.keys(stockData.sector)
+        return keys.map((key) => {
+            const data = stockData.sector[key]
+            return <MarketSector key={key} sectorKey={key} stockData={data}/>
+        })
+    }
+
     return (
         <div className="grid gap-5 p-5 grid-cols-12">
             <div className="col-span-9 p-2 bg-white rounded-md">
@@ -57,8 +67,7 @@ export default function StockHoldings({stockDetails}) {
                         </div>
                     </div>
                 </div>
-                <MarketSector />
-                <MarketSector />
+                {renderMarketSector()}
             </div>
         </div>
     )
