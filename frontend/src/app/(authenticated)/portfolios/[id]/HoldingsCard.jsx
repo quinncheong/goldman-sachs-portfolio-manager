@@ -1,5 +1,4 @@
 export default function HoldingsCard({ stock }) {
-    console.log(stock)
     return (
         <div className="w-full p-2 mb-2 bg-blue-100 rounded-md flex flex-row items-center h-16">
             <div className="w-[25%] font-semibold">
@@ -16,22 +15,22 @@ export default function HoldingsCard({ stock }) {
                     {stock.position}
                 </span>
                 <span className="text-gray-500 text-xs">
-                    {stock.market}
+                    {stock.market.toFixed(2)}
                 </span>
             </div>
             <div className="w-[10%] font-semibold flex flex-col">
                 <span>
-                    {stock.last}
+                    {stock.last.toFixed(2)}
                 </span>
                 <span className="text-gray-500 text-xs">
-                    {stock.cost}
+                    {stock.cost.toFixed(2)}
                 </span>
             </div>
             <div className={`w-[14%] font-semibold ${stock.pnla > 0 ? "text-green-600" : "text-red-500"}`}>
-                <span>{stock.pnla}</span>
+                <span>{stock.pnla.toFixed(2)}</span>
             </div>
             <div className={`w-[14%] font-semibold ${stock.dpnla > 0 ? "text-green-600" : "text-red-500"}`}>
-                <span>{stock.dpnla}</span>
+                <span>{stock.dpnla.toFixed(2)}</span>
             </div>
             <div className="w-[10%] font-semibold">
                 <span>
@@ -45,7 +44,7 @@ export default function HoldingsCard({ stock }) {
             </div>
             <div className={`w-[7%] font-semibold ${stock.positionsRatio > 0 ? "text-green-600" : "text-red-500"}`}>
                 <span>
-                    {stock.positionsRatio}%
+                    {stock.positionsRatio.toFixed(2)}%
                 </span>
             </div>
         </div>

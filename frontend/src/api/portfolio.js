@@ -97,6 +97,20 @@ const getStockDetails = async (portfolioId) => {
   return response.data;
 };
 
+export const useGetStockData = (portfolioId) => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getStockData", portfolioId],
+    queryFn: () => getStockData(portfolioId),
+  });
+
+  return { data, isLoading, isError, error };
+};
+
+const getStockData = async (portfolioId) => {
+  let response = await axiosInstance.get("/" + portfolioId + "/stockData");
+  return response.data;
+};
+
 export const useCreatePortfolio = () => {
   const queryClient = useQueryClient();
   const {
