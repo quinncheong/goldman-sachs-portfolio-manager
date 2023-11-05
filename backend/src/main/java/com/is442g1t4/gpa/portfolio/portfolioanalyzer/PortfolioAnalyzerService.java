@@ -75,6 +75,7 @@ public class PortfolioAnalyzerService {
         result.put("pnl", Double.parseDouble(df.format(pnl)));
         result.put("dpnla", dpnla);
         result.put("pnla", pnla);
+        result.put("value",Double.parseDouble(df.format(value)));
 
         return result;
     }
