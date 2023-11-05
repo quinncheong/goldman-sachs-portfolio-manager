@@ -97,3 +97,25 @@ export const createAccessLog = async (action) => {
     return "";
   }
 };
+
+export const useGetAccountData = () => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getAccountData"],
+    queryFn: () => getAccountData(),
+  });
+
+  return { data, isLoading, isError, error };
+};
+
+const getAccountData = async () => {
+  try {
+    let userId = jwtDecode(getCookie("token")).userId;
+    let response = await axiosUserInstance.get("/data/" + userId);
+    return response.data;
+  } catch (error) {
+    toast.error("Account has no data!");
+    console.log(error);
+    return [];
+  }
+};
+
