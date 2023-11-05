@@ -7,6 +7,7 @@ import { redirect, useRouter } from "next/navigation";
 export default function AddPortfolio() {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
+  const [initialValue, setInitialValue] = useState("");
   const [stocks, setStocks] = useState([]);
 
   const {
@@ -25,12 +26,16 @@ export default function AddPortfolio() {
     setDesc(e.target.value);
   };
 
+  const handleInitialValueChange = (e) => {
+    setInitialValue(parseFloat(e.target.value));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     let portfolioData = {
       name: name,
       description: desc,
-      initialValue: 0,
+      initialValue: initialValue,
       allocatedStocks: stocks,
     };
 
@@ -68,6 +73,19 @@ export default function AddPortfolio() {
                 className="textarea text-black bg-white textarea-bordered textarea-md w-full max-w-xs"
                 onChange={handleDescChange}
               ></textarea>
+            </div>
+            <div className="form-control w-full max-w-xs">
+              <label className="label">
+                <span className="label-text text-black">
+                  Initial Value (USD$)
+                </span>
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. 100000"
+                className="input text-black bg-white input-bordered input-md w-full max-w-xs"
+                onChange={handleInitialValueChange}
+              />
             </div>
             <button
               type="submit"

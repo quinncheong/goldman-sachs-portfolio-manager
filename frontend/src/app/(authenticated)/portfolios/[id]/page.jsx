@@ -108,6 +108,7 @@ function PortfolioPage({ params }) {
       </div>
       <PortfolioAnalysis
         stockData={stockData}
+        stockDetails={stockDetails}
       />
 
       <div className="rounded-md p-4 text-white bg-secondary-100">

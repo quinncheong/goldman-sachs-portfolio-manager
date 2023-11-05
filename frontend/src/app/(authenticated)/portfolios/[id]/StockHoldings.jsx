@@ -4,7 +4,9 @@ import MarketSector from "./MarketSector";
 export default function StockHoldings({stockDetails, stockData}) {
 
     function renderStocks() {
-        if (!stockDetails) return <div>Stocks Loading</div>;
+        
+        if (stockDetails===undefined) return <div><h1 className="m-3 text-xl font-semibold text-red-600">Loading Error</h1></div>;
+        if (Object.keys(stockDetails).length == 0) return <div><h1 className="m-3 text-xl font-semibold text-red-600">No stocks added!</h1></div>;
         const keys = Object.keys(stockDetails)
         return keys.map((key) => {
             const stock = stockDetails[key]
@@ -13,7 +15,8 @@ export default function StockHoldings({stockDetails, stockData}) {
     }
     
     function renderMarketSector() {
-        if (!stockData) return <div>Market Sector Loading</div>;
+        if (stockData===undefined) return <div><h1 className="m-3 text-xl font-semibold text-red-600">Loading Error</h1></div>;
+        if (Object.keys(stockData.sector).length == 0) return <div><h1 className="m-3 text-xl font-semibold text-red-600">No stocks added!</h1></div>;
         const keys = Object.keys(stockData.sector)
         return keys.map((key) => {
             const data = stockData.sector[key]
