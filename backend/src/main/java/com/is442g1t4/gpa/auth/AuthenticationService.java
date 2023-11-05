@@ -38,7 +38,7 @@ public class AuthenticationService {
                                 .password(passwordEncoder.encode(request.getPassword()))
                                 .email(request.getEmail())
                                 .portfolioIds(new ArrayList<ObjectId>())
-                                .isVerified(false)
+                                .verified(false)
                                 .role(RoleEnum.USER).build();
                 userRepository.save(user);
 
@@ -63,7 +63,7 @@ public class AuthenticationService {
                                 .password(passwordEncoder.encode(request.getPassword()))
                                 .email(request.getEmail())
                                 .portfolioIds(new ArrayList<ObjectId>())
-                                .isVerified(true)
+                                .verified(true)
                                 .role(RoleEnum.ADMIN)
                                 .build();
                 userRepository.save(user);
