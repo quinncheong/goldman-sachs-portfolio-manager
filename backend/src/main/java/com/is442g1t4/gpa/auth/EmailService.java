@@ -22,9 +22,9 @@ public class EmailService {
         this.templateEngine = templateEngine;
     }
 
-    public void sendEmail(String name, String email, String token)  throws MessagingException{
+    public void sendVerificationEmail(String name, String email, String token)  throws MessagingException{
         Context context = new Context();
-        String urlString = "http//localhost:3000/verify?=" + token;
+        String urlString = "http://localhost:3000/verify?=" + token;
         context.setVariables(Map.of("name", name, "url", urlString));
         String messageText = templateEngine.process("emailtemplate",context);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -36,6 +36,26 @@ public class EmailService {
         mimeMessageHelper.setText( messageText,true);
         // mimeMessageHelper.setText("hi",true);
         mimeMessageHelper.setSubject("NEW USER ACCOUNT VERIFICATION");
+
+        javaMailSender.send(mimeMessage);
+
+        System.out.println("Message sent");
+    }
+
+    public void sendForgetPasswordEmail(String name, String email, String token)  throws MessagingException{
+        Context context = new Context();
+        String urlString = "http://localhost:3000/forget-password?=" + token;
+        context.setVariables(Map.of("name", name, "url", urlString));
+        String messageText = templateEngine.process("forgotpasswordtemplate",context);
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+
+        mimeMessageHelper.setFrom("is442g1t4@gmail.com");
+        mimeMessageHelper.setTo(email);
+        mimeMessageHelper.setText( messageText,true);
+        // mimeMessageHelper.setText("hi",true);
+        mimeMessageHelper.setSubject("FORGET PASSWORD");
 
         javaMailSender.send(mimeMessage);
 

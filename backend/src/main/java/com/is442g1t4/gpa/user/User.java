@@ -65,6 +65,11 @@ public class User implements UserDetails {
         return role;
     }
 
+
+    public boolean getVerified(){
+        return verified;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
