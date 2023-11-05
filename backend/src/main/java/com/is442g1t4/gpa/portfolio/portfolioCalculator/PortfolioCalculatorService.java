@@ -2,7 +2,11 @@ package com.is442g1t4.gpa.portfolio.portfolioCalculator;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.is442g1t4.gpa.stock.StockService;
 import com.is442g1t4.gpa.user.User;
@@ -13,6 +17,7 @@ import com.is442g1t4.gpa.portfolio.PortfolioRepository;
 import com.is442g1t4.gpa.portfolio.PortfolioService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
+import com.is442g1t4.gpa.portfolio.portfolioanalyzer.PortfolioAnalyzerService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockRepository;
 
 import java.util.*;
@@ -25,6 +30,7 @@ public class PortfolioCalculatorService {
 
     @Autowired
     private StockService stockService;
+
 
     
 
@@ -113,5 +119,6 @@ public class PortfolioCalculatorService {
 
         return data;
     }   
+
 
 }

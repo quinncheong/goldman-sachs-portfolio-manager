@@ -19,6 +19,7 @@ import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
 import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculator;
 import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculatorService;
+import com.is442g1t4.gpa.portfolio.portfolioanalyzer.PortfolioAnalyzerService;
 
 @RestController
 @RequestMapping("/api/v1/portfolio")
@@ -29,6 +30,9 @@ public class PortfolioController {
     @Autowired
     private PortfolioCalculatorService portfolioCalculatorService;
 
+    @Autowired
+    private PortfolioAnalyzerService portfolioAnalyzer;
+    
     @GetMapping("/all")
     public ResponseEntity<List<Portfolio>> getAllPortfolios() {
         return new ResponseEntity<List<Portfolio>>(portfolioService.getAllPortfolios(),
@@ -114,5 +118,9 @@ public class PortfolioController {
     public ResponseEntity<Map<String, Map<String,Double>>> getStockData(@PathVariable ObjectId id) {
         return new ResponseEntity<Map<String, Map<String,Double>>>(
                 portfolioCalculatorService.getStockData(portfolioCalculatorService.getCalculatedStockInPortfolio(id)), HttpStatus.OK);
+    }
+    @GetMapping("/{id}/portfolio")
+    public ResponseEntity<Map<String, Double>> getPortfolioTotal(@PathVariable ObjectId id) {
+        return new ResponseEntity<Map<String, Double>>(portfolioAnalyzer.getPortfolioAnalysis(id), HttpStatus.OK);
     }
 }
