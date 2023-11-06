@@ -1,5 +1,19 @@
-export default function HoldingsCard({ stock }) {
+import { useRemoveStock } from "@/api/portfolio";
+
+export default function HoldingsCard({ stock , portfolioData }) {
+    const {
+        isRemoving,
+        isSuccessRemoving,
+        isErrorRemoving,
+        removeError,
+        remStock,
+      } = useRemoveStock();
     
+    const handleRemoveStock = (e) => {
+        e.preventDefault()
+        remStock({"portfolioId" : portfolioData.id, "stockTicker" : stock.stockTicker})
+        
+    }
     return (
         <div className="w-full p-2 mb-2 bg-blue-100 rounded-md flex flex-row items-center h-16">
             <div className="w-[25%] font-semibold">
@@ -50,6 +64,16 @@ export default function HoldingsCard({ stock }) {
                     {stock.positionsRatio.toFixed(2)}%
                 </span>
             </div>
+            <div className="w-[7%] font-semibold ">
+                <span>
+                <button
+          className="btn bg-error p-4 text-white border-0 float-right"
+          onClick={handleRemoveStock}
+        >
+          x
+        </button>
+                </span>
+            </div> 
         </div>
     )
 }

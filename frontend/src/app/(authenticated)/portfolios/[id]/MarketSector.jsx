@@ -14,7 +14,7 @@ export default function MarketSector({ sectorKey, stockData }) {
                 <span>{capitalize(sectorKey)}</span>
             </div>
             <div className="w-4/12 font-bold">
-                <span>{stockData}%</span>
+                <span>{stockData.toFixed(2)}%</span>
             </div>
         </div>
     )

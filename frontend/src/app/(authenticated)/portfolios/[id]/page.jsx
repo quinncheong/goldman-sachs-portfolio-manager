@@ -21,6 +21,7 @@ import { jwtDecode } from "jwt-decode";
 import withAuth from "@/middleware/authentication";
 
 function PortfolioPage({ params }) {
+  console.log(params.id);
   const router = useRouter();
   const {
     data: portfolio,
@@ -127,6 +128,7 @@ function PortfolioPage({ params }) {
       <StockHoldings 
         stockDetails={stockDetails}
         stockData={stockData}
+        portfolioData={portfolio}
       />
 
       <AddStockModal

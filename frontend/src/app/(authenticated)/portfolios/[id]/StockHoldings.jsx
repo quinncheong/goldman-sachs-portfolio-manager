@@ -1,7 +1,7 @@
 import HoldingsCard from "./HoldingsCard";
 import MarketSector from "./MarketSector";
 
-export default function StockHoldings({stockDetails, stockData}) {
+export default function StockHoldings({stockDetails, stockData, portfolioData}) {
 
     function renderStocks() {
         
@@ -10,7 +10,8 @@ export default function StockHoldings({stockDetails, stockData}) {
         const keys = Object.keys(stockDetails)
         return keys.map((key) => {
             const stock = stockDetails[key]
-            return <HoldingsCard key={key} stock={stock} />;
+            
+            return <HoldingsCard key={key} stock={stock} portfolioData={portfolioData}/>;
         });
     }
     
@@ -53,6 +54,9 @@ export default function StockHoldings({stockDetails, stockData}) {
                         </div>
                         <div className="w-[7%] text-xs">
                             <span>Positions Ratio</span>
+                        </div>
+                        <div className="w-[7%] text-xs">
+                            <span > <div className="float-right">Remove Stock</div></span>
                         </div>
                     </div>
                 </div>

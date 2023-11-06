@@ -270,10 +270,66 @@ export const useDeletePortfolio = () => {
   };
 };
 
+
+
 const deletePortfolio = async (portfolioId) => {
   console.log(portfolioId);
   try {
     let response = await axiosInstance.delete("/" + portfolioId);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+
+export const useRemoveStock = () => {
+  const queryClient = useQueryClient();
+  const {
+    isLoading: isRemoving,
+    isSuccess: isSuccessRemoving,
+    isError: isErrorRemoving,
+    error: removeError,
+    mutate: remStock,
+  } = useMutation({
+    mutationFn: (data) => removeStock(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["useGetStockData",  "useGetStockDetails"]);
+    },
+    onMutate: (variables) => {
+      // A mutation is about to happen!
+      // Optionally return a context containing data to use when for example rolling back
+      // return { id: 1 };
+    },
+    onError: (error, variables, context) => {
+      // An error happened!
+      // console.log(`rolling back optimistic update with id ${context.id}`);
+      toast.error(error);
+    },
+    onSuccess: (data, variables, context) => {
+      toast.success("Stock Successfully Removed!");
+      console.log(data);
+    },
+    onSettled: (data, error, variables, context) => {
+      // Error or success... doesn't matter!
+    },
+  });
+
+  return {
+    isRemoving,
+    isSuccessRemoving,
+    isErrorRemoving,
+    removeError,
+    remStock,
+  };
+};
+
+const removeStock = async (removed) => {
+
+  try {
+    const portfolioId = removed.portfolioId;
+    const stockTicker = removed.stockTicker;
+    let response = await axiosInstance.delete("/" + portfolioId + "/" + stockTicker);
     return response.data;
   } catch (error) {
     return error;
