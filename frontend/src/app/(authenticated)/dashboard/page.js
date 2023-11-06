@@ -3,51 +3,64 @@ import {
   useGetPortfoliosOfUser,
   useGetPublicPortfolios,
 } from "@api/portfolio.js";
+import {useGetAccountData} from "@api/user.js";
 import PortfolioTable from "./PortfolioTable";
 import PortfolioCarousel from "./PortfolioCarousel";
 import { withAuth } from "@/middleware/authentication";
+import Loader from "@/components/loading/Loader";
 
 function Dashboard() {
   const { data, isLoading, isError, error } = useGetPortfoliosOfUser();
+  const { 
+    data: accData,
+    isLoading: isAccDataLoading, 
+    isError: isAccDataError, 
+    error: AccDataError 
+  } = useGetAccountData();
   const {
     data: publicPortfolios,
     isLoading: isPublicPorfoliosLoading,
     isError: isPublicPorfoliosError,
     error: publicPortfoliosError,
   } = useGetPublicPortfolios();
+  console.log(accData)
 
+  if (isAccDataLoading) {
+    return <Loader />;
+  } 
   const financials = [
-    {
-      label: "Total Assets",
-      value: "$50,000",
-    },
-    {
-      label: "Total Securities Value",
-      value: "$40,000",
-    },
-    {
-      label: "Total Cash Balance",
-      value: "$10,000",
-    },
-  ];
+  {
+    label: "Total Assets",
+    value: "$"+new Intl.NumberFormat('en-US', {style: 'decimal',}).format(accData.totalAssets),
+  },
+  {
+    label: "Total Securities Value",
+    value: "$"+new Intl.NumberFormat('en-US', {style: 'decimal',}).format(accData.totalSecurities),
+  },
+  {
+    label: "Total Cash Balance",
+    value: "$"+new Intl.NumberFormat('en-US', {style: 'decimal',}).format(accData.totalCash),
+  },
+];
+  const dpnlStatus = badgeColor(accData.dpnlp);
+  const pnlStatus = badgeColor(accData.pnlp);
 
   const analysis = [
     {
       label: "Daily P&L",
-      value: "-$800",
-      badge: { text: "-1.6%", color: "error" },
+      value: dpnlStatus[0] + "$" + new Intl.NumberFormat('en-US', {style: 'decimal',}).format(Math.abs(accData.dpnla)),
+      badge: { text: dpnlStatus[0] + new Intl.NumberFormat('en-US', {style: 'decimal',}).format(Math.abs(accData.dpnlp))+"%", color: dpnlStatus[1] },
     },
     {
       label: "Total P&L",
-      value: "$4,000",
-      badge: { text: "+5.75%", color: "success" },
+      value: pnlStatus[0]+ "$" + new Intl.NumberFormat('en-US', {style: 'decimal',}).format(Math.abs(accData.pnla)),
+      badge: { text: pnlStatus[0] + new Intl.NumberFormat('en-US', {style: 'decimal',}).format(Math.abs(accData.pnlp))+"%", color: pnlStatus[1] },
     },
     {
       label: "Annualized Rate of Return",
       value: "20.50%",
     },
   ];
-
   return (
     <div style={{ height: "1600px" }} className="min-w-full">
       <div className="container flex flex-col gap-5 mx-auto p-4 text-black">
@@ -104,3 +117,11 @@ const InfoItem = ({ label, value, badge }) => (
 const Badge = ({ text, color }) => (
   <div className={`badge badge-${color} text-white font-bold`}>{text}</div>
 );
+
+function badgeColor(value) {
+  if (value >= 0) {
+    return ["+","success"];
+  } else {
+    return ["-","error"];
+  }
+}
