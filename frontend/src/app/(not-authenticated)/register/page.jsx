@@ -57,7 +57,7 @@ export default function Register() {
     if (isRegisterError) {
       alert(registerError);
     } else {
-      router.push("/dashboard");
+      router.push("/");
     }
   };
 

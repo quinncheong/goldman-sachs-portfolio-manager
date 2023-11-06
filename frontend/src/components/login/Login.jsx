@@ -2,26 +2,27 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
-import { login } from "@api/authentication";
-import { useCreateAccessLog } from "@/api/user";
+import { login, useLogin } from "@api/authentication";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const { accessLogError, addAccessLog } = useCreateAccessLog();
+  const { data, isLoading, isSuccess, isError, error, mutateAsync } =
+    useLogin();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = await login(username, password);
-    if (token === 403) {
-      alert("Wrong username or password.");
-    } else {
-      await setCookie("token", token);
-      await addAccessLog("LOGIN");
+    await mutateAsync({ username, password });
+
+    if (isSuccess && data.isVerified && data.token) {
       router.push("/dashboard");
+    }
+
+    if (isError) {
+      toast.warning(error);
     }
   };
 

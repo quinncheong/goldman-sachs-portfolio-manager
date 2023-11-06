@@ -62,23 +62,50 @@ export const verifyRegisteredUser = async (token) => {
   }
 };
 
-export const login = async (username, password) => {
+export const useLogin = () => {
+  const { data, isLoading, isSuccess, isError, error, mutateAsync } =
+    useMutation({
+      mutationFn: (data) => login(data),
+      onSuccess: async (data) => {
+        setCookie("token", data.token);
+        createAccessLog("LOGIN");
+      },
+      onError: (error) => {
+        alert(error);
+      },
+    });
+
+  return {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    mutateAsync,
+  };
+};
+
+export const login = async ({ username, password }) => {
   const json = {
     username: username,
     password: password,
   };
+
+  let res = {
+    isVerified: false,
+    token: "",
+  };
+
   try {
     let response = await axiosAuthInstance.post("/authenticate", json);
     console.log(response);
-    return response.data.token;
+    res.token = response.data.token;
+    res.isVerified = response.data.verified;
   } catch (err) {
-    if (err.response.status === 403) {
-      console.log("Wrong username/password.");
-      return 403;
-    } else {
-      console.log("Something went wrong.");
-    }
+    console.log(err);
   }
+
+  return res;
 };
 
 export const useGetLoginStatus = () => {
