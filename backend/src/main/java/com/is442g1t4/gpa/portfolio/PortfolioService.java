@@ -137,6 +137,11 @@ public class PortfolioService {
             for (AllocatedStock allocatedStock: allocatedStocks){
                 if (!allocatedStock.getStockTicker().equals(stockTicker)){
                     newAllocatedStocks.add(allocatedStock);
+                }else{
+                    double allocatedStockValue = allocatedStock.getStockQuantity() * allocatedStock.getStockBuyPrice();
+                    double portfolioInitialValue = portfolio.get().getInitialValue();
+                    portfolio.get().setInitialValue(portfolioInitialValue + allocatedStockValue);
+                    portfolioRepository.save(portfolio.get());
                 }
             }
         }
