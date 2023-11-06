@@ -21,8 +21,8 @@ export const useRegister = () => {
     useMutation({
       mutationFn: (data) => register(data),
       onSuccess: async (tokenData) => {
-        await setCookie("token", tokenData.token);
-        createAccessLog("REGISTER");
+        console.log(tokenData);
+        createLogWithToken(tokenData.token, "REGISTER");
       },
       onError: (error) => {
         alert(error);
@@ -38,7 +38,6 @@ export const useRegister = () => {
     mutateAsync,
   };
 };
-
 const register = async (userData) => {
   try {
     let response = await axiosAuthInstance.post("/register", userData);

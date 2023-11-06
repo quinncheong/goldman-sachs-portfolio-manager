@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useRegister } from "@/api/authentication";
-import { setCookie } from "cookies-next";
 
 export default function Register() {
   const router = useRouter();

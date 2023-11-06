@@ -2,6 +2,7 @@
 import { useResetPassword } from "@/api/authentication";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function TokenVerified({ token }) {
   const [password, setPassword] = useState("");
@@ -15,12 +16,13 @@ function TokenVerified({ token }) {
   const {
     data,
     isLoading,
+    isSuccess: isResetPasswordSuccess,
     isError: isResetPasswordError,
     error: resetPasswordError,
     mutateAsync,
   } = useResetPassword();
 
-  const handleRegisterUser = async (e) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault();
 
     if (passwordErrors.length > 0 || confirmPasswordErrors.length > 0) {
@@ -34,8 +36,6 @@ function TokenVerified({ token }) {
     await mutateAsync({ token, password });
     if (isResetPasswordError) {
       alert(resetPasswordError);
-    } else {
-      router.push("/dashboard");
     }
   };
 
@@ -78,6 +78,30 @@ function TokenVerified({ token }) {
     setConfirmPasswordErrors(errors);
     return errors;
   };
+
+  const handlePasswordChange = (e) => {
+    e.preventDefault();
+    setPassword(e.target.value);
+  };
+
+  // function ResetPasswordForm() {
+  //   return (
+
+  //   );
+  // }
+
+  function ResetPasswordSuccess() {
+    return (
+      <div className="flex flex-col align-items-center">
+        <h2>You have successfully reset your password!</h2>
+        <p>Click the button below to sign in!</p>
+        <button className="w-full mt-3 text-white btn bg-primary-300 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+          <Link href={"/"}>Sign In</Link>
+        </button>
+      </div>
+    );
+  }
+
   return (
     <section style={{ height: 1700 }} className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center p-8 m-auto">
@@ -97,59 +121,59 @@ function TokenVerified({ token }) {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Reset your password
             </h1>
-
             {/* Form */}
-            <form className="space-y-4 md:space-y-6" action="#">
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onBlur={validatePassword}
-                />
-                <RenderFormErrors errors={passwordErrors} />
-              </div>
-              <div>
-                <label
-                  htmlFor="confirmPassword"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  id="confirmPassword"
-                  placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  onBlur={validateConfirmPassword}
-                />
-                <RenderFormErrors errors={confirmPasswordErrors} />
-              </div>
+            {!isResetPasswordSuccess && (
+              <form className="space-y-4 md:space-y-6" action="#">
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="••••••••"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required
+                    value={password}
+                    onChange={handlePasswordChange}
+                    onBlur={validatePassword}
+                  />
+                  <RenderFormErrors errors={passwordErrors} />
+                </div>
+                <div>
+                  <label
+                    htmlFor="confirmPassword"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Confirm Password
+                  </label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="••••••••"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onBlur={validateConfirmPassword}
+                  />
+                  <RenderFormErrors errors={confirmPasswordErrors} />
+                </div>
 
-              <button
-                onClick={handleRegisterUser}
-                type="submit"
-                className="w-full text-white btn bg-primary-300 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                Reset Password!
-              </button>
-            </form>
+                <button
+                  onClick={handleResetPassword}
+                  type="submit"
+                  className="w-full text-white btn bg-primary-300 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                >
+                  Reset Password!
+                </button>
+              </form>
+            )}
             {/* Form End */}
+            {isResetPasswordSuccess && <ResetPasswordSuccess />}
           </div>
         </div>
       </div>
