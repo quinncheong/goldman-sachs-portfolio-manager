@@ -9,6 +9,8 @@ import com.is442g1t4.gpa.user.UserRepository;
 import com.is442g1t4.gpa.portfolio.PortfolioService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -124,4 +126,22 @@ public class PortfolioService {
         return portfolioRepository.save(portfolio.get());
     }
 
+    public Portfolio deleteAllocatedStockFromPortfolio(ObjectId portfolioId, String stockTicker){
+        Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
+        List<AllocatedStock> newAllocatedStocks = new ArrayList<>();
+
+        if (portfolio.isPresent()) {
+
+            List<AllocatedStock> allocatedStocks = portfolio.get().getAllocatedStocks();
+
+            for (AllocatedStock allocatedStock: allocatedStocks){
+                if (!allocatedStock.getStockTicker().equals(stockTicker)){
+                    newAllocatedStocks.add(allocatedStock);
+                }
+            }
+        }
+        portfolio.get().setAllocatedStocks(newAllocatedStocks);
+        Portfolio retrievedPortfolio = portfolioRepository.save(portfolio.get());
+        return retrievedPortfolio;
+    }
 }
