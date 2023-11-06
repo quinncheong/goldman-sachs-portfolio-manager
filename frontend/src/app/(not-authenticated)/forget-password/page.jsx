@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { sendResetPasswordMail } from "@api/authentication";
 
-export default function Login() {
+export default function Page() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [mailSent, setMailSent] = useState(false);

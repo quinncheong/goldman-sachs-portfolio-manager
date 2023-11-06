@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { verifyResetPwToken } from "@/api/authentication";
+import { verifyJWT } from "@/api/authentication";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
@@ -21,7 +21,7 @@ function Page() {
         return;
       }
 
-      let isVerified = await verifyResetPwToken(token);
+      let isVerified = await verifyJWT(token);
       console.log("isVerified " + isVerified);
       setVerified(isVerified);
     }
@@ -40,7 +40,6 @@ function RenderUnverified() {
   const router = useRouter();
 
   useEffect(() => {
-    toast.error("You are unauthorized to access");
     // router.push("/");
   }, []);
 

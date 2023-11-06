@@ -6,10 +6,11 @@ import { getCookie, setCookie } from "cookies-next";
 import { BASE_SERVER_URL, AUTH_API_PATH } from "./apiFactory";
 import { toast } from "react-toastify";
 import { createAccessLog, createLogWithToken } from "./user";
+import { jwtDecode } from "jwt-decode";
 
 const axiosAuthInstance = axios.create({
   baseURL: BASE_SERVER_URL + AUTH_API_PATH,
-  timeout: 3000,
+  timeout: 5000,
   headers: {
     "Content-Type": "application/json",
   },
@@ -41,6 +42,19 @@ export const useRegister = () => {
 const register = async (userData) => {
   try {
     let response = await axiosAuthInstance.post("/register", userData);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+export const verifyRegisteredUser = async (token) => {
+  try {
+    let response = await axiosAuthInstance.post(
+      "/register/verification/" + token
+    );
+    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -92,7 +106,8 @@ const getLoginStatus = async () => {
 
 export const sendResetPasswordMail = async (email) => {
   try {
-    let response = await axiosAuthInstance.post("/reset-password-mail", email);
+    let response = await axiosAuthInstance.post("/password/reset/email", email);
+    console.log(response);
     return response.data.token;
   } catch (err) {
     console.log(err);
@@ -100,14 +115,19 @@ export const sendResetPasswordMail = async (email) => {
   }
 };
 
-export const verifyResetPwToken = async (token) => {
+export const verifyJWT = async (token) => {
   try {
-    let response = await axiosAuthInstance.post("/verify-token", token);
-    return true;
-    return response.data.token;
+    console.log("Verifying JWT: " + token);
+    jwtDecode(token);
+    let response = await axiosAuthInstance.get("/verify/" + token);
+    console.log(response);
+    if (response.data) {
+      return true;
+    }
+    return false;
   } catch (err) {
     console.log(err);
-    return true;
+    return false;
   }
 };
 
@@ -133,12 +153,11 @@ export const useResetPassword = () => {
   };
 };
 
-const resetPassword = async (token, password) => {
+const resetPassword = async ({ token, password }) => {
   try {
-    let response = await axiosAuthInstance.post(
-      "/reset-password/" + token,
-      password
-    );
+    let response = await axiosAuthInstance.post("/password/reset/" + token, {
+      newPassword: password,
+    });
     return response.data;
   } catch (error) {
     console.log(error);

@@ -9,9 +9,13 @@ import com.is442g1t4.gpa.auth.PasswordRequest;
 import com.is442g1t4.gpa.auth.WrongPasswordException;
 import com.is442g1t4.gpa.portfolio.Portfolio;
 import com.is442g1t4.gpa.portfolio.PortfolioService;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import com.is442g1t4.gpa.portfolio.portfolioanalyzer.PortfolioAnalyzerService;
 import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculatorUtility;
-import java.util.*;
 
 @Service
 public class UserService {
@@ -35,6 +39,7 @@ public class UserService {
     }
 
     public Optional<User> getUser(ObjectId id) {
+        System.out.println(id);
         return userRepository.findById(id);
     }
 
@@ -116,21 +121,22 @@ public class UserService {
         return userRepository.save(user.get());
     }
 
-    public Map<String,Double> getAccountData (ObjectId id) {
-        Map<String,Double> data = new HashMap<>();
+    public Map<String, Double> getAccountData(ObjectId id) {
+        Map<String, Double> data = new HashMap<>();
         Double dpnl = 0.0;
         Double dpnla = 0.0;
         Double pnla = 0.0;
         Double pnl = 0.0;
-        
+
         Double totalSecurities = 0.0;
         Double totalCash = 0.0;
         Optional<User> user = userRepository.findById(id);
-        
+
         List<Portfolio> portfolios = portfolioService.getPortfoliosByUserId(id);
-        if (portfolios.size()>0) {
+        if (portfolios.size() > 0) {
             for (Portfolio portfolio : portfolios) {
-                Map<String, Double> result = portfolioAnalyzer.getPortfolioAnalysis(portfolio.getId());
+                Map<String, Double> result =
+                        portfolioAnalyzer.getPortfolioAnalysis(portfolio.getId());
                 System.out.println(result);
                 dpnl += result.get("dpnl");
                 dpnla += result.get("dpnla");
@@ -138,22 +144,22 @@ public class UserService {
                 pnl += result.get("pnl");
                 totalSecurities += result.get("value");
 
-                //comment out once refactor
+                // comment out once refactor
                 totalCash += portfolio.getInitialValue();
             }
             totalCash += user.get().getCashBalance();
-            
-            
-            
+
+
+
         }
         Double totalAssets = totalCash + totalSecurities;
-        data.put("dpnlp",PortfolioCalculatorUtility.round(dpnl));
-        data.put("dpnla",dpnla);
-        data.put("pnla",pnla);
-        data.put("pnlp",PortfolioCalculatorUtility.round(pnl));
-        data.put("totalAssets",totalAssets);
-        data.put("totalSecurities",totalSecurities);
-        data.put("totalCash",totalCash);
+        data.put("dpnlp", PortfolioCalculatorUtility.round(dpnl));
+        data.put("dpnla", dpnla);
+        data.put("pnla", pnla);
+        data.put("pnlp", PortfolioCalculatorUtility.round(pnl));
+        data.put("totalAssets", totalAssets);
+        data.put("totalSecurities", totalSecurities);
+        data.put("totalCash", totalCash);
         return data;
-    }  
+    }
 }
