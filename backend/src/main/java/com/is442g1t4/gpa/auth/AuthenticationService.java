@@ -34,6 +34,13 @@ public class AuthenticationService {
         private final EmailService emailservice;
 
         public AuthenticationResponse register(RegisterRequest request) {
+
+                Optional<User> duplicateUsername = userRepository.findByEmail(request.getEmail());
+                Optional<User> duplicateEmail = userRepository.findByEmail(request.getEmail());
+
+                if (duplicateUsername.isPresent()||duplicateEmail.isPresent()){
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Duplicate username or email");
+                }
                 User user = User.builder().name(request.getName()).username(request.getUsername())
                                 .password(passwordEncoder.encode(request.getPassword()))
                                 .email(request.getEmail()).portfolioIds(new ArrayList<ObjectId>())
