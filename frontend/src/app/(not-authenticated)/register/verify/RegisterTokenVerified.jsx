@@ -3,27 +3,33 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { verifyRegisteredUser } from "@/api/authentication";
+import { useVerifyRegisteredUser } from "@/api/authentication";
 import Loader from "@/components/loading/Loader";
 
 function RegisterTokenVerified({ token }) {
-  const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  const {
+    data,
+    isLoading,
+    isSuccess: isVerificationSuccess,
+    isError,
+    error,
+    mutateAsync,
+  } = useVerifyRegisteredUser();
 
   useEffect(() => {
     handleRegisterUser();
 
     async function handleRegisterUser() {
-      let finishedConfirmation = await verifyRegisteredUser(token);
-      if (finishedConfirmation) {
-        setLoading(false);
-      } else {
+      await mutateAsync(token);
+      if (isError) {
         router.push("/");
       }
     }
   }, [router, token]);
 
-  if (loading) {
+  if (isLoading) {
     return <Loader />;
   }
 
@@ -51,9 +57,12 @@ function RegisterTokenVerified({ token }) {
               You can now click the button below to go back to the Sign in page
               and access your account.
             </p>
-            <button className="btn bg-primary-300 hover:bg-green-800 my-auto mt-3">
-              <Link href={"/"}>Sign In</Link>
-            </button>
+            <Link
+              className="btn bg-primary-300 hover:bg-green-800 my-auto mt-3"
+              href={"/"}
+            >
+              Sign In
+            </Link>
           </div>
         </div>
       </div>

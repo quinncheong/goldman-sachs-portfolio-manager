@@ -34,6 +34,12 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
+    @PostMapping("/register/admin")
+    public ResponseEntity<AuthenticationResponse> registerAdmin(
+            @RequestBody RegisterRequest request) {
+        return ResponseEntity.ok(authenticationService.registerAdmin(request));
+    }
+
     @PostMapping("/register/verification")
     public ResponseEntity<String> sendVerificationEmail(@RequestBody EmailDetails emailDetails) {
         String recipientEmail = emailDetails.getRecipient();
@@ -60,19 +66,13 @@ public class AuthenticationController {
                 HttpStatus.OK);
     }
 
-    @PostMapping("/register/admin")
-    public ResponseEntity<AuthenticationResponse> registerAdmin(
-            @RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authenticationService.registerAdmin(request));
-    }
+
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
-
-
 
     @PostMapping("/password/reset/email")
     public ResponseEntity<EmailResponse> forgetPassword(@RequestBody EmailRequest request) {

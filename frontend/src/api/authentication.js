@@ -4,7 +4,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCookie, setCookie } from "cookies-next";
 
 import { BASE_SERVER_URL, AUTH_API_PATH } from "./apiFactory";
-import { toast } from "react-toastify";
 import { createAccessLog, createLogWithToken } from "./user";
 import { jwtDecode } from "jwt-decode";
 
@@ -21,7 +20,6 @@ export const useRegister = () => {
     useMutation({
       mutationFn: (data) => register(data),
       onSuccess: async (tokenData) => {
-        console.log(tokenData);
         createLogWithToken(tokenData.token, "REGISTER");
       },
       onError: (error) => {
@@ -46,6 +44,29 @@ const register = async (userData) => {
     console.log(error);
     return error;
   }
+};
+
+export const useVerifyRegisteredUser = () => {
+  const { data, isLoading, isSuccess, isError, error, mutateAsync } =
+    useMutation({
+      mutationFn: (data) => verifyRegisteredUser(data),
+      onSuccess: async (tokenData) => {
+        console.log(tokenData);
+        createLogWithToken(tokenData.token, "VERIFY_EMAIL");
+      },
+      onError: (error) => {
+        alert(error);
+      },
+    });
+
+  return {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    mutateAsync,
+  };
 };
 
 export const verifyRegisteredUser = async (token) => {
@@ -130,7 +151,29 @@ const getLoginStatus = async () => {
   });
 };
 
-export const sendResetPasswordMail = async (email) => {
+export const useSendResetPwMail = () => {
+  const { data, isLoading, isSuccess, isError, error, mutateAsync } =
+    useMutation({
+      mutationFn: (data) => sendResetPasswordMail(data),
+      onSuccess: async (tokenData) => {
+        // createLogWithToken(tokenData.token, "RESET_PASSWORD_PENDING");
+      },
+      onError: (error) => {
+        alert(error);
+      },
+    });
+
+  return {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    mutateAsync,
+  };
+};
+
+const sendResetPasswordMail = async (email) => {
   try {
     let response = await axiosAuthInstance.post("/password/reset/email", email);
     console.log(response);
