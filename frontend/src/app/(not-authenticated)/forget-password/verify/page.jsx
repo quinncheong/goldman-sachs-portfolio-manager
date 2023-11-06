@@ -40,7 +40,6 @@ function RenderUnverified() {
   const router = useRouter();
 
   useEffect(() => {
-    toast.error("You are unauthorized to access");
     // router.push("/");
   }, []);
 
