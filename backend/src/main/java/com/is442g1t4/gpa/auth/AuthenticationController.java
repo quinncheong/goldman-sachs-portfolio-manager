@@ -23,8 +23,7 @@ public class AuthenticationController {
     private final EmailService emailservice;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegisterRequest request) {
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(service.register(request));
     }
 
@@ -46,12 +45,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/changepassword/{token}")
-    public ResponseEntity<PasswordChangedStatus> changeForgottenPassword(@PathVariable String token,@RequestBody ForgetPasswordRequest request) {
+    public ResponseEntity<PasswordChangedStatus> changeForgottenPassword(@PathVariable String token,
+            @RequestBody ForgetPasswordRequest request) {
         return ResponseEntity.ok(service.changeForgottenPassword(request, token));
     }
 
     @PostMapping("/verification")
-    public ResponseEntity<String> sendVerificationEmail(@RequestBody EmailDetails emailDetails){
+    public ResponseEntity<String> sendVerificationEmail(@RequestBody EmailDetails emailDetails) {
         String recipientEmail = emailDetails.getRecipient();
         String token = "hello I am a jwt token";
         String name = "Bryan";
@@ -60,21 +60,18 @@ public class AuthenticationController {
         // String attachment = emailDetails.getAttachment();
         try {
             System.out.println("Sending...");
-            emailservice.sendVerificationEmail(name, recipientEmail,token);
+            emailservice.sendVerificationEmail(name, recipientEmail, token);
             System.out.println("Email sent successfully");
-            return new ResponseEntity<String>("Email sent succesfully",
-                HttpStatus.OK);
-        }
-        catch (MessagingException e) {
+            return new ResponseEntity<String>("Email sent succesfully", HttpStatus.OK);
+        } catch (MessagingException e) {
             System.out.println("Failed to send email. Error: " + e.getMessage());
             return new ResponseEntity<String>("Failed to send email. Error: " + e.getMessage(),
-                HttpStatus.OK);
+                    HttpStatus.OK);
         }
     }
 
     @PostMapping("/verification/{token}")
-    public ResponseEntity<AuthenticationResponse> verifyAccount(@PathVariable String token){
-        return new ResponseEntity<AuthenticationResponse>(service.verifyUser(token),
-                    HttpStatus.OK);
+    public ResponseEntity<AuthenticationResponse> verifyAccount(@PathVariable String token) {
+        return new ResponseEntity<AuthenticationResponse>(service.verifyUser(token), HttpStatus.OK);
     }
 }
