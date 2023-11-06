@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { setCookie } from "cookies-next";
-import { login, useLogin } from "@api/authentication";
+import { useLogin } from "@api/authentication";
 import Link from "next/link";
 import { toast } from "react-toastify";
 
@@ -17,9 +16,14 @@ export default function Login() {
     e.preventDefault();
     await mutateAsync({ username, password });
 
+    console.log("here");
     if (isSuccess && data.isVerified && data.token) {
-      router.push("/dashboard");
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 2000);
+      return;
     }
+    console.log("here2");
 
     if (isError) {
       toast.warning(error);
@@ -111,7 +115,6 @@ export default function Login() {
               </div>
               <button
                 onClick={handleSubmit}
-                type="submit"
                 className="w-full btn text-white bg-primary-200 hover:bg-primary-100 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
                 Sign in

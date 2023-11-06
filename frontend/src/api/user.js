@@ -28,10 +28,10 @@ export const useGetAccountData = () => {
 const getAccountData = async () => {
   try {
     let userId = jwtDecode(getCookie("token")).userId;
+    console.log(userId);
     let response = await axiosUserInstance.get("/data/" + userId);
     return response.data;
   } catch (error) {
-    toast.error("Account has no data!");
     console.log(error);
     return [];
   }

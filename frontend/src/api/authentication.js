@@ -130,7 +130,7 @@ export const login = async ({ username, password }) => {
 
 export const useGetLoginStatus = () => {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["getPortfolios"],
+    queryKey: ["getLoginStatus"],
     queryFn: () => getLoginStatus(),
   });
 
