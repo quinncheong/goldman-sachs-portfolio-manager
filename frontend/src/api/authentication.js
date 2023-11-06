@@ -10,7 +10,7 @@ import { jwtDecode } from "jwt-decode";
 
 const axiosAuthInstance = axios.create({
   baseURL: BASE_SERVER_URL + AUTH_API_PATH,
-  timeout: 3000,
+  timeout: 5000,
   headers: {
     "Content-Type": "application/json",
   },
@@ -42,6 +42,19 @@ export const useRegister = () => {
 const register = async (userData) => {
   try {
     let response = await axiosAuthInstance.post("/register", userData);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+export const verifyRegisteredUser = async (token) => {
+  try {
+    let response = await axiosAuthInstance.post(
+      "/register/verification/" + token
+    );
+    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -105,9 +118,9 @@ export const verifyJWT = async (token) => {
   try {
     console.log("Verifying JWT: " + token);
     jwtDecode(token);
-    let response = await axiosAuthInstance.post("/verification/" + token);
+    let response = await axiosAuthInstance.get("/verify/" + token);
     console.log(response);
-    if (response.data.token) {
+    if (response.data) {
       return true;
     }
     return false;

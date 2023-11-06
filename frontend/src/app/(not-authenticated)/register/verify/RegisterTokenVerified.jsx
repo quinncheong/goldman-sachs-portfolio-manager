@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { verifyJWT } from "@/api/authentication";
+import { verifyRegisteredUser } from "@/api/authentication";
 import Loader from "@/components/loading/Loader";
 
 function RegisterTokenVerified({ token }) {
@@ -14,7 +14,7 @@ function RegisterTokenVerified({ token }) {
     handleRegisterUser();
 
     async function handleRegisterUser() {
-      let finishedConfirmation = await verifyJWT(token);
+      let finishedConfirmation = await verifyRegisteredUser(token);
       if (finishedConfirmation) {
         setLoading(false);
       } else {

@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { verifyJWT } from "@/api/authentication";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 
 import RegisterTokenVerified from "./RegisterTokenVerified";
 
@@ -37,14 +35,7 @@ function Page() {
 }
 
 function RenderUnverified() {
-  const router = useRouter();
-
-  useEffect(() => {
-    toast.error("You are unauthorized to access");
-    // router.push("/");
-  }, []);
-
-  return <></>;
+  return <p>You are unauthorized to access this page</p>;
 }
 
 export default Page;
