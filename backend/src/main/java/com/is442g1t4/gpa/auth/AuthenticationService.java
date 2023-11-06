@@ -147,7 +147,7 @@ public class AuthenticationService {
 
         public PasswordChangedStatus changeForgottenPassword(ForgetPasswordRequest request,
                         String token) {
-                String newPassword = request.getNewpassword();
+                String newPassword = request.getNewPassword();
                 String username = jwtService.extractUsername(token);
                 User user = userRepository.findByUsername(username).orElseThrow();
                 System.out.println(newPassword);

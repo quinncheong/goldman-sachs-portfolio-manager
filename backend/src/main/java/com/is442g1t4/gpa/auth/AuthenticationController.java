@@ -74,12 +74,12 @@ public class AuthenticationController {
 
 
 
-    @PostMapping("/password/forget/email")
+    @PostMapping("/password/reset/email")
     public ResponseEntity<EmailResponse> forgetPassword(@RequestBody EmailRequest request) {
         return ResponseEntity.ok(authenticationService.sendForgetpwEmail(request));
     }
 
-    @PostMapping("/password/change/{token}")
+    @PostMapping("/password/reset/{token}")
     public ResponseEntity<PasswordChangedStatus> changeForgottenPassword(@PathVariable String token,
             @RequestBody ForgetPasswordRequest request) {
         return ResponseEntity.ok(authenticationService.changeForgottenPassword(request, token));

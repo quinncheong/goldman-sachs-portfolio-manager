@@ -46,7 +46,7 @@ public class EmailService {
     public void sendForgetPasswordEmail(String name, String email, String token)
             throws MessagingException {
         Context context = new Context();
-        String urlString = "http://localhost:3000/forget-password?=" + token;
+        String urlString = "http://localhost:3000/forget-password/verify?token=" + token;
         context.setVariables(Map.of("name", name, "url", urlString));
         String messageText = templateEngine.process("forgotpasswordtemplate", context);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();

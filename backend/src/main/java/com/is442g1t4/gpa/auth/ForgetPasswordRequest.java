@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ForgetPasswordRequest {
-    String newpassword;
+    String newPassword;
 }
