@@ -1,0 +1,5 @@
+package com.is442g1t4.gpa.user;
+
+public enum Action {
+    LOGIN, LOGOUT, REGISTER, RESET_PASSWORD_PENDING, RESET_PASSWORD_SUCCESS, VERIFY_EMAIL
+}
