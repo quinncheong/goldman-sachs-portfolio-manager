@@ -35,9 +35,9 @@ public class PortfolioService {
     public List<Portfolio> getPortfoliosByUserId(ObjectId userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
-            System.out.println(user.get().getId());
             return portfolioRepository.findByUserId(user.get().getId());
         } else {
+            
             return Collections.<Portfolio>emptyList();
         }
     }

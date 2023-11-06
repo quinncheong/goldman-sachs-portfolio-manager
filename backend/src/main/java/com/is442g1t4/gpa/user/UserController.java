@@ -1,7 +1,6 @@
 package com.is442g1t4.gpa.user;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,5 +77,10 @@ public class UserController {
     @PutMapping("/cash/{id}/{cash}")
     public ResponseEntity<User> addCash(@PathVariable ObjectId id, @PathVariable double cash) {
         return new ResponseEntity<User>(userService.addCash(id, cash), HttpStatus.OK);
+    }
+
+    @GetMapping("/data/{id}")
+    public ResponseEntity<Map<String,Double>> getAccountData(@PathVariable ObjectId id) {
+        return new ResponseEntity<Map<String,Double>>(userService.getAccountData(id), HttpStatus.OK);
     }
 }

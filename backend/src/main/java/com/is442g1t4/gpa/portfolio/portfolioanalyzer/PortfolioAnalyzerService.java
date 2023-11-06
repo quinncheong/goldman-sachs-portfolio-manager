@@ -11,6 +11,7 @@ import com.is442g1t4.gpa.user.UserRepository;
 import com.is442g1t4.gpa.portfolio.Portfolio;
 import com.is442g1t4.gpa.portfolio.PortfolioRepository;
 import com.is442g1t4.gpa.portfolio.PortfolioService;
+import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculatorUtility;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockRepository;
@@ -34,8 +35,16 @@ public class PortfolioAnalyzerService {
 
     public Map<String, Double> getPortfolioAnalysis(ObjectId id) {
         Map<String, Double> result = new HashMap<>();
-
+        
         List<AllocatedStock> allocatedStocks = portfolioService.getAllAllocatedStocksInPortfolio(id);
+        if (allocatedStocks.size() == 0) {
+            result.put("dpnl", 0.0);
+            result.put("pnl", 0.0);
+            result.put("dpnla", 0.0);
+            result.put("pnla", 0.0);
+            result.put("value", 0.0);
+            return result;
+        }
 
         double cost = 0;
         double value = 0;
@@ -66,15 +75,16 @@ public class PortfolioAnalyzerService {
             }
         }
 
-        dpnl = Double.parseDouble(df.format((value / previousValue - 1) * 100));
-        pnl = Double.parseDouble(df.format((value / cost - 1) * 100));
-        dpnla = Double.parseDouble(df.format((value - previousValue)));
-        pnla = Double.parseDouble(df.format(value - cost));
+        dpnl = PortfolioCalculatorUtility.round((value / previousValue - 1) * 100);
+        pnl = PortfolioCalculatorUtility.round((value / cost - 1) * 100);
+        dpnla = PortfolioCalculatorUtility.round((value - previousValue));
+        pnla = PortfolioCalculatorUtility.round(value - cost);
 
-        result.put("dpnl", Double.parseDouble(df.format(dpnl)));
-        result.put("pnl", Double.parseDouble(df.format(pnl)));
+        result.put("dpnl", dpnl);
+        result.put("pnl", pnl);
         result.put("dpnla", dpnla);
         result.put("pnla", pnla);
+        result.put("value",PortfolioCalculatorUtility.round(value));
 
         return result;
     }

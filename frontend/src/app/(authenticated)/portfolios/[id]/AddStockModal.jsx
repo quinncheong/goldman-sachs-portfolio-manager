@@ -78,7 +78,8 @@ export default function AddStockModal({ portfolio, closeModal, openModal }) {
         stockBuyDate: date,
       };
       portfolio.allocatedStocks.push(newAllocatedStock);
-      updatePortfolio(portfolio);
+      const updated = { ...portfolio, initialValue:cashBalance }
+      updatePortfolio(updated);
       closeModal();
     }
   };

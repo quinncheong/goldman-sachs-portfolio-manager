@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import {
   useDeletePortfolio,
+  useGetAnalysis,
   useGetPortfolioByPortfolioId,
   useGetStockData,
   useGetStockDetails,
@@ -41,6 +42,13 @@ function PortfolioPage({ params }) {
     isError: stockDataIsError,
     error: stockDataError
   } = useGetStockData(params.id);
+
+  const {
+    data: analysisData,
+    isLoading: analysisIsLoading,
+    isError: analysisIsError,
+    error: analysisError
+  } = useGetAnalysis(params.id);
 
 
   function openModal() {
@@ -109,6 +117,8 @@ function PortfolioPage({ params }) {
       <PortfolioAnalysis
         stockData={stockData}
         stockDetails={stockDetails}
+        analysisData={analysisData}
+        portfolioData={portfolio}
       />
 
       <div className="rounded-md p-4 text-white bg-secondary-100">
