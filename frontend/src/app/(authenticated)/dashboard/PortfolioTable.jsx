@@ -39,7 +39,7 @@ export default function PortfolioTable({ portfolios }) {
       columns={columns}
       rows={portfolios.slice(0, 5)}
       rowHeight={85}
-      sot
+      sort
     />
   );
 }
