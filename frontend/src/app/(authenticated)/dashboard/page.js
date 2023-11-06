@@ -146,30 +146,34 @@ function Dashboard() {
 
 export default withAuth(Dashboard);
 
-const FinancialInfo = ({ title, items, badge }) => (
-  <div className="bg-white p-4 rounded shadow flex flex-col pb-10">
-    <h2 className="text-xl sm:text-2xl font-semibold mb-4">{title}</h2>
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      {items.map((item, index) => (
-        <InfoItem
-          key={index}
-          label={item.label}
-          value={item.value}
-          badge={item.badge}
-        />
-      ))}
+function FinancialInfo({ title, items, badge }) {
+  return (
+    <div className="bg-white p-4 rounded shadow flex flex-col pb-10">
+      <h2 className="text-xl sm:text-2xl font-semibold mb-4">{title}</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {items.map((item, index) => (
+          <InfoItem
+            key={index}
+            label={item.label}
+            value={item.value}
+            badge={item.badge}
+          />
+        ))}
+      </div>
+      {badge && <Badge text={badge.text} color={badge.color} />}
     </div>
-    {badge && <Badge text={badge.text} color={badge.color} />}
-  </div>
-);
+  );
+}
 
-const InfoItem = ({ label, value, badge }) => (
-  <div className="flex flex-col mb-4 sm:mb-0">
-    <span className="text-sm sm:text-md text-gray-400">{label}:</span>
-    <span className="text-lg sm:text-2xl">{value}</span>
-    {badge && <Badge text={badge.text} color={badge.color} />}
-  </div>
-);
+function InfoItem({ label, value, badge }) {
+  return (
+    <div className="flex flex-col mb-4 sm:mb-0">
+      <span className="text-sm sm:text-md text-gray-400">{label}:</span>
+      <span className="text-lg sm:text-2xl">{value}</span>
+      {badge && <Badge text={badge.text} color={badge.color} />}
+    </div>
+  );
+}
 
 const Badge = ({ text, color }) => (
   <div className={`badge badge-${color} text-white font-bold`}>{text}</div>

@@ -6,6 +6,7 @@ import Link from "next/link";
 import Loader from "@/components/loading/Loader";
 
 import { useGetLoginStatus, useLogin } from "@/api/authentication";
+import { toast } from "react-toastify";
 
 export default function App() {
   const router = useRouter();
@@ -26,6 +27,8 @@ export default function App() {
       router.push("/dashboard");
       return;
     }
+
+    toast.warning(error);
   }, [data, isSuccess]);
 
   const handleSubmit = async (e) => {
@@ -36,14 +39,6 @@ export default function App() {
   if (isLoading) {
     return <Loader />;
   }
-
-  // if (isError) {
-  //   return (
-  //     <div className="flex min-h-screen items-center justify-between p-24">
-  //       <p>Error: {error}</p>
-  //     </div>
-  //   );
-  // }
 
   // if (isLoggedIn) {
   //   router.push("/dashboard");
