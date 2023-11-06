@@ -6,6 +6,7 @@ import { getCookie, setCookie } from "cookies-next";
 import { BASE_SERVER_URL, AUTH_API_PATH } from "./apiFactory";
 import { toast } from "react-toastify";
 import { createAccessLog, createLogWithToken } from "./user";
+import { jwtDecode } from "jwt-decode";
 
 const axiosAuthInstance = axios.create({
   baseURL: BASE_SERVER_URL + AUTH_API_PATH,
@@ -100,14 +101,19 @@ export const sendResetPasswordMail = async (email) => {
   }
 };
 
-export const verifyResetPwToken = async (token) => {
+export const verifyJWT = async (token) => {
   try {
-    let response = await axiosAuthInstance.post("/verify-token", token);
-    return true;
-    return response.data.token;
+    console.log("Verifying JWT: " + token);
+    jwtDecode(token);
+    let response = await axiosAuthInstance.post("/verification/" + token);
+    console.log(response);
+    if (response.data.token) {
+      return true;
+    }
+    return false;
   } catch (err) {
     console.log(err);
-    return true;
+    return false;
   }
 };
 
