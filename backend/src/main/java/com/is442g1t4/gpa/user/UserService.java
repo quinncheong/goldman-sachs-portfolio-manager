@@ -12,6 +12,7 @@ import com.is442g1t4.gpa.portfolio.PortfolioService;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import javax.swing.text.html.Option;
 
 @Service
 public class UserService {
@@ -32,6 +33,7 @@ public class UserService {
     }
 
     public Optional<User> getUser(ObjectId id) {
+        System.out.println(id);
         return userRepository.findById(id);
     }
 

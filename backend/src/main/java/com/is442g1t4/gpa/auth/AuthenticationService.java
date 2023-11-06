@@ -34,49 +34,40 @@ public class AuthenticationService {
         private final EmailService emailservice;
 
         public AuthenticationResponse register(RegisterRequest request) {
-                User user = User.builder()
-                                .name(request.getName())
-                                .username(request.getUsername())
+                User user = User.builder().name(request.getName()).username(request.getUsername())
                                 .password(passwordEncoder.encode(request.getPassword()))
-                                .email(request.getEmail())
-                                .portfolioIds(new ArrayList<ObjectId>())
-                                .verified(false)
-                                .role(RoleEnum.USER).build();
+                                .email(request.getEmail()).portfolioIds(new ArrayList<ObjectId>())
+                                .verified(false).role(RoleEnum.USER).build();
                 userRepository.save(user);
 
                 Map<String, Object> extraClaims = new HashMap<>();
                 extraClaims.put("userId", user.getId().toString());
                 extraClaims.put("role", user.getRole().toString());
 
-                String jwtToken = jwtService.generateRegistrationToken(user.getUsername(), extraClaims);
+                String jwtToken = jwtService.generateRegistrationToken(user.getUsername(),
+                                extraClaims);
                 try {
-                        emailservice.sendVerificationEmail(request.getName(), request.getEmail() , jwtToken);
-                }
-                catch (MessagingException e) {
+                        emailservice.sendVerificationEmail(request.getName(), request.getEmail(),
+                                        jwtToken);
+                } catch (MessagingException e) {
                         System.out.println("Failed to send email. Error: " + e.getMessage());
                 }
                 return AuthenticationResponse.builder().token(jwtToken).build();
         }
 
         public AuthenticationResponse registerAdmin(RegisterRequest request) {
-                User user = User.builder()
-                                .name(request.getName())
-                                .username(request.getUsername())
+                User user = User.builder().name(request.getName()).username(request.getUsername())
                                 .password(passwordEncoder.encode(request.getPassword()))
-                                .email(request.getEmail())
-                                .portfolioIds(new ArrayList<ObjectId>())
-                                .verified(true)
-                                .role(RoleEnum.ADMIN)
-                                .build();
+                                .email(request.getEmail()).portfolioIds(new ArrayList<ObjectId>())
+                                .verified(true).role(RoleEnum.ADMIN).build();
                 userRepository.save(user);
 
                 String jwtToken = jwtService.generateToken(user);
-                return AuthenticationResponse.builder()
-                                .token(jwtToken)
-                                .build();
+                return AuthenticationResponse.builder().token(jwtToken).build();
         }
 
-        public AuthenticationResponse authenticate(AuthenticationRequest request) throws ResponseStatusException{
+        public AuthenticationResponse authenticate(AuthenticationRequest request)
+                        throws ResponseStatusException {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                                 request.getUsername(), request.getPassword()));
                 // user and password is correct, authenticated
@@ -88,16 +79,17 @@ public class AuthenticationService {
 
                 String jwtToken = "";
                 if (!user.getVerified()) {
-                        jwtToken = jwtService.generateRegistrationToken(user.getUsername(), extraClaims);
+                        jwtToken = jwtService.generateRegistrationToken(user.getUsername(),
+                                        extraClaims);
                         try {
-                                emailservice.sendVerificationEmail(user.getName(), user.getEmail() , jwtToken);
+                                emailservice.sendVerificationEmail(user.getName(), user.getEmail(),
+                                                jwtToken);
                                 jwtToken = "User is not verified";
+                        } catch (MessagingException e) {
+                                System.out.println(
+                                                "Failed to send email. Error: " + e.getMessage());
                         }
-                        catch (MessagingException e) {
-                                System.out.println("Failed to send email. Error: " + e.getMessage());
-                        }
-                }
-                else {
+                } else {
                         jwtToken = jwtService.generateToken(user.getUsername(), extraClaims);
                 }
                 return AuthenticationResponse.builder().token(jwtToken).build();
@@ -105,7 +97,7 @@ public class AuthenticationService {
 
         public AuthenticationResponse verifyUser(String token) {
                 String username = jwtService.extractUsername(token);
-                
+
                 // set user to be verified
                 User user = userRepository.findByUsername(username).orElseThrow();
                 user.setVerified(true);
@@ -117,6 +109,10 @@ public class AuthenticationService {
 
                 String jwtToken = jwtService.generateToken(user.getUsername(), extraClaims);
                 return AuthenticationResponse.builder().token(jwtToken).build();
+        }
+
+        public boolean verifyToken(String token) {
+                return jwtService.isTokenValid(token);
         }
 
         public EmailResponse sendForgetpwEmail(EmailRequest request) {
@@ -131,32 +127,34 @@ public class AuthenticationService {
                         extraClaims.put("userId", foundUser.getId().toString());
                         extraClaims.put("role", foundUser.getRole().toString());
 
-                        String jwtToken = jwtService.generateRegistrationToken(foundUser.getUsername(), extraClaims);
+                        String jwtToken = jwtService.generateRegistrationToken(
+                                        foundUser.getUsername(), extraClaims);
 
                         // once jwt token generated, send forget password email
                         try {
-                                emailservice.sendForgetPasswordEmail(foundUser.getName(), foundUser.getEmail() , jwtToken);
+                                emailservice.sendForgetPasswordEmail(foundUser.getName(),
+                                                foundUser.getEmail(), jwtToken);
                                 status = "Forget Password Email Sent";
-                        }
-                        catch (MessagingException e) {
+                        } catch (MessagingException e) {
                                 status = "Failed to send email. Error: " + e.getMessage();
                         }
 
-                    } else {
+                } else {
                         status = "No user found with email";
                 }
                 return EmailResponse.builder().emailResponse(status).build();
         }
 
-        public PasswordChangedStatus changeForgottenPassword(ForgetPasswordRequest request, String token) {
-                String newPassword = request.getNewpassword();                
+        public PasswordChangedStatus changeForgottenPassword(ForgetPasswordRequest request,
+                        String token) {
+                String newPassword = request.getNewpassword();
                 String username = jwtService.extractUsername(token);
                 User user = userRepository.findByUsername(username).orElseThrow();
                 System.out.println(newPassword);
                 // set new password
                 user.setPassword(passwordEncoder.encode(newPassword));
                 userRepository.save(user);
-                
+
                 String status = "Forgotten password successfully changed";
                 return PasswordChangedStatus.builder().status(status).build();
         }
