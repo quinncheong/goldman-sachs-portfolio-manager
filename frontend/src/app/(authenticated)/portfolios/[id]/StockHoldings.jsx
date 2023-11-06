@@ -56,7 +56,7 @@ export default function StockHoldings({stockDetails, stockData, portfolioData}) 
                             <span>Positions Ratio</span>
                         </div>
                         <div className="w-[7%] text-xs">
-                            <span > <div className="float-right">Remove Stock</div></span>
+                            <span>Remove Stock</span>
                         </div>
                     </div>
                 </div>
