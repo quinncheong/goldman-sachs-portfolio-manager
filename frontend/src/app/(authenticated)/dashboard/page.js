@@ -45,24 +45,24 @@ function Dashboard() {
       {
         label: "Total Assets",
         value:
-          "$" +
-          new Intl.NumberFormat("en-US", { style: "decimal" }).format(
+
+          new Intl.NumberFormat("en-US", { style: "currency", currency:'USD' }).format(
             accData.totalAssets
           ),
       },
       {
         label: "Total Securities Value",
         value:
-          "$" +
-          new Intl.NumberFormat("en-US", { style: "decimal" }).format(
+ 
+          new Intl.NumberFormat("en-US", { style: "currency", currency:'USD' }).format(
             accData.totalSecurities
           ),
       },
       {
         label: "Total Cash Balance",
         value:
-          "$" +
-          new Intl.NumberFormat("en-US", { style: "decimal" }).format(
+ 
+          new Intl.NumberFormat("en-US", { style: "currency", currency:'USD' }).format(
             accData.totalCash
           ),
       },
@@ -73,8 +73,8 @@ function Dashboard() {
         label: "Daily P&L",
         value:
           dpnlStatus[0] +
-          "$" +
-          new Intl.NumberFormat("en-US", { style: "decimal" }).format(
+
+          new Intl.NumberFormat("en-US", { style: "currency", currency:'USD' }).format(
             Math.abs(accData.dpnla)
           ),
         badge: {
@@ -91,8 +91,8 @@ function Dashboard() {
         label: "Total P&L",
         value:
           pnlStatus[0] +
-          "$" +
-          new Intl.NumberFormat("en-US", { style: "decimal" }).format(
+
+          new Intl.NumberFormat("en-US", { style: "currency", currency:'USD' }).format(
             Math.abs(accData.pnla)
           ),
         badge: {

@@ -34,7 +34,11 @@ export default function HoldingsCard({ stock, portfolioData }) {
         <span className="text-gray-500 text-xs">{stock.cost.toFixed(2)}</span>
       </div>
       <div className="w-[14%] font-semibold flex flex-col">
-        <span>{stock.pnla.toFixed(2)}</span>
+        <span
+          className={`${stock.pnla > 0 ? "text-green-600" : "text-red-500"}`}
+        >
+          {stock.pnla.toFixed(2)}
+        </span>
         <span
           className={`text-xs ${
             stock.pnlp > 0 ? "text-green-600" : "text-red-500"
@@ -45,7 +49,11 @@ export default function HoldingsCard({ stock, portfolioData }) {
         </span>
       </div>
       <div className="w-[14%] font-semibold flex flex-col">
-        <span>{stock.dpnla.toFixed(2)}</span>
+        <span
+          className={`${stock.dpnla > 0 ? "text-green-600" : "text-red-500"}`}
+        >
+          {stock.dpnla.toFixed(2)}
+        </span>
         <span
           className={`text-xs ${
             stock.dpnlp > 0 ? "text-green-600" : "text-red-500"

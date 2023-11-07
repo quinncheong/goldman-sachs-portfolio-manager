@@ -73,10 +73,10 @@ export default function PortfolioCarouselCard({ portfolio }) {
               <span>Daily P&L: </span>
               <div
                 className={`badge text-white font-bold ${
-                  userData.dpnlp > 0 ? "badge-success" : "badge-error"
+                  userData.dpnlp >= 0 ? "badge-success" : "badge-error"
                 }`}
               >
-                {userData.dpnlp > 0 ? "+" : ""}
+                {userData.dpnlp >= 0 ? "+" : ""}
                 {userData.dpnlp.toFixed(2)}%
               </div>
             </div>
@@ -84,16 +84,16 @@ export default function PortfolioCarouselCard({ portfolio }) {
               <span>Total P&L: </span>
               <div
                 className={`badge text-white font-bold ${
-                  userData.pnlp > 0 ? "badge-success" : "badge-error"
+                  userData.pnlp >= 0 ? "badge-success" : "badge-error"
                 }`}
               >
-                {userData.pnlp > 0 ? "+" : ""}
+                {userData.pnlp >= 0 ? "+" : ""}
                 {userData.pnlp.toFixed(2)}%
               </div>
             </div>
             <div>
               <span>RoR: </span>
-              <div className={`badge text-white font-bold ${ror > 0 ? "badge-success" : "badge-error"}`}>{ror > 0 ? "+" : ""}{ror.toFixed(2)}%</div>
+              <div className={`badge text-white font-bold ${ror >= 0 ? "badge-success" : "badge-error"}`}>{ror >= 0 ? "+" : ""}{ror.toFixed(2)}%</div>
             </div>
           </div>
         </div>

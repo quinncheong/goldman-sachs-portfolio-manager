@@ -59,10 +59,10 @@ export default function PortfolioAnalysis({
         </div>
       );
     const securitiesValue = new Intl.NumberFormat("en-US", {
-      style: "decimal",
+      style: "currency", currency:'USD'
     }).format(analysisData.value);
     const cashBalance = new Intl.NumberFormat("en-US", {
-      style: "decimal",
+      style: "currency", currency:'USD'
     }).format(portfolioData.initialValue);
 
     return { total: securitiesValue, cash: cashBalance };
@@ -82,10 +82,10 @@ export default function PortfolioAnalysis({
         <span className="text-sm sm:text-md text-gray-400">
           Securities Value:
         </span>
-        <span className="text-xl text-black">&emsp;${renderTotal().total}</span>
+        <span className="text-xl text-black"> {renderTotal().total}</span>
         <br></br>
         <span className="text-sm sm:text-md text-gray-400">Cash Balance:</span>
-        <span className="text-xl text-black">&emsp;${renderTotal().cash}</span>
+        <span className="text-xl text-black"> {renderTotal().cash}</span>
       </div>
 
       <div className="col-span-8 p-5 bg-white rounded-md">
