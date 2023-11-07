@@ -300,9 +300,7 @@ export const useRemoveStock = () => {
     mutate: remStock,
   } = useMutation({
     mutationFn: (data) => removeStock(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["useGetStockData",  "useGetStockDetails"]);
-    },
+    
     onMutate: (variables) => {
       // A mutation is about to happen!
       // Optionally return a context containing data to use when for example rolling back
@@ -314,6 +312,7 @@ export const useRemoveStock = () => {
       toast.error(error);
     },
     onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries(["useGetStockData",  "useGetStockDetails"]);
       toast.success("Stock Successfully Removed!");
       console.log(data);
     },

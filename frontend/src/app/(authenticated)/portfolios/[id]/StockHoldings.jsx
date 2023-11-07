@@ -1,7 +1,7 @@
 import HoldingsCard from "./HoldingsCard";
 import MarketSector from "./MarketSector";
 
-export default function StockHoldings({ stockDetails, stockData }) {
+export default function StockHoldings({ stockDetails, stockData, portfolioData }) {
   function renderStocks() {
     if (stockDetails === undefined)
       return (
@@ -22,7 +22,7 @@ export default function StockHoldings({ stockDetails, stockData }) {
     const keys = Object.keys(stockDetails);
     return keys.map((key) => {
       const stock = stockDetails[key];
-      return <HoldingsCard key={key} stock={stock} />;
+      return <HoldingsCard key={key} stock={stock} portfolioData={portfolioData}/>;
     });
   }
 

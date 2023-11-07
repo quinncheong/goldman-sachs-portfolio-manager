@@ -103,11 +103,7 @@ function Dashboard() {
             "%",
           color: pnlStatus[1],
         },
-      },
-      {
-        label: "Annualized Rate of Return",
-        value: "20.50%",
-      },
+      }
     ];
 
     setFinancials(tmpFinancials);
@@ -123,7 +119,7 @@ function Dashboard() {
       <div className="container flex flex-col gap-5 mx-auto p-4 text-black">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FinancialInfo title="Your Account Financials:" items={financials} />
-          <FinancialInfo title="Your Account Analysis:" items={analysis} />
+          <AnalysisInfo title="Your Account Analysis:" items={analysis} />
         </div>
         <div className="rounded-md p-4 text-white bg-secondary-100">
           <h2 className="text-2xl font-semibold">Your Latest Portfolios</h2>
@@ -164,10 +160,28 @@ function FinancialInfo({ title, items, badge }) {
     </div>
   );
 }
+function AnalysisInfo({ title, items, badge }) {
+  return (
+    <div className="bg-white p-4 rounded shadow flex flex-col pb-10">
+      <h2 className="text-xl sm:text-2xl font-semibold mb-4">{title}</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
+        {items.map((item, index) => (
+          <InfoItem
+            key={index}
+            label={item.label}
+            value={item.value}
+            badge={item.badge}
+          />
+        ))}
+      </div>
+      {badge && <Badge text={badge.text} color={badge.color} />}
+    </div>
+  );
+}
 
 function InfoItem({ label, value, badge }) {
   return (
-    <div className="flex flex-col mb-4 sm:mb-0">
+    <div className="flex flex-col mb-4 sm:mb-0 flex">
       <span className="text-sm sm:text-md text-gray-400">{label}:</span>
       <span className="text-lg sm:text-2xl">{value}</span>
       {badge && <Badge text={badge.text} color={badge.color} />}

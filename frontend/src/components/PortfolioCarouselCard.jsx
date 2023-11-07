@@ -1,5 +1,6 @@
 import { useGetAccountIdData } from "@/api/user";
 import { useRouter } from "next/navigation";
+import Loader from "@/components/loading/Loader";
 
 export default function PortfolioCarouselCard({ portfolio }) {
   const router = useRouter();
@@ -8,8 +9,13 @@ export default function PortfolioCarouselCard({ portfolio }) {
     router.push(`/portfolios/${portfolio.id}`);
   };
   console.log('hi')
-  console.log(portfolio)
+  console.log(portfolio.userId)
   const { data: userData, isLoading, isError, error } = useGetAccountIdData(portfolio.userId);
+  
+  if (isLoading) {
+    return <Loader />;
+  }
+  
   if (userData) {
     console.log(userData)
     totalAssets = new Intl.NumberFormat("en-US", { style: "decimal" }).format(
