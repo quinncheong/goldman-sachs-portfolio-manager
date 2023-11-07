@@ -37,8 +37,8 @@ public class StockPriceService {
     }
 
     public StockPrice getStockPriceBySymbolAndDate(String stockTicker, Date date) {
-        System.out.println("SPS");
-        System.out.println(date);
+        // System.out.println("SPS");
+        // System.out.println(date);
         Date nextDay = new Date(date.getTime() + 86400000);
         StockPrice stockPrice = stockPriceRepository.findStockPriceByStockTickerAndDate(stockTicker, date, nextDay);
         return stockPrice;

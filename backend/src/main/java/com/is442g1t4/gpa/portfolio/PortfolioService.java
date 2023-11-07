@@ -175,20 +175,28 @@ public class PortfolioService {
             Map<String, Double> temp = new HashMap<>();
             ArrayList<Double> stockPrices = new ArrayList<>();
             ArrayList<Double> percentages = new ArrayList<>();
-            System.out.println("SEx");
+            System.out.println("SEx is working");
             System.out.println(stockTicker);
             System.out.println(cal.getTime());
-            stockPrices.add(stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime()).getClose());
+            StockPrice stockPrice1 = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
+            while (stockPrice1 == null){
+                cal.add(Calendar.DATE, -3);
+                stockPrice1 = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
+            }
+            System.out.println(stockPrice1);
+            stockPrices.add(stockPrice1.getClose());
             for (int i = 0; i < 6; i ++){
                 cal.add(Calendar.YEAR, -1);
-                System.out.println(stockTicker);
                 Date curr = cal.getTime();
                 StockPrice stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr);
-                if (stockPrice == null){
+                while (stockPrice == null){
                     cal.add(Calendar.DATE, -3);
                     curr = cal.getTime();
                     stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr);
                 }
+                System.out.println(stockTicker);
+                System.out.println(curr);
+                System.out.println(stockPrice);
                 stockPrices.add(stockPrice.getClose());
             }
             for (int i = stockPrices.size() - 1; i > 0; i --){
@@ -196,10 +204,15 @@ public class PortfolioService {
                 percentages.add(perc);
             }
             Double percGrowth = (stockPrices.get(0)/stockPrices.get(stockPrices.size() - 1) - 1)*100;
+            Double ex;
+            if (percGrowth < 0){
+                ex = PortfolioCalculatorUtility.round(Math.pow(-percGrowth, 1.0/5.0)) * -1.0;
+            } else {
+                ex = PortfolioCalculatorUtility.round(Math.pow(percGrowth, 1.0/5.0));
+            }
             System.out.println(stockPrices.get(0));
             System.out.println(stockPrices.get(stockPrices.size() - 1));
             System.out.println(percGrowth);
-            Double ex = PortfolioCalculatorUtility.round(Math.pow(percGrowth, 1.0/5.0));
             Double sum = 0.0;
             for (Double perc: percentages){
                 sum += Math.pow(perc - ex, 2);
@@ -207,10 +220,11 @@ public class PortfolioService {
             Double var = PortfolioCalculatorUtility.round(Math.pow(sum / 5.0, 1.0/2.0));
             temp.put("ex", ex);
             temp.put("var", var);
-            ror += PortfolioCalculatorUtility.round(ex * cPortfolioCalculator.getPositionsRatio()/100.0);
+            ror += PortfolioCalculatorUtility.round(ex * cPortfolioCalculator.getPositionsRatio()/100);
             result.put(stockTicker, temp);
         }
         Map<String, Double> portfolio = new HashMap<>();
+        ror = PortfolioCalculatorUtility.round(ror);
         portfolio.put("ex", ror);
         result.put("portfolio", portfolio);
 
