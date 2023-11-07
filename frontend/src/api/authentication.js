@@ -4,7 +4,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCookie, setCookie } from "cookies-next";
 
 import { BASE_SERVER_URL, AUTH_API_PATH } from "./apiFactory";
-import { toast } from "react-toastify";
 import { createAccessLog, createLogWithToken } from "./user";
 import { jwtDecode } from "jwt-decode";
 
@@ -21,8 +20,39 @@ export const useRegister = () => {
     useMutation({
       mutationFn: (data) => register(data),
       onSuccess: async (tokenData) => {
-        await setCookie("token", tokenData.token);
-        createAccessLog("REGISTER");
+        createLogWithToken(tokenData.token, "REGISTER");
+      },
+      onError: (error) => {
+        alert(error);
+      },
+    });
+
+  return {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    mutateAsync,
+  };
+};
+const register = async (userData) => {
+  try {
+    let response = await axiosAuthInstance.post("/register", userData);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+export const useVerifyRegisteredUser = () => {
+  const { data, isLoading, isSuccess, isError, error, mutateAsync } =
+    useMutation({
+      mutationFn: (data) => verifyRegisteredUser(data),
+      onSuccess: async (tokenData) => {
+        console.log(tokenData);
+        createLogWithToken(tokenData.token, "VERIFY_EMAIL");
       },
       onError: (error) => {
         alert(error);
@@ -39,16 +69,6 @@ export const useRegister = () => {
   };
 };
 
-const register = async (userData) => {
-  try {
-    let response = await axiosAuthInstance.post("/register", userData);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-};
-
 export const verifyRegisteredUser = async (token) => {
   try {
     let response = await axiosAuthInstance.post(
@@ -62,28 +82,55 @@ export const verifyRegisteredUser = async (token) => {
   }
 };
 
-export const login = async (username, password) => {
+export const useLogin = () => {
+  const { data, isLoading, isSuccess, isError, error, mutateAsync } =
+    useMutation({
+      mutationFn: (data) => login(data),
+      onSuccess: async (data) => {
+        setCookie("token", data.token);
+        createAccessLog("LOGIN");
+      },
+      onError: (error) => {
+        alert(error);
+      },
+    });
+
+  return {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    mutateAsync,
+  };
+};
+
+export const login = async ({ username, password }) => {
   const json = {
     username: username,
     password: password,
   };
+
+  let res = {
+    isVerified: false,
+    token: "",
+  };
+
   try {
     let response = await axiosAuthInstance.post("/authenticate", json);
     console.log(response);
-    return response.data.token;
+    res.token = response.data.token;
+    res.isVerified = response.data.verified;
   } catch (err) {
-    if (err.response.status === 403) {
-      console.log("Wrong username/password.");
-      return 403;
-    } else {
-      console.log("Something went wrong.");
-    }
+    console.log(err);
   }
+
+  return res;
 };
 
 export const useGetLoginStatus = () => {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["getPortfolios"],
+    queryKey: ["getLoginStatus"],
     queryFn: () => getLoginStatus(),
   });
 
@@ -104,7 +151,29 @@ const getLoginStatus = async () => {
   });
 };
 
-export const sendResetPasswordMail = async (email) => {
+export const useSendResetPwMail = () => {
+  const { data, isLoading, isSuccess, isError, error, mutateAsync } =
+    useMutation({
+      mutationFn: (data) => sendResetPasswordMail(data),
+      onSuccess: async (tokenData) => {
+        // createLogWithToken(tokenData.token, "RESET_PASSWORD_PENDING");
+      },
+      onError: (error) => {
+        alert(error);
+      },
+    });
+
+  return {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    mutateAsync,
+  };
+};
+
+const sendResetPasswordMail = async (email) => {
   try {
     let response = await axiosAuthInstance.post("/password/reset/email", email);
     console.log(response);

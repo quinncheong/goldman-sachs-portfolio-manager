@@ -80,7 +80,8 @@ public class UserController {
     }
 
     @GetMapping("/data/{id}")
-    public ResponseEntity<Map<String,Double>> getAccountData(@PathVariable ObjectId id) {
-        return new ResponseEntity<Map<String,Double>>(userService.getAccountData(id), HttpStatus.OK);
+    public ResponseEntity<Map<String, Double>> getAccountData(@PathVariable ObjectId id) {
+        return new ResponseEntity<Map<String, Double>>(userService.getAccountData(id),
+                HttpStatus.OK);
     }
 }

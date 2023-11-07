@@ -43,8 +43,8 @@ public class SecurityConfig {
                 config.setAllowCredentials(true);
                 config.addAllowedOrigin("http://localhost:3000");
                 config.setAllowedMethods(Arrays.asList("POST", "OPTIONS", "GET", "DELETE", "PUT"));
-                config.setAllowedHeaders(
-                                Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization"));
+                config.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin", "Content-Type",
+                                "Accept", "Authorization"));
                 source.registerCorsConfiguration("/**", config);
                 FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
                 bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
@@ -53,19 +53,14 @@ public class SecurityConfig {
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-                http
-                                .csrf(csrf -> csrf
-                                                .disable())
-                                .authorizeHttpRequests()
-                                .requestMatchers("/api/v1/auth/**")
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated()
-                                .and()
-                                .sessionManagement(management -> management
-                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                http.csrf(csrf -> csrf.disable()).authorizeHttpRequests()
+                                .requestMatchers("/api/v1/auth/**", "/api/v1/user/log").permitAll()
+                                .anyRequest().authenticated().and()
+                                .sessionManagement(management -> management.sessionCreationPolicy(
+                                                SessionCreationPolicy.STATELESS))
                                 .authenticationProvider(authenticationProvider)
-                                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                                .addFilterBefore(jwtAuthFilter,
+                                                UsernamePasswordAuthenticationFilter.class);
 
                 return http.build();
         }

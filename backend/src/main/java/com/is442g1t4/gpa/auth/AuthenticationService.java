@@ -85,21 +85,22 @@ public class AuthenticationService {
                 extraClaims.put("role", user.getRole().toString());
 
                 String jwtToken = "";
+                boolean verified = false;
                 if (!user.getVerified()) {
                         jwtToken = jwtService.generateRegistrationToken(user.getUsername(),
                                         extraClaims);
                         try {
                                 emailservice.sendVerificationEmail(user.getName(), user.getEmail(),
                                                 jwtToken);
-                                jwtToken = "User is not verified";
                         } catch (MessagingException e) {
                                 System.out.println(
                                                 "Failed to send email. Error: " + e.getMessage());
                         }
                 } else {
                         jwtToken = jwtService.generateToken(user.getUsername(), extraClaims);
+                        verified = true;
                 }
-                return AuthenticationResponse.builder().token(jwtToken).build();
+                return AuthenticationResponse.builder().token(jwtToken).verified(verified).build();
         }
 
         public AuthenticationResponse verifyUser(String token) {

@@ -3,13 +3,21 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { sendResetPasswordMail } from "@api/authentication";
+import { useSendResetPwMail } from "@api/authentication";
 
 export default function Page() {
   const router = useRouter();
   const [email, setEmail] = useState("");
-  const [mailSent, setMailSent] = useState(false);
   const [emailErrors, setEmailErrors] = useState([]);
+
+  const {
+    data,
+    isLoading,
+    isSuccess: mailSentSuccess,
+    isError,
+    error,
+    mutateAsync,
+  } = useSendResetPwMail();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,8 +31,7 @@ export default function Page() {
       return;
     }
 
-    await sendResetPasswordMail(email);
-    setMailSent(true);
+    await mutateAsync(email);
   };
 
   //   if (mailSent) {
@@ -105,8 +112,8 @@ export default function Page() {
               If you are registered with us, we will send you an email at your
               registered email:
             </p>
-            {mailSent && renderSuccessMsg()}
-            {!mailSent && renderForm()}
+            {mailSentSuccess && renderSuccessMsg()}
+            {!mailSentSuccess && renderForm()}
           </div>
         </div>
       </div>
