@@ -78,7 +78,7 @@ public class PortfolioCalculatorService {
         // positions ratio and sector analysis
         for (String stockTicker : calculatedStock.keySet()){
             PortfolioCalculator portfolioCalculator = calculatedStock.get(stockTicker);
-            portfolioCalculator.setPositionsRatio(PortfolioCalculatorUtility.round((portfolioCalculator.getMarket() / totalValue) * 100));
+            portfolioCalculator.setPositionsRatio((portfolioCalculator.getMarket() / totalValue) * 100);
         }
         return calculatedStock;
     }

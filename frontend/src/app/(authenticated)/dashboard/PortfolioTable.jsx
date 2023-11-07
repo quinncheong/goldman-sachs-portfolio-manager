@@ -4,26 +4,34 @@ import "react-data-grid/lib/styles.css";
 import { useState, useEffect } from "react";
 import DataGrid from "react-data-grid";
 import Link from "next/link";
+import { useGetAnalysisArray } from "@/api/portfolio";
+import Loader from "@/components/loading/Loader";
 
 const headers = [];
 
 const columns = [
-  { key: "id", name: "Id" },
   { key: "name", name: "Portfolio Name" },
   { key: "description", name: "Portfolio Description" },
-  { key: "initialValue", name: "Initial Value" },
+  { key: "initialValue", name: "Total Cash" },
+  { key: "value", name: "Total Securities" },
   { key: "PNL", name: "PNL" },
   { key: "view", name: "View Portfolio" },
 ];
 
+
+
 export default function PortfolioTable({ portfolios }) {
+
   useEffect(() => {
     if (!portfolios) {
       return;
     }
     for (let p of portfolios) {
+      
+
       p.view = <ViewMore portfolioId={p.id} />;
-      p.PNL = 100;
+      p.PNL = 100
+      
     }
   }, [portfolios]);
 

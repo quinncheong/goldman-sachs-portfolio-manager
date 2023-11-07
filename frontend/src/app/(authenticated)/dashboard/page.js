@@ -28,6 +28,8 @@ function Dashboard() {
     error: publicPortfoliosError,
   } = useGetPublicPortfolios();
 
+
+
   const [financials, setFinancials] = useState([]);
   const [analysis, setAnalysis] = useState([]);
 
