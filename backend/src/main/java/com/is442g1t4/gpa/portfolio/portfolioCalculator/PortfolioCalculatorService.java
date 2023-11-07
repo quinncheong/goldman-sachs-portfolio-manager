@@ -12,6 +12,7 @@ import com.is442g1t4.gpa.stock.StockService;
 import com.is442g1t4.gpa.user.User;
 import com.is442g1t4.gpa.user.UserRepository;
 import com.is442g1t4.gpa.stock.model.Stock;
+import com.is442g1t4.gpa.stock.stockPrice.StockPriceService;
 import com.is442g1t4.gpa.portfolio.Portfolio;
 import com.is442g1t4.gpa.portfolio.PortfolioRepository;
 import com.is442g1t4.gpa.portfolio.PortfolioService;
@@ -19,6 +20,7 @@ import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
 import com.is442g1t4.gpa.portfolio.portfolioanalyzer.PortfolioAnalyzerService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockRepository;
+import com.is442g1t4.gpa.stock.stockPrice.StockPrice;
 
 import java.util.*;
 import java.time.Instant;
@@ -31,7 +33,8 @@ public class PortfolioCalculatorService {
     @Autowired
     private StockService stockService;
 
-
+    @Autowired
+    private StockPriceService stockPriceService;
     
 
     public Map<String, PortfolioCalculator> getCalculatedStockInPortfolio(ObjectId id) {
@@ -119,6 +122,4 @@ public class PortfolioCalculatorService {
 
         return data;
     }   
-
-
 }

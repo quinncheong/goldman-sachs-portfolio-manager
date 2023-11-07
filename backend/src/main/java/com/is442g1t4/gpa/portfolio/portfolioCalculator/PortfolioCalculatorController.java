@@ -32,4 +32,5 @@ public class PortfolioCalculatorController {
         return new ResponseEntity<Map<String, PortfolioCalculator>>(
                 portfolioCalculatorService.getCalculatedStockInPortfolio(id), HttpStatus.OK);
     }
+
 }

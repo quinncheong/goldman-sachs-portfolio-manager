@@ -13,6 +13,7 @@ import com.is442g1t4.gpa.user.UserRepository;
 import com.is442g1t4.gpa.portfolio.Portfolio;
 import com.is442g1t4.gpa.portfolio.PortfolioRepository;
 import com.is442g1t4.gpa.portfolio.PortfolioService;
+import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculator;
 import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculatorUtility;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
@@ -33,9 +34,6 @@ public class PortfolioAnalyzerService {
 
     @Autowired
     private StockService stockService;
-
-    @Autowired
-    private StockPriceService stockPriceService;
 
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
@@ -95,99 +93,5 @@ public class PortfolioAnalyzerService {
         return result;
     }
 
-    public Map<Date, Map<String, Double>> getPortfolioAnalysisByTime(ObjectId id, String startString, String endString, String type) {
-        Date startDate;  
-        Date endDate;
-        try {
-
-            if (type == "month") { 
-                SimpleDateFormat formatter = new SimpleDateFormat("MMyyyy");
-                startDate = formatter.parse(startString);
-                endDate = formatter.parse(endString);
-            } else {
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
-                startDate = formatter.parse(startString);
-                endDate = formatter.parse(endString);
-            }
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        Calendar start = Calendar.getInstance();
-        start.setTime(startDate);
-        Calendar end = Calendar.getInstance();
-        end.setTime(endDate);
-        
-
-        Map<Date, Map<String, Double>> result = new HashMap<>();
-        Map<String, Double> temp = new HashMap<>();
-        List<AllocatedStock> allocatedStocks = portfolioService.getAllAllocatedStocksInPortfolio(id);
-        if (allocatedStocks.size() == 0) {
-            temp.put("dpnl", 0.0);
-            temp.put("pnl", 0.0);
-            temp.put("dpnla", 0.0);
-            temp.put("pnla", 0.0);
-            temp.put("value", 0.0);
-            result.put(startDate, temp);
-            return result;
-        }
-
-        double cost = 0;
-        double value = 0;
-        double previousValue = 0;
-        Double pnl;
-        Double dpnl;
-        Double dpnla;
-        Double pnla;
-
-        for (AllocatedStock allocatedStock : allocatedStocks) {
-            String stockTicker = allocatedStock.getStockTicker();
-            // Stock stock = stockService.getStockByTicker(stockTicker).get();
-            for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
-                StockPrice stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker,);
-                int quantity = allocatedStock.getStockQuantity();
-                Date buyDate = allocatedStock.getStockBuyDate();
-                Instant instant = buyDate.toInstant();
-
-                cost = cost + (allocatedStock.getStockBuyPrice() * quantity);
-                double priceToday = stock.getPriceToday();
-                value  = value + (priceToday * quantity);
-
-                if(instant.atZone(ZoneId.systemDefault()).toLocalDate().equals(LocalDate.now()) ){
-                    previousValue = previousValue + (priceToday * quantity);
-                } else {
-                    previousValue = previousValue + (stock.getPriceYesterday() * quantity);
-                }
-            }
-            StockPrice stockPrice = stockPriceService.getStockPriceByTickerBySymbolAndDate(stockTicker,date);
-            int quantity = allocatedStock.getStockQuantity();
-            Date buyDate = allocatedStock.getStockBuyDate();
-            Instant instant = buyDate.toInstant();
-
-            cost = cost + (allocatedStock.getStockBuyPrice() * quantity);
-            double priceToday = stock.getPriceToday();
-            value  = value + (priceToday * quantity);
-
-            if(instant.atZone(ZoneId.systemDefault()).toLocalDate().equals(LocalDate.now()) ){
-                previousValue = previousValue + (priceToday * quantity);
-            } else {
-                previousValue = previousValue + (stock.getPriceYesterday() * quantity);
-            }
-        }
-
-        dpnl = PortfolioCalculatorUtility.round((value / previousValue - 1) * 100);
-        pnl = PortfolioCalculatorUtility.round((value / cost - 1) * 100);
-        dpnla = PortfolioCalculatorUtility.round((value - previousValue));
-        pnla = PortfolioCalculatorUtility.round(value - cost);
-
-        temp.put("dpnl", dpnl);
-        temp.put("pnl", pnl);
-        temp.put("dpnla", dpnla);
-        temp.put("pnla", pnla);
-        temp.put("value",PortfolioCalculatorUtility.round(value));
-    return result;
-    }
-
     
-}
+// }
