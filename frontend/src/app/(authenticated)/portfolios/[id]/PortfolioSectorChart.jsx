@@ -38,7 +38,7 @@ export default function PortfolioSectorChart({ stockData, type }) {
             cy="50%"
             outerRadius={80}
             fill="#8884d8"
-            label
+            label={(entry)  => `${entry.value}%`}
           />
           {
           	data.map((entry, index) => {
@@ -46,7 +46,7 @@ export default function PortfolioSectorChart({ stockData, type }) {
             	return <Cell fill={color} />;
             })
           }
-          <Tooltip />
+          <Tooltip formatter={(value) => `${value}%`}/>
         </PieChart>
       </ResponsiveContainer>
     );
