@@ -18,7 +18,7 @@ export default function PortfolioAnalysis({
           </h1>
         </div>
       );
-    return <MonetaryAnalysis analysisData={analysisData} />;
+    return <MonetaryAnalysis analysisData={analysisData} portfolioData={portfolioData} />;
   };
 
   function renderSectorChart(type) {

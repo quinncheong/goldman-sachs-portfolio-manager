@@ -1,4 +1,4 @@
-import { useGetAnalysis } from "@/api/portfolio";
+import { useGetAnalysis, useGetROROfPortfolio } from "@/api/portfolio";
 import IsPublicBadge from "@/components/IsPublicBadge";
 import { useRouter } from "next/navigation";
 
@@ -10,6 +10,9 @@ export default function PortfolioCard({ portfolio }) {
     error: analysisError
   } = useGetAnalysis(portfolio.id);
 
+  const { data: ror, isLoading: rorLoading, isError: isRorError, error: rorError} = useGetROROfPortfolio(portfolio.id);
+  
+  
   const router = useRouter();
 
   const viewPortfolioDetails = () => {
@@ -51,9 +54,7 @@ export default function PortfolioCard({ portfolio }) {
               </div>
               <div>
                 <span>RoR: </span>
-                <div className="badge badge-success text-white font-bold">
-                  +22.14%
-                </div>
+                {/* <div className={`badge text-white font-bold ${ror > 0 ? "badge-success" : "badge-error"}`}>{ror > 0 ? "+" : ""}{ror.toFixed(2)}%</div> */}
               </div>
             </div>
           </div>

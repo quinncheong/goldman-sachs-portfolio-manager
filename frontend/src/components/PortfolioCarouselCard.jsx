@@ -1,4 +1,5 @@
 import { useGetAccountIdData, useGetUser } from "@/api/user";
+import { useGetROROfPortfolio } from "@/api/portfolio";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/loading/Loader";
 import { jwtDecode } from "jwt-decode";
@@ -22,6 +23,9 @@ export default function PortfolioCarouselCard({ portfolio }) {
     userisError,
     userError,
   } = useGetUser(portfolio.userId);
+
+  // const { data: ror, isLoading: rorLoading, isError: isRorError, error: rorError} = useGetROROfPortfolio(portfolio.id);
+  const ror = 30;
 
   if (portfolio.userId == jwtDecode(getCookie("token")).userId) {
     return <></>
@@ -89,9 +93,7 @@ export default function PortfolioCarouselCard({ portfolio }) {
             </div>
             <div>
               <span>RoR: </span>
-              <div className="badge badge-success text-white font-bold">
-                +22.14%
-              </div>
+              <div className={`badge text-white font-bold ${ror > 0 ? "badge-success" : "badge-error"}`}>{ror > 0 ? "+" : ""}{ror.toFixed(2)}%</div>
             </div>
           </div>
         </div>

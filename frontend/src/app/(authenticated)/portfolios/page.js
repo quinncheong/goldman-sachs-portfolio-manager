@@ -13,6 +13,9 @@ function Portfolio({}) {
     error,
   } = useGetPortfoliosOfUser();
 
+  
+
+
   const addPortfolio = (e) => {
     e.preventDefault();
     router.push("/addportfolio");
@@ -25,7 +28,7 @@ function Portfolio({}) {
     <div className="container flex flex-col m-auto p-5 h-screen">
       <div className="rounded-md p-4 text-white bg-secondary-100 mb-5 items-center flex flex-row justify-between">
         <h2 className="text-xl sm:text-2xl font-semibold text-white">
-          Your Portfolio:
+          Your Portfolios:
         </h2>
         <button
           className="btn bg-primary-200 text-white border-0"

@@ -341,3 +341,17 @@ const removeStock = async (removed) => {
     return error;
   }
 };
+
+export const useGetROROfPortfolio = (portfolioId) => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getROROfPortfolio", portfolioId],
+    queryFn: () => getROROfPortfolio(portfolioId),
+  });
+
+  return { data, isLoading, isError, error };
+};
+
+const getROROfPortfolio = async (portfolioId) => {
+  let response = await axiosInstance.get("/ror/" + portfolioId);
+  return response.data;
+};

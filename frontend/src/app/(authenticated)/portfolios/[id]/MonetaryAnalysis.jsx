@@ -1,4 +1,9 @@
-export default function MonetaryAnalysis({ analysisData }) {
+import { useGetROROfPortfolio } from "@/api/portfolio";
+
+export default function MonetaryAnalysis({ analysisData, portfolioData }) {
+
+    // const { data: ror, isLoading: rorLoading, isError: isRorError, error: rorError} = useGetROROfPortfolio(portfolioData.id);
+    const ror = -50;
     return (
         <div className="flex sm:flex-row justify-between">
             <div className="flex flex-col mb-4 sm:mb-0">
@@ -19,11 +24,8 @@ export default function MonetaryAnalysis({ analysisData }) {
                 <span className="text-sm sm:text-md text-gray-400">
                     Annualized Rate of Return:
                 </span>
-                <span className="text-lg sm:text-2xl">20.50%</span>
-                <div className="text-sm">
-                    <span className="text-gray-500">DJIA: </span>
-                    <span className="text-green-400 font-bold">10.10%</span>
-                </div>
+                <span className={`sm:text-2xl ${ror > 0 ? "text-success" : "text-error"  }`}>{ror > 0 ? "+" : "-"}{Math.abs(ror).toFixed(2)}%</span>
+
             </div>
         </div>
     );
