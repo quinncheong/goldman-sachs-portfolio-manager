@@ -12,16 +12,20 @@ const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 export default function PortfolioSectorChart({ stockData, type }) {
   let data
   if (type == "sector") {
-    data = Object.entries(stockData.sector).map(([key, value]) => ({
+    data = Object.entries(stockData.sector).map(([key, value], index) => ({
       name: key.charAt(0).toUpperCase() + key.slice(1).toLowerCase(),
-      value: value
+      value: +value.toFixed(2),
+      fill: COLORS[index % COLORS.length]
     }))
   } else {
-    data = Object.entries(stockData.country).map(([key, value]) => ({
+    data = Object.entries(stockData.country).map(([key, value], index) => ({
       name: key,
-      value: value
+      value: +value.toFixed(2),
+      fill: COLORS[index % COLORS.length]
     }))
   }
+
+
   const pieChart = () => {
     return (
       <ResponsiveContainer width={400} height="100%">
@@ -36,6 +40,12 @@ export default function PortfolioSectorChart({ stockData, type }) {
             fill="#8884d8"
             label
           />
+          {
+          	data.map((entry, index) => {
+            	const color = entry.pv > 4000 ? COLORS[0] : COLORS[1];
+            	return <Cell fill={color} />;
+            })
+          }
           <Tooltip />
         </PieChart>
       </ResponsiveContainer>
