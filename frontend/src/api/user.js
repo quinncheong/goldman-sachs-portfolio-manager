@@ -37,16 +37,16 @@ const getAccountData = async () => {
   }
 };
 
-export const useGetCurrentUser = () => {
+export const useGetUser = (userId) => {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["getCurrentUser"],
-    queryFn: () => useGetCurrentUser(),
+    queryKey: ["getUser", userId],
+    queryFn: () => getUser(userId),
   })
+  return { data, isLoading, isError, error };
 }
 
-export const getCurrentUser = async () => {
+export const getUser = async (userId) => {
   try {
-    let userId = jwtDecode(getCookie("token")).userId;
     let response = await axiosUserInstance.get("/" + userId);
     return response.data;
   } catch (error) {

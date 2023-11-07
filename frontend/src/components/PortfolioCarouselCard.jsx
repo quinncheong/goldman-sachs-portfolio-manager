@@ -1,26 +1,44 @@
-import { useGetAccountIdData } from "@/api/user";
+import { useGetAccountIdData, useGetUser } from "@/api/user";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/loading/Loader";
+import { jwtDecode } from "jwt-decode";
+import { getCookie } from "cookies-next";
 
 export default function PortfolioCarouselCard({ portfolio }) {
   const router = useRouter();
-  let totalAssets
+  let totalAssets;
   const viewPortfolioDetails = () => {
     router.push(`/portfolios/${portfolio.id}`);
   };
-  console.log('hi')
-  console.log(portfolio.userId)
-  const { data: userData, isLoading, isError, error } = useGetAccountIdData(portfolio.userId);
-  
+  const {
+    data: userData,
+    isLoading,
+    isError,
+    error,
+  } = useGetAccountIdData(portfolio.userId);
+  const {
+    data: userObjData,
+    userisLoading,
+    userisError,
+    userError,
+  } = useGetUser(portfolio.userId);
+
+  if (portfolio.userId == jwtDecode(getCookie("token")).userId) {
+    return <></>
+  }
+
   if (isLoading) {
     return <Loader />;
   }
-  
+
+  if (userisLoading) {
+    return <Loader />;
+  }
+
   if (userData) {
-    console.log(userData)
     totalAssets = new Intl.NumberFormat("en-US", { style: "decimal" }).format(
       userData.totalAssets.toFixed(2)
-    )
+    );
   }
 
   return (
@@ -28,7 +46,8 @@ export default function PortfolioCarouselCard({ portfolio }) {
       <CardAvatar />
       <div className="card-body items-center">
         <h2 className="card-title">
-          Portfolio Owner: <span className="font-normal">John Doe</span>
+          Portfolio Owner:{" "}
+          <span className="font-normal">{userObjData.name}</span>
         </h2>
         <h2 className="card-title">
           Title: <span className="font-normal">{portfolio.name}</span>
