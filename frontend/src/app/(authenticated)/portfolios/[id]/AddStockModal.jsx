@@ -78,7 +78,7 @@ export default function AddStockModal({ portfolio, closeModal, openModal }) {
         stockBuyDate: date,
       };
       portfolio.allocatedStocks.push(newAllocatedStock);
-      const updated = { ...portfolio, initialValue:cashBalance }
+      const updated = { ...portfolio, initialValue: cashBalance };
       updatePortfolio(updated);
       closeModal();
     }
@@ -89,6 +89,12 @@ export default function AddStockModal({ portfolio, closeModal, openModal }) {
       <dialog id="add-stock-modal" className="modal text-white bg-opacity-75">
         <div className="modal-box text-white w-3/4 h-3/6 max-w-5xl">
           <h3 className="font-bold text-lg">Adding Stock</h3>
+          <form method="dialog">
+            {/* if there is a button in form, it will close the modal */}
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+              ✕
+            </button>
+          </form>
           <p className="py-4">
             Get started with adding a stock to your portfolio
           </p>

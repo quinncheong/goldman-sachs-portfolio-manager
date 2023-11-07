@@ -6,7 +6,7 @@ import { useGetListOfStocks } from "@/api/stock";
 import { useGetHistoricalStockPrice } from "@/api/stockPrice";
 import { toast } from "react-toastify";
 
-export default function UpdatePortfolioModal({ portfolio, closeModal, openModal }) {
+export default function UpdatePortfolioModal({ portfolio, closeModal }) {
   const [description, setDescription] = useState(portfolio.description);
   const [name, setName] = useState(portfolio.name);
   const [status, setStatus] = useState(portfolio.publiclyAccessible);
@@ -25,27 +25,39 @@ export default function UpdatePortfolioModal({ portfolio, closeModal, openModal 
 
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
-  }
+  };
 
   const handleStatusChange = (e) => {
     setStatus(e.target.value);
-  }
+  };
 
   const update = (e) => {
     e.preventDefault();
-    const updated = { ...portfolio, name: name, description: description, publiclyAccessible: status }
+    const updated = {
+      ...portfolio,
+      name: name,
+      description: description,
+      publiclyAccessible: status,
+    };
     updatePortfolio(updated);
     closeModal();
-  }
+  };
 
   return (
     <>
-      <dialog id="update-portfolio-modal" className="modal text-white bg-opacity-75">
-        <div className="modal-box text-white w-3/4 h-3/6 max-w-5xl">
+      <dialog
+        id="update-portfolio-modal"
+        className="modal text-white bg-opacity-75"
+      >
+        <div className="modal-box text-white w-3/4 h-2/6 max-w-5xl">
           <h3 className="font-bold text-lg">Update Portfolio</h3>
-          <p className="py-4">
-            Update your portfolio
-          </p>
+          <form method="dialog">
+            {/* if there is a button in form, it will close the modal */}
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+              ✕
+            </button>
+          </form>
+          <p className="py-4">Update your portfolio</p>
           {modalBody()}
           <div className="mt-auto modal-action">
             <form method="dialog">
@@ -61,11 +73,7 @@ export default function UpdatePortfolioModal({ portfolio, closeModal, openModal 
   );
 
   function modalBody() {
-    return (
-      <>
-        {formDetails()}
-      </>
-    );
+    return <>{formDetails()}</>;
   }
 
   function formDetails() {
@@ -102,12 +110,8 @@ export default function UpdatePortfolioModal({ portfolio, closeModal, openModal 
               value={status}
               className="select select-bordered max-w-xs"
             >
-              <option value={true}>
-                Public
-              </option>
-              <option value={false}>
-                Private
-              </option>
+              <option value={true}>Public</option>
+              <option value={false}>Private</option>
             </select>
           </div>
         </div>

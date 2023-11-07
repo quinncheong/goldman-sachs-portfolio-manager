@@ -125,7 +125,6 @@ const getAnalysis = async (portfolioId) => {
   return response.data;
 };
 
-
 export const useCreatePortfolio = () => {
   const queryClient = useQueryClient();
   const {
@@ -136,9 +135,6 @@ export const useCreatePortfolio = () => {
     mutate: createNewPortfolio,
   } = useMutation({
     mutationFn: (data) => createPortfolio(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["getPortfoliosOfUser"]);
-    },
     onMutate: (variables) => {
       // A mutation is about to happen!
       // Optionally return a context containing data to use when for example rolling back
@@ -152,6 +148,7 @@ export const useCreatePortfolio = () => {
     onSuccess: (data, variables, context) => {
       toast.success("Portfolio Created!");
       console.log(data);
+      queryClient.invalidateQueries(["getPortfoliosOfUser"]);
     },
     onSettled: (data, error, variables, context) => {
       // Error or success... doesn't matter!
@@ -188,9 +185,6 @@ export const useUpdatePortfolio = () => {
     mutate,
   } = useMutation({
     mutationFn: (data) => updatePortfolio(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["savePortfolio"]);
-    },
     onMutate: (variables) => {
       // A mutation is about to happen!
       // Optionally return a context containing data to use when for example rolling back
@@ -204,6 +198,19 @@ export const useUpdatePortfolio = () => {
     onSuccess: (data, variables, context) => {
       toast.success("Portfolio has been saved!");
       console.log(data);
+
+      queryClient.invalidateQueries({
+        queryKey: ["getPortfolioByPortfolioId", data.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getStockDetails", data.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getStockData", data.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getAnalysis", data.id],
+      });
     },
     onSettled: (data, error, variables, context) => {
       // Error or success... doesn't matter!
