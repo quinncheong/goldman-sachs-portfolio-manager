@@ -70,7 +70,7 @@ const getPortfoliosOfUser = async () => {
 };
 
 export const useGetPortfolioByPortfolioId = (portfolioId) => {
-  const { data, isLoading, isError, error, refetch } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["getPortfolioByPortfolioId", portfolioId],
     queryFn: () => getPortfolioByPortfolioId(portfolioId),
   });
@@ -135,9 +135,6 @@ export const useCreatePortfolio = () => {
     mutate: createNewPortfolio,
   } = useMutation({
     mutationFn: (data) => createPortfolio(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["getPortfoliosOfUser"]);
-    },
     onMutate: (variables) => {
       // A mutation is about to happen!
       // Optionally return a context containing data to use when for example rolling back
@@ -151,6 +148,7 @@ export const useCreatePortfolio = () => {
     onSuccess: (data, variables, context) => {
       toast.success("Portfolio Created!");
       console.log(data);
+      queryClient.invalidateQueries(["getPortfoliosOfUser"]);
     },
     onSettled: (data, error, variables, context) => {
       // Error or success... doesn't matter!
@@ -208,7 +206,10 @@ export const useUpdatePortfolio = () => {
         queryKey: ["getStockDetails", data.id],
       });
       queryClient.invalidateQueries({
-        queryKey: ["getStockDetails", data.id],
+        queryKey: ["getStockData", data.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getAnalysis", data.id],
       });
     },
     onSettled: (data, error, variables, context) => {
