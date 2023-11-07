@@ -1,6 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { getCookie } from "cookies-next";
+import { jwtDecode } from "jwt-decode";
 import {
   useDeletePortfolio,
   useGetAnalysis,
@@ -9,6 +11,8 @@ import {
   useGetStockDetails,
 } from "@/api/portfolio";
 
+import withAuth from "@/middleware/authentication";
+
 import Loader from "@/components/loading/Loader";
 import IsPublicBadge from "@/components/IsPublicBadge";
 import PortfolioFinancials from "./PortfolioFinancials";
@@ -16,9 +20,6 @@ import PortfolioAnalysis from "./PortfolioAnalysis";
 import StockHoldings from "./StockHoldings";
 import AddStockModal from "./AddStockModal";
 import UpdatePortfolioModal from "./UpdatePortfolioModal";
-import { getCookie } from "cookies-next";
-import { jwtDecode } from "jwt-decode";
-import withAuth from "@/middleware/authentication";
 
 function PortfolioPage({ params }) {
   const router = useRouter();
@@ -40,32 +41,15 @@ function PortfolioPage({ params }) {
     data: stockData,
     isLoading: stockDataIsLoading,
     isError: stockDataIsError,
-    error: stockDataError
+    error: stockDataError,
   } = useGetStockData(params.id);
 
   const {
     data: analysisData,
     isLoading: analysisIsLoading,
     isError: analysisIsError,
-    error: analysisError
+    error: analysisError,
   } = useGetAnalysis(params.id);
-
-
-  function openModal() {
-    document.getElementById("add-stock-modal").showModal()
-  }
-
-  function closeModal() {
-    document.getElementById("add-stock-modal").close()
-  }
-
-  function openUpdateModal() {
-    document.getElementById("update-portfolio-modal").showModal()
-  }
-
-  function closeUpdateModal() {
-    document.getElementById("update-portfolio-modal").close()
-  }
 
   const {
     isDeleteing,
@@ -75,7 +59,21 @@ function PortfolioPage({ params }) {
     delPortfolio,
   } = useDeletePortfolio();
 
+  function openModal() {
+    document.getElementById("add-stock-modal").showModal();
+  }
 
+  function closeModal() {
+    document.getElementById("add-stock-modal").close();
+  }
+
+  function openUpdateModal() {
+    document.getElementById("update-portfolio-modal").showModal();
+  }
+
+  function closeUpdateModal() {
+    document.getElementById("update-portfolio-modal").close();
+  }
 
   if (isLoading) {
     return <Loader />;
@@ -90,10 +88,10 @@ function PortfolioPage({ params }) {
   }
 
   const handleDeletePortfolio = (e) => {
-    e.preventDefault()
-    delPortfolio(params.id)
-    router.push("/portfolios")
-  }
+    e.preventDefault();
+    delPortfolio(params.id);
+    router.push("/portfolios");
+  };
 
   return (
     <div className="container mx-auto p-4 text-black">
@@ -102,10 +100,12 @@ function PortfolioPage({ params }) {
           <h2 className="text-4xl font-semibold border-none outline-none w-fit">
             {portfolio.name}
           </h2>
-          <p className="text-xl border-none outline-none w-fit">{portfolio.description}</p>
+          <p className="text-xl border-none outline-none w-fit">
+            {portfolio.description}
+          </p>
           <p className="text-xl mt-2">
             This Porfolio is:{" "}
-            <IsPublicBadge isPublic={portfolio.publiclyAccessible || false} />
+            <IsPublicBadge isPublic={portfolio.publiclyAccessible} />
           </p>
         </div>
         <RenderButtonsWithAccessControl portfolioUserId={portfolio.userId} />
@@ -124,10 +124,7 @@ function PortfolioPage({ params }) {
       <div className="rounded-md p-4 text-white bg-secondary-100">
         <h2 className="text-2xl font-semibold">Holdings</h2>
       </div>
-      <StockHoldings 
-        stockDetails={stockDetails}
-        stockData={stockData}
-      />
+      <StockHoldings stockDetails={stockDetails} stockData={stockData} />
 
       <AddStockModal
         portfolio={portfolio}
@@ -143,7 +140,6 @@ function PortfolioPage({ params }) {
     </div>
   );
 
-
   function RenderButtonsWithAccessControl({ portfolioUserId }) {
     let userId = jwtDecode(getCookie("token")).userId;
     if (!(userId === portfolioUserId)) {
@@ -151,9 +147,9 @@ function PortfolioPage({ params }) {
     }
 
     return (
-      <>
+      <div className="flex w-5/6 gap-4">
         <button
-          className="btn btn-error p-4 text-white border-0"
+          className="btn btn-error p-4 text-white border-0 ml-auto"
           onClick={handleDeletePortfolio}
         >
           Delete Portfolio
@@ -170,7 +166,7 @@ function PortfolioPage({ params }) {
         >
           Add Stocks
         </button>
-      </>
+      </div>
     );
   }
 }

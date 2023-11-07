@@ -70,7 +70,7 @@ const getPortfoliosOfUser = async () => {
 };
 
 export const useGetPortfolioByPortfolioId = (portfolioId) => {
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["getPortfolioByPortfolioId", portfolioId],
     queryFn: () => getPortfolioByPortfolioId(portfolioId),
   });
@@ -124,7 +124,6 @@ const getAnalysis = async (portfolioId) => {
   let response = await axiosInstance.get("/" + portfolioId + "/portfolio");
   return response.data;
 };
-
 
 export const useCreatePortfolio = () => {
   const queryClient = useQueryClient();
@@ -188,9 +187,6 @@ export const useUpdatePortfolio = () => {
     mutate,
   } = useMutation({
     mutationFn: (data) => updatePortfolio(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["savePortfolio"]);
-    },
     onMutate: (variables) => {
       // A mutation is about to happen!
       // Optionally return a context containing data to use when for example rolling back
@@ -204,6 +200,16 @@ export const useUpdatePortfolio = () => {
     onSuccess: (data, variables, context) => {
       toast.success("Portfolio has been saved!");
       console.log(data);
+
+      queryClient.invalidateQueries({
+        queryKey: ["getPortfolioByPortfolioId", data.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getStockDetails", data.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getStockDetails", data.id],
+      });
     },
     onSettled: (data, error, variables, context) => {
       // Error or success... doesn't matter!
