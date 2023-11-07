@@ -7,7 +7,7 @@ import {
   Tooltip,
 } from "recharts";
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#EB4034", "#EB34b7", "#9900F7", "#00F7FF", "#DDFF00"];
 
 export default function PortfolioSectorChart({ stockData, type }) {
   let data
@@ -24,7 +24,6 @@ export default function PortfolioSectorChart({ stockData, type }) {
       fill: COLORS[index % COLORS.length]
     }))
   }
-
 
   const pieChart = () => {
     return (
