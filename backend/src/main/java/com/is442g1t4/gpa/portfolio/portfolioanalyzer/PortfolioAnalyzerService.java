@@ -13,6 +13,7 @@ import com.is442g1t4.gpa.user.UserRepository;
 import com.is442g1t4.gpa.portfolio.Portfolio;
 import com.is442g1t4.gpa.portfolio.PortfolioRepository;
 import com.is442g1t4.gpa.portfolio.PortfolioService;
+import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculator;
 import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculatorUtility;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
@@ -93,4 +94,4 @@ public class PortfolioAnalyzerService {
     }
 
     
-}
+// }

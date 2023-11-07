@@ -19,6 +19,7 @@ import com.is442g1t4.gpa.portfolio.Portfolio;
 import com.is442g1t4.gpa.portfolio.PortfolioService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculator;
+import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculatorService;
 import com.is442g1t4.gpa.portfolio.portfolioanalyzer.PortfolioAnalyzerService;
 
 @RestController
@@ -28,8 +29,12 @@ public class PortfolioAnalyzerController {
     @Autowired
     private PortfolioAnalyzerService portfolioAnalyzer;
 
+    @Autowired
+    private PortfolioCalculatorService portfolioCalculatorService;
+
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Double>> getPortfolioAnalysis(@PathVariable ObjectId id) {
         return new ResponseEntity<Map<String, Double>>(portfolioAnalyzer.getPortfolioAnalysis(id), HttpStatus.OK);
     }
+
 }

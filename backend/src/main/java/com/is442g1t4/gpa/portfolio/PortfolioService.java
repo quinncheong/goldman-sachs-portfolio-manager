@@ -9,11 +9,19 @@ import com.is442g1t4.gpa.user.UserRepository;
 import com.is442g1t4.gpa.portfolio.PortfolioService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
+import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculator;
+import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculatorUtility;
+import com.is442g1t4.gpa.stock.stockPrice.StockPrice;
+import com.is442g1t4.gpa.stock.stockPrice.StockPriceService;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
+import java.util.Date;
 
 @Service
 public class PortfolioService {
@@ -25,6 +33,9 @@ public class PortfolioService {
 
     @Autowired
     private AllocatedStockService allocatedStockService;
+
+    @Autowired
+    private StockPriceService stockPriceService;
 
     public List<Portfolio> getAllPortfolios() {
         return portfolioRepository.findAll();
@@ -148,5 +159,61 @@ public class PortfolioService {
         portfolio.get().setAllocatedStocks(newAllocatedStocks);
         Portfolio retrievedPortfolio = portfolioRepository.save(portfolio.get());
         return retrievedPortfolio;
+    }
+
+    public Double getPortfolioStockExAndVar(Map<String, PortfolioCalculator> calculated){
+        Double ror = 0.0;
+        Map<String, Map<String, Double>> result = new HashMap<>();
+        for (String stockTicker : calculated.keySet()){
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+            cal.add(Calendar.DATE, -15);
+            PortfolioCalculator cPortfolioCalculator = calculated.get(stockTicker);
+            Map<String, Double> temp = new HashMap<>();
+            ArrayList<Double> stockPrices = new ArrayList<>();
+            ArrayList<Double> percentages = new ArrayList<>();
+            System.out.println("SEx");
+            System.out.println(stockTicker);
+            System.out.println(cal.getTime());
+            stockPrices.add(stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime()).getClose());
+            for (int i = 0; i < 6; i ++){
+                cal.add(Calendar.YEAR, -1);
+                System.out.println(stockTicker);
+                Date curr = cal.getTime();
+                StockPrice stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr);
+                if (stockPrice == null){
+                    cal.add(Calendar.DATE, -3);
+                    curr = cal.getTime();
+                    stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr);
+                }
+                stockPrices.add(stockPrice.getClose());
+            }
+            for (int i = stockPrices.size() - 1; i > 0; i --){
+                Double perc = PortfolioCalculatorUtility.round((stockPrices.get(i - 1) / stockPrices.get(i) - 1) * 100);
+                percentages.add(perc);
+            }
+            Double percGrowth = (stockPrices.get(0)/stockPrices.get(stockPrices.size() - 1) - 1)*100;
+            System.out.println(stockPrices.get(0));
+            System.out.println(stockPrices.get(stockPrices.size() - 1));
+            System.out.println(percGrowth);
+            Double ex = PortfolioCalculatorUtility.round(Math.pow(percGrowth, 1.0/5.0));
+            Double sum = 0.0;
+            for (Double perc: percentages){
+                sum += Math.pow(perc - ex, 2);
+            }
+            Double var = PortfolioCalculatorUtility.round(Math.pow(sum / 5.0, 1.0/2.0));
+            temp.put("ex", ex);
+            temp.put("var", var);
+            ror += PortfolioCalculatorUtility.round(ex * cPortfolioCalculator.getPositionsRatio()/100.0);
+            result.put(stockTicker, temp);
+        }
+        Map<String, Double> portfolio = new HashMap<>();
+        portfolio.put("ex", ror);
+        result.put("portfolio", portfolio);
+
+        return ror;
     }
 }
