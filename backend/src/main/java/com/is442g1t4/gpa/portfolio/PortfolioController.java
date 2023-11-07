@@ -133,4 +133,11 @@ public class PortfolioController {
         
     }
 
+    @GetMapping("/ror/{id}")
+    public ResponseEntity<Double> getRoR(@PathVariable ObjectId id) {
+        Map<String, PortfolioCalculator> calculated = portfolioCalculatorService.getCalculatedStockInPortfolio(id);
+        return new ResponseEntity<Double>(
+            portfolioService.getPortfolioStockExAndVar(calculated), HttpStatus.OK);
+    }
+
 }
