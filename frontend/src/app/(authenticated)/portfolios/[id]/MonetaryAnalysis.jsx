@@ -33,7 +33,7 @@ export default function MonetaryAnalysis({ analysisData, portfolioData }) {
       <div className="flex flex-col mb-4 sm:mb-0">
         <span className="text-sm sm:text-md text-gray-400">Total P&amp;L:</span>
         <span className="text-lg sm:text-2xl">
-          {analysisData.pnla >= 0 ? "+$" : "-$"}
+          {analysisData.pnla >= 0 ? "+" : "-"}
           {new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD",
