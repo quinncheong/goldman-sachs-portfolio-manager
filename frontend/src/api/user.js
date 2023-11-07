@@ -37,6 +37,42 @@ const getAccountData = async () => {
   }
 };
 
+export const useGetCurrentUser = () => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getCurrentUser"],
+    queryFn: () => useGetCurrentUser(),
+  })
+}
+
+export const getCurrentUser = async () => {
+  try {
+    let userId = jwtDecode(getCookie("token")).userId;
+    let response = await axiosUserInstance.get("/" + userId);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const useGetAccountIdData = (userId) => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getAccountIdData", userId],
+    queryFn: () => getAccountIdData(userId),
+  });
+
+  return { data, isLoading, isError, error };
+};
+
+const getAccountIdData = async (userId) => {
+  try {
+    let response = await axiosUserInstance.get("/data/" + userId);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
 // ACCESS LOGGING. Note that log creation does not need authorization.
 const axiosUserInstanceNoAuth = axios.create({
   baseURL: BASE_SERVER_URL + USER_API_PATH,

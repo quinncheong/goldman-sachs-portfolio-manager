@@ -1,11 +1,21 @@
+import { useGetAccountIdData } from "@/api/user";
 import { useRouter } from "next/navigation";
 
 export default function PortfolioCarouselCard({ portfolio }) {
   const router = useRouter();
-
+  let totalAssets
   const viewPortfolioDetails = () => {
     router.push(`/portfolios/${portfolio.id}`);
   };
+  console.log('hi')
+  console.log(portfolio)
+  const { data: userData, isLoading, isError, error } = useGetAccountIdData(portfolio.userId);
+  if (userData) {
+    console.log(userData)
+    totalAssets = new Intl.NumberFormat("en-US", { style: "decimal" }).format(
+      userData.totalAssets.toFixed(2)
+    )
+  }
 
   return (
     <div className="card w-100 glass flex flex-col items-center">
@@ -27,19 +37,29 @@ export default function PortfolioCarouselCard({ portfolio }) {
             <div>
               <p>
                 <span className="text-gray-400">Total Assets: </span>
-                <span className="font-bold text-gray-700">$25,000</span>
+                <span className="font-bold text-gray-700">${totalAssets}</span>
               </p>
             </div>
             <div>
               <span>Daily P&L: </span>
-              <div className="badge badge-error text-white font-bold">
-                -0.50%
+              <div
+                className={`badge text-white font-bold ${
+                  userData.dpnlp > 0 ? "badge-success" : "badge-error"
+                }`}
+              >
+                {userData.dpnlp > 0 ? "+" : ""}
+                {userData.dpnlp.toFixed(2)}%
               </div>
             </div>
             <div>
               <span>Total P&L: </span>
-              <div className="badge badge-success text-white font-bold">
-                +11.07%
+              <div
+                className={`badge text-white font-bold ${
+                  userData.pnlp > 0 ? "badge-success" : "badge-error"
+                }`}
+              >
+                {userData.pnlp > 0 ? "+" : ""}
+                {userData.pnlp.toFixed(2)}%
               </div>
             </div>
             <div>

@@ -56,7 +56,7 @@ export default function StockHoldings({ stockDetails, stockData }) {
                 <div className="h-20">
                     <h1 className="m-3 text-xl font-semibold">Stock Holdings</h1>
                     <div className="w-full flex flex-row items-end min-h-8">
-                        <div className="w-[25%] text-xs">
+                        <div className="w-[22%] text-xs">
                             <span>Symbol | Name</span>
                         </div>
                         <div className="w-[10%] text-xs">
@@ -68,20 +68,20 @@ export default function StockHoldings({ stockDetails, stockData }) {
                         <div className="w-[14%] text-xs">
                             <span>P&L</span>
                         </div>
-                        <div className="w-[14%] text-xs">
+                        <div className="w-[13.5%] text-xs">
                             <span>Daily P&L</span>
                         </div>
-                        <div className="w-[10%] text-xs">
+                        <div className="w-[9.5%] text-xs">
                             <span>Asset Var.</span>
                         </div>
                         <div className="w-[10%] text-xs">
                             <span>MC to Risk</span>
                         </div>
-                        <div className="w-[7%] text-xs">
-                            <span>Positions Ratio</span>
+                        <div className="w-[10%] text-xs">
+                            <span>Pos. Ratio</span>
                         </div>
-                        <div className="w-[7%] text-xs">
-                            <span>Remove Stock</span>
+                        <div className="w-[6%] text-xs">
+                            <span>Remove</span>
                         </div>
                     </div>
                 </div>
