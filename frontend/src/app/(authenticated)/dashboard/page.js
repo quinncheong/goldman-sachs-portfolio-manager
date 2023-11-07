@@ -27,7 +27,6 @@ function Dashboard() {
     isError: isPublicPorfoliosError,
     error: publicPortfoliosError,
   } = useGetPublicPortfolios();
-  console.log(accData);
 
   const [financials, setFinancials] = useState([]);
   const [analysis, setAnalysis] = useState([]);
@@ -164,7 +163,7 @@ function AnalysisInfo({ title, items, badge }) {
   return (
     <div className="bg-white p-4 rounded shadow flex flex-col pb-10">
       <h2 className="text-xl sm:text-2xl font-semibold mb-4">{title}</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
+      <div className="flex flex-row">
         {items.map((item, index) => (
           <InfoItem
             key={index}
@@ -181,7 +180,7 @@ function AnalysisInfo({ title, items, badge }) {
 
 function InfoItem({ label, value, badge }) {
   return (
-    <div className="flex flex-col mb-4 sm:mb-0 flex">
+    <div className="flex flex-col mb-4 sm:mb-0 flex mr-8">
       <span className="text-sm sm:text-md text-gray-400">{label}:</span>
       <span className="text-lg sm:text-2xl">{value}</span>
       {badge && <Badge text={badge.text} color={badge.color} />}
