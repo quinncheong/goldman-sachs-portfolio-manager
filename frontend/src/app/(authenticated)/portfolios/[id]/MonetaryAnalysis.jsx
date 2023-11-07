@@ -34,9 +34,10 @@ export default function MonetaryAnalysis({ analysisData, portfolioData }) {
         <span className="text-sm sm:text-md text-gray-400">Total P&amp;L:</span>
         <span className="text-lg sm:text-2xl">
           {analysisData.pnla >= 0 ? "+$" : "-$"}
-          {new Intl.NumberFormat("en-US", { style: "decimal" }).format(
-            Math.abs(analysisData.pnla).toFixed(2)
-          )}
+          {new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+          }).format(Math.abs(analysisData.pnla).toFixed(2))}
         </span>
         <div
           className={`badge text-white font-bold ${
