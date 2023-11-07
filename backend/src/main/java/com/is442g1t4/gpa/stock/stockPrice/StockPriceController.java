@@ -64,7 +64,6 @@ public class StockPriceController {
             @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
 
         StockPrice stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, date);
-        System.out.println(stockPrice);
 
         if (stockPrice == null) {
             return new ResponseEntity<StockPrice>(HttpStatus.NOT_FOUND);
