@@ -92,6 +92,7 @@ public class PortfolioAnalyzerService {
 
         return result;
     }
+}
 
     
 // }
