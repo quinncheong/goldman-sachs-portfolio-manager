@@ -22,6 +22,7 @@ import AddStockModal from "./AddStockModal";
 import UpdatePortfolioModal from "./UpdatePortfolioModal";
 
 function PortfolioPage({ params }) {
+  console.log(params.id);
   const router = useRouter();
   const {
     data: portfolio,
@@ -124,7 +125,11 @@ function PortfolioPage({ params }) {
       <div className="rounded-md p-4 text-white bg-secondary-100">
         <h2 className="text-2xl font-semibold">Holdings</h2>
       </div>
-      <StockHoldings stockDetails={stockDetails} stockData={stockData} />
+      <StockHoldings 
+        stockDetails={stockDetails}
+        stockData={stockData}
+        portfolioData={portfolio}
+      />
 
       <AddStockModal
         portfolio={portfolio}

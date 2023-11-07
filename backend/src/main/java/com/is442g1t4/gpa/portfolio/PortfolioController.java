@@ -123,4 +123,14 @@ public class PortfolioController {
     public ResponseEntity<Map<String, Double>> getPortfolioTotal(@PathVariable ObjectId id) {
         return new ResponseEntity<Map<String, Double>>(portfolioAnalyzer.getPortfolioAnalysis(id), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{portfolioId}/{stockTicker}")
+    public ResponseEntity<Portfolio> deleteAllocatedStockFromPortfolio(@PathVariable ObjectId portfolioId, @PathVariable String stockTicker) {
+
+        Portfolio retrievedPortfolio = portfolioService.deleteAllocatedStockFromPortfolio(portfolioId, stockTicker);
+
+        return new ResponseEntity<Portfolio>(retrievedPortfolio, HttpStatus.OK);
+        
+    }
+
 }
