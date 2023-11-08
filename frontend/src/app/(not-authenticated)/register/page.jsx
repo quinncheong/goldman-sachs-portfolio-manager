@@ -84,7 +84,6 @@ export default function Register() {
 
     return errors;
   };
-
   const validateConfirmPassword = (e) => {
     let errors = [];
 
