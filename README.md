@@ -172,14 +172,14 @@ Quinn Cheong - [Github](https://github.com/quinncheong)<br/>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/quinncheong/goldman-sachs-portfolio-manager.svg?style=for-the-badge
 [contributors-url]: https://github.com/quinncheong/goldman-sachs-portfolio-manager/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/quinncheong/goldman-sachs-portfolio-manager.svg?style=for-the-badge
 [forks-url]: https://github.com/quinncheong/goldman-sachs-portfolio-manager/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/quinncheong/goldman-sachs-portfolio-manager.svg?style=for-the-badge
 [stars-url]: https://github.com/quinncheong/goldman-sachs-portfolio-manager/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/quinncheong/goldman-sachs-portfolio-manager.svg?style=for-the-badge
 [issues-url]: https://github.com/quinncheong/goldman-sachs-portfolio-manager/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/quinncheong/goldman-sachs-portfolio-manager.svg?style=for-the-badge
 [license-url]: https://github.com/quinncheong/goldman-sachs-portfolio-manager/blob/master/LICENSE.txt
 [product-screenshot]: images/screenshot.png
