@@ -123,7 +123,7 @@ function Dashboard() {
           <AnalysisInfo title="Your Account Analysis:" items={analysis} />
         </div>
         <div className="rounded-md p-4 text-white bg-secondary-100">
-          <h2 className="text-2xl font-semibold">Your Latest Portfolios</h2>
+          <h2 className="text-2xl font-semibold">Your Top 5 Portfolios</h2>
         </div>
         <div className="h-86">
           <PortfolioTable portfolios={data} />
