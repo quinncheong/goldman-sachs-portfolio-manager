@@ -7,7 +7,6 @@ import java.time.ZoneId;
 import java.util.*;
 
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
-import com.is442g1t4.gpa.stock.model.Stock;
 
 public class PortfolioCalculatorUtility {
 

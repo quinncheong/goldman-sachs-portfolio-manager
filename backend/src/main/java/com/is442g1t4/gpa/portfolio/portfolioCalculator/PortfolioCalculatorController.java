@@ -35,11 +35,4 @@ public class PortfolioCalculatorController {
                 portfolioCalculatorService.getCalculatedStockInPortfolio(id), HttpStatus.OK);
     }
 
-    @GetMapping("/timely/{id}/{startDate}/{endDate}")
-    public ResponseEntity<Map<String, Double>> getTimely2(@PathVariable ObjectId id, 
-                                                        @PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate,
-                                                        @PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate) {
-        return new ResponseEntity<Map<String, Double>>(portfolioCalculatorService.getAdjustedMonthlyPortfolioValueByDateRange(id, startDate, endDate), HttpStatus.OK);
-    }
-
 }
