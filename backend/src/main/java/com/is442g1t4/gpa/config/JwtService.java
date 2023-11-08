@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +26,9 @@ public class JwtService {
     @Autowired
     UserService userService;
 
-
-    // can put in application properties or .env later on
-    private static final String SECRET_KEY =
-            "322b7b7169264f7b62323f48437d4654384e33465f584947356c213e2b";
+    @Value("${JWT_SECRET_KEY}")
+    private String SECRET_KEY;
+    
 
     public String generateToken(User user) {
         return generateToken(user.getUsername(), new HashMap<>());

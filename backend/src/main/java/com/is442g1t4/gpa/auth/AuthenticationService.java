@@ -35,7 +35,7 @@ public class AuthenticationService {
 
         public AuthenticationResponse register(RegisterRequest request) {
 
-                Optional<User> duplicateUsername = userRepository.findByEmail(request.getEmail());
+                Optional<User> duplicateUsername = userRepository.findByUsername(request.getUsername());
                 Optional<User> duplicateEmail = userRepository.findByEmail(request.getEmail());
 
                 if (duplicateUsername.isPresent()||duplicateEmail.isPresent()){
