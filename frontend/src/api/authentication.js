@@ -51,7 +51,6 @@ export const useVerifyRegisteredUser = () => {
     useMutation({
       mutationFn: (data) => verifyRegisteredUser(data),
       onSuccess: async (tokenData) => {
-        console.log(tokenData);
         createLogWithToken(tokenData.token, "VERIFY_EMAIL");
       },
       onError: (error) => {
@@ -74,7 +73,6 @@ export const verifyRegisteredUser = async (token) => {
     let response = await axiosAuthInstance.post(
       "/register/verification/" + token
     );
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -118,7 +116,6 @@ export const login = async ({ username, password }) => {
 
   try {
     let response = await axiosAuthInstance.post("/authenticate", json);
-    console.log(response);
     res.token = response.data.token;
     res.isVerified = response.data.verified;
   } catch (err) {
@@ -176,7 +173,6 @@ export const useSendResetPwMail = () => {
 const sendResetPasswordMail = async (email) => {
   try {
     let response = await axiosAuthInstance.post("/password/reset/email", email);
-    console.log(response);
     return response.data.token;
   } catch (err) {
     console.log(err);
@@ -186,10 +182,8 @@ const sendResetPasswordMail = async (email) => {
 
 export const verifyJWT = async (token) => {
   try {
-    console.log("Verifying JWT: " + token);
     jwtDecode(token);
     let response = await axiosAuthInstance.get("/verify/" + token);
-    console.log(response);
     if (response.data) {
       return true;
     }

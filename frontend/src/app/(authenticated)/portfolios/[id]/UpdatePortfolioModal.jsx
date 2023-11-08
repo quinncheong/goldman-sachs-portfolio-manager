@@ -1,10 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useUpdatePortfolio } from "@/api/portfolio";
-import { useGetListOfStocks } from "@/api/stock";
-import { useGetHistoricalStockPrice } from "@/api/stockPrice";
-import { toast } from "react-toastify";
 
 export default function UpdatePortfolioModal({ portfolio, closeModal }) {
   const [description, setDescription] = useState(portfolio.description);

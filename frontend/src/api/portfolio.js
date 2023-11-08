@@ -136,22 +136,15 @@ export const useCreatePortfolio = () => {
   } = useMutation({
     mutationFn: (data) => createPortfolio(data),
     onMutate: (variables) => {
-      // A mutation is about to happen!
-      // Optionally return a context containing data to use when for example rolling back
-      // return { id: 1 };
     },
     onError: (error, variables, context) => {
-      // An error happened!
-      // console.log(`rolling back optimistic update with id ${context.id}`);
       toast.error(error);
     },
     onSuccess: (data, variables, context) => {
       toast.success("Portfolio Created!");
-      console.log(data);
       queryClient.invalidateQueries(["getPortfoliosOfUser"]);
     },
     onSettled: (data, error, variables, context) => {
-      // Error or success... doesn't matter!
     },
   });
 
@@ -186,19 +179,12 @@ export const useUpdatePortfolio = () => {
   } = useMutation({
     mutationFn: (data) => updatePortfolio(data),
     onMutate: (variables) => {
-      // A mutation is about to happen!
-      // Optionally return a context containing data to use when for example rolling back
-      // return { id: 1 };
     },
     onError: (error, variables, context) => {
-      // An error happened!
-      // console.log(`rolling back optimistic update with id ${context.id}`);
       toast.error(error);
     },
     onSuccess: (data, variables, context) => {
       toast.success("Portfolio has been saved!");
-      console.log(data);
-
       queryClient.invalidateQueries({
         queryKey: ["getPortfolioByPortfolioId", data.id],
       });
@@ -256,21 +242,14 @@ export const useDeletePortfolio = () => {
       queryClient.invalidateQueries(["getPortfoliosOfUser"]);
     },
     onMutate: (variables) => {
-      // A mutation is about to happen!
-      // Optionally return a context containing data to use when for example rolling back
-      // return { id: 1 };
     },
     onError: (error, variables, context) => {
-      // An error happened!
-      // console.log(`rolling back optimistic update with id ${context.id}`);
       toast.error(error);
     },
     onSuccess: (data, variables, context) => {
       toast.success("Portfolio Successfully Delete!");
-      console.log(data);
     },
     onSettled: (data, error, variables, context) => {
-      // Error or success... doesn't matter!
     },
   });
 
@@ -284,7 +263,6 @@ export const useDeletePortfolio = () => {
 };
 
 const deletePortfolio = async (portfolioId) => {
-  console.log(portfolioId);
   try {
     let response = await axiosInstance.delete("/" + portfolioId);
     return response.data;
@@ -304,13 +282,8 @@ export const useRemoveStock = () => {
   } = useMutation({
     mutationFn: (data) => removeStock(data),
     onMutate: (variables) => {
-      // A mutation is about to happen!
-      // Optionally return a context containing data to use when for example rolling back
-      // return { id: 1 };
     },
     onError: (error, variables, context) => {
-      // An error happened!
-      // console.log(`rolling back optimistic update with id ${context.id}`);
       toast.error(error);
     },
     onSuccess: (data, variables, context) => {

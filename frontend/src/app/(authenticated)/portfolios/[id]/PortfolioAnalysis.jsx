@@ -13,7 +13,6 @@ export default function PortfolioAnalysis({
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [shouldShowTimeChart, setShouldShowTimeChart] = useState(false);
-
   const renderAnalysis = () => {
     if (analysisData === undefined)
       return (

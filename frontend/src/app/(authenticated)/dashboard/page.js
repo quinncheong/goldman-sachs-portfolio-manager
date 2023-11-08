@@ -1,34 +1,31 @@
 "use client";
 import { useState, useEffect } from "react";
-
 import Loader from "@/components/loading/Loader";
-
 import {
   useGetPortfoliosOfUser,
   useGetPublicPortfolios,
 } from "@api/portfolio.js";
 import { useGetAccountData } from "@api/user.js";
-
 import PortfolioTable from "./PortfolioTable";
 import PortfolioCarousel from "./PortfolioCarousel";
 import { withAuth } from "@/middleware/authentication";
 
 function Dashboard() {
   const { data, isLoading, isError, error } = useGetPortfoliosOfUser();
+
   const {
     data: accData,
     isLoading: isAccDataLoading,
     isError: isAccDataError,
     error: AccDataError,
   } = useGetAccountData();
+
   const {
     data: publicPortfolios,
     isLoading: isPublicPorfoliosLoading,
     isError: isPublicPorfoliosError,
     error: publicPortfoliosError,
   } = useGetPublicPortfolios();
-
-
 
   const [financials, setFinancials] = useState([]);
   const [analysis, setAnalysis] = useState([]);
@@ -37,46 +34,40 @@ function Dashboard() {
     if (!accData) {
       return;
     }
-
     const dpnlStatus = badgeColor(accData.dpnlp);
     const pnlStatus = badgeColor(accData.pnlp);
-
     let tmpFinancials = [
       {
         label: "Total Assets",
-        value:
-
-          new Intl.NumberFormat("en-US", { style: "currency", currency:'USD' }).format(
-            accData.totalAssets
-          ),
+        value: new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(accData.totalAssets),
       },
       {
         label: "Total Securities Value",
-        value:
- 
-          new Intl.NumberFormat("en-US", { style: "currency", currency:'USD' }).format(
-            accData.totalSecurities
-          ),
+        value: new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(accData.totalSecurities),
       },
       {
         label: "Total Cash Balance",
-        value:
- 
-          new Intl.NumberFormat("en-US", { style: "currency", currency:'USD' }).format(
-            accData.totalCash
-          ),
+        value: new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(accData.totalCash),
       },
     ];
-
     let tmpAnalysis = [
       {
         label: "Daily P&L",
         value:
           dpnlStatus[0] +
-
-          new Intl.NumberFormat("en-US", { style: "currency", currency:'USD' }).format(
-            Math.abs(accData.dpnla)
-          ),
+          new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+          }).format(Math.abs(accData.dpnla)),
         badge: {
           text:
             dpnlStatus[0] +
@@ -91,10 +82,10 @@ function Dashboard() {
         label: "Total P&L",
         value:
           pnlStatus[0] +
-
-          new Intl.NumberFormat("en-US", { style: "currency", currency:'USD' }).format(
-            Math.abs(accData.pnla)
-          ),
+          new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+          }).format(Math.abs(accData.pnla)),
         badge: {
           text:
             pnlStatus[0] +
@@ -104,9 +95,8 @@ function Dashboard() {
             "%",
           color: pnlStatus[1],
         },
-      }
+      },
     ];
-
     setFinancials(tmpFinancials);
     setAnalysis(tmpAnalysis);
   }, [accData]);
@@ -161,6 +151,7 @@ function FinancialInfo({ title, items, badge }) {
     </div>
   );
 }
+
 function AnalysisInfo({ title, items, badge }) {
   return (
     <div className="bg-white p-4 rounded shadow flex flex-col pb-10">

@@ -1,23 +1,7 @@
 "use client";
 import "react-data-grid/lib/styles.css";
-
-import { useState, useEffect } from "react";
-import DataGrid from "react-data-grid";
-import Link from "next/link";
-import { useGetAnalysis, useGetAnalysisArray } from "@/api/portfolio";
-import Loader from "@/components/loading/Loader";
+import { useGetAnalysis } from "@/api/portfolio";
 import PortfolioTableRow from "./PortfolioTableRow";
-
-const headers = [];
-
-const columns = [
-  { key: "name", name: "Portfolio Name" },
-  { key: "description", name: "Portfolio Description" },
-  { key: "initialValue", name: "Total Cash" },
-  { key: "value", name: "Total Securities" },
-  { key: "PNL", name: "PNL" },
-  { key: "view", name: "View Portfolio" },
-];
 
 export default function PortfolioTable({ portfolios }) {
   if (!portfolios) {
@@ -30,10 +14,10 @@ export default function PortfolioTable({ portfolios }) {
   });
 
   if (portfolioData.includes(undefined)) {
-    return <></>
+    return <></>;
   }
+  let appendedPortfolios = [];
 
-  let appendedPortfolios = []
   function renderRow() {
     for (let i = 0; i < portfolios.length; i++) {
       for (let j = 0; j < portfolioData.length; j++) {
@@ -44,12 +28,12 @@ export default function PortfolioTable({ portfolios }) {
         }
       }
     }
-
-    const sortedPortfolios = appendedPortfolios.sort((a, b) => b.pnl - a.pnl)
-
-    return sortedPortfolios.slice(0, 5).map((portfolio, index) => (
-      <PortfolioTableRow portfolio={portfolio} key={index} index={index} />
-    ));
+    const sortedPortfolios = appendedPortfolios.sort((a, b) => b.pnl - a.pnl);
+    return sortedPortfolios
+      .slice(0, 5)
+      .map((portfolio, index) => (
+        <PortfolioTableRow portfolio={portfolio} key={index} index={index} />
+      ));
   }
 
   return (

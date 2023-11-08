@@ -34,7 +34,6 @@ export default function PortfolioMarketChart({
   startDate,
   endDate,
 }) {
-  console.log(portfolioData);
   const { data, isLoading, isError, error } = useGetTimeSeriesAnalysis({
     id: portfolioData.id,
     start: startDate,
