@@ -1,10 +1,7 @@
 package com.is442g1t4.gpa.auth;
 
-// import java.io.UnsupportedEncodingException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +28,6 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final EmailService emailservice;
 
-
     @GetMapping("/verify/{token}")
     public ResponseEntity<Boolean> getJwtValidity(@PathVariable String token) {
         return ResponseEntity.ok(authenticationService.verifyToken(token));
@@ -53,9 +49,6 @@ public class AuthenticationController {
         String recipientEmail = emailDetails.getRecipient();
         String token = "hello I am a jwt token";
         String name = "Bryan";
-        // String subject = emailDetails.getSubject();
-        // String content = emailDetails.getMsgBody();
-        // String attachment = emailDetails.getAttachment();
         try {
             System.out.println("Sending...");
             emailservice.sendVerificationEmail(name, recipientEmail, token);
@@ -74,8 +67,6 @@ public class AuthenticationController {
                 HttpStatus.OK);
     }
 
-
-
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody AuthenticationRequest request) {
@@ -92,6 +83,5 @@ public class AuthenticationController {
             @RequestBody ForgetPasswordRequest request) {
         return ResponseEntity.ok(authenticationService.changeForgottenPassword(request, token));
     }
-
 
 }

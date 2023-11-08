@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StockPriceRepository extends MongoRepository<StockPrice, ObjectId> {
-    // Stock addStockPriceData(Stock stock);
     @Aggregation(pipeline = {
             "{ '$match': { 'stockTicker': ?0, 'date' : { $gte : ?1, $lt: ?2 } } }",
             "{ '$limit': 1 }"
@@ -18,7 +17,5 @@ public interface StockPriceRepository extends MongoRepository<StockPrice, Object
     StockPrice findStockPriceByStockTickerAndDate(String stockTicker, Date startDate, Date endDate);
 
     List<StockPrice> findStockPriceByStockTicker(String stockTicker);
-
-    // List<StockPrice> findStockPriceByDate(Date date);
 
 }

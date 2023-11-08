@@ -25,7 +25,7 @@ export const useRegister = () => {
       },
       onError: (error) => {
         console.log(error);
-        toast.error("Username or password is already in use");
+        toast.error("Username or Email is already in use");
       },
     });
 
@@ -152,8 +152,7 @@ export const useSendResetPwMail = () => {
   const { data, isLoading, isSuccess, isError, error, mutateAsync } =
     useMutation({
       mutationFn: (data) => sendResetPasswordMail(data),
-      onSuccess: async (tokenData) => {
-      },
+      onSuccess: async (tokenData) => {},
       onError: (error) => {
         alert(error);
       },

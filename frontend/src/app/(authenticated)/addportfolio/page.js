@@ -49,7 +49,7 @@ export default function AddPortfolio() {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div className="min-w-full">
+        <div className="min-w-full h-[100vh]">
           <div className="container mx-auto p-4">
             <div className="form-control w-full max-w-xs">
               <label className="label">

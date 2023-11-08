@@ -33,4 +33,3 @@ public class Stock {
     private double priceYesterday;
     private double priceToday;
 }
- 

@@ -32,12 +32,12 @@ public class User implements UserDetails {
 
     @Indexed(unique = true)
     private String username;
-    
+
     private String password;
-    
+
     @Indexed(unique = true)
     private String email;
-    
+
     private double cashBalance;
     private List<ObjectId> portfolioIds;
     private boolean verified;
@@ -65,8 +65,7 @@ public class User implements UserDetails {
         return role;
     }
 
-
-    public boolean getVerified(){
+    public boolean getVerified() {
         return verified;
     }
 

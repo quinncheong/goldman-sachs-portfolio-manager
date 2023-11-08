@@ -12,11 +12,9 @@ public class PortfolioCalculator {
     private String stockTicker;
     private String stockName;
     private String country;
-    // quantity
     private int position;
     private double market;
     private double last;
-    // average cost
     private double cost;
     private double pnlp;
     private double pnla;
@@ -24,11 +22,10 @@ public class PortfolioCalculator {
     private double dpnla;
     private double positionsRatio;
 
-    public PortfolioCalculator(String stockTicker, int position, double cost){
+    public PortfolioCalculator(String stockTicker, int position, double cost) {
         this.stockTicker = stockTicker;
         this.position = position;
         this.cost = cost;
     }
-    
 
 }

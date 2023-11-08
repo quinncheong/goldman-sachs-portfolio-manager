@@ -61,12 +61,6 @@ public class SchedulingService {
             stockPriceRepository.saveAll(fullStockPrices);
             System.out.println("Saved for" + trackedStock.getSymbol());
 
-            // try {
-            // Thread.sleep(30000);
-            // } catch (InterruptedException e) {
-            // // TODO Add to custom logger or DLQ
-            // e.printStackTrace();
-            // }
         }
         return;
     }

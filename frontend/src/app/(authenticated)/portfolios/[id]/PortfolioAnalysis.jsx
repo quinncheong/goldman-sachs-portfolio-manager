@@ -118,7 +118,7 @@ export default function PortfolioAnalysis({
               }}
               name="start"
               type="date"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-secondary-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Select date start"
             />
           </div>
@@ -143,11 +143,14 @@ export default function PortfolioAnalysis({
               }}
               name="end"
               type="date"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-secondary-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Select date end"
             />
           </div>
-          <button type="button" onClick={showTimeChart}>
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2"
+            onClick={showTimeChart}
+          >
             Go
           </button>
         </div>

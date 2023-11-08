@@ -35,23 +35,4 @@ public class StockService {
         }
         return stockRepository.save(stock);
     }
-
-    public double getPriceTodayByTicker(String stockSymbol) {
-        Optional<Stock> retrievedStock = getStockByTicker(stockSymbol);
-        if (retrievedStock.isPresent()) {
-            // return retrievedStock.get().getPriceToday() != null ? : 50.0;
-            return 50.0; // hardcoding for now
-        }
-        return 0;
-    }
-
-    public double getPriceYesterdayByTicker(String stockSymbol) {
-        Optional<Stock> retrievedStock = getStockByTicker(stockSymbol);
-        if (retrievedStock.isPresent()) {
-            return 40.0; // hardcoding for now
-            // return retrievedStock.get().getPriceYesterday();
-        }
-        return 0;
-    }
-
 }

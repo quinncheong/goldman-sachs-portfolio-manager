@@ -59,8 +59,7 @@ public class UserService {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             String oldPassword = user.get().getPassword();
-            boolean isPasswordMatch =
-                    passwordEncoder.matches(request.getOldpassword(), oldPassword);
+            boolean isPasswordMatch = passwordEncoder.matches(request.getOldpassword(), oldPassword);
             System.out.println(isPasswordMatch);
             if (isPasswordMatch) {
                 System.out.println("Password match, changing password...");
@@ -135,8 +134,7 @@ public class UserService {
         List<Portfolio> portfolios = portfolioService.getPortfoliosByUserId(id);
         if (portfolios.size() > 0) {
             for (Portfolio portfolio : portfolios) {
-                Map<String, Double> result =
-                        portfolioAnalyzer.getPortfolioAnalysis(portfolio.getId());
+                Map<String, Double> result = portfolioAnalyzer.getPortfolioAnalysis(portfolio.getId());
                 System.out.println(result);
                 dpnl += result.get("dpnl");
                 dpnla += result.get("dpnla");
@@ -148,8 +146,6 @@ public class UserService {
                 totalCash += portfolio.getInitialValue();
             }
             totalCash += user.get().getCashBalance();
-
-
 
         }
         Double totalAssets = totalCash + totalSecurities;

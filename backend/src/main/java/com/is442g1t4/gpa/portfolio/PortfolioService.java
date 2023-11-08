@@ -177,13 +177,16 @@ public class PortfolioService {
             System.out.println(stockPrice1);
             stockPrices.add(stockPrice1.getClose());
             cal.add(Calendar.YEAR, -6);
-            stockPrice1 = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
-            while (stockPrice1 == null){
+            stockPrice1 =
+                    stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
+            while (stockPrice1 == null) {
                 cal.add(Calendar.DATE, -3);
-                stockPrice1 = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
+                stockPrice1 =
+                        stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
             }
             stockPrices.add(stockPrice1.getClose());
-            Double percGrowth = (stockPrices.get(0)/stockPrices.get(stockPrices.size() - 1) - 1)*100;
+            Double percGrowth =
+                    (stockPrices.get(0) / stockPrices.get(stockPrices.size() - 1) - 1) * 100;
 
             Double ex;
             if (percGrowth < 0) {
@@ -213,22 +216,26 @@ public class PortfolioService {
         return ror;
     }
 
-    public Map<String, Double> getMonthlyPortfolioValueByDateRange(Map<String, PortfolioCalculator> calculated, Date startDate, Date endDate){
+    public Map<String, Double> getMonthlyPortfolioValueByDateRange(
+            Map<String, PortfolioCalculator> calculated, Date startDate, Date endDate) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
         Map<String, Double> result = new TreeMap<>();
         Calendar curr = Calendar.getInstance();
         curr.setTime(endDate);
-        while((curr.getTime().getTime() - startDate.getTime()) > 0){
+        while ((curr.getTime().getTime() - startDate.getTime()) > 0) {
             Double val = 0.0;
-            StockPrice test = stockPriceService.getStockPriceBySymbolAndDate("AAPL", curr.getTime());
-            while (test == null){
+            StockPrice test =
+                    stockPriceService.getStockPriceBySymbolAndDate("AAPL", curr.getTime());
+            while (test == null) {
                 curr.add(Calendar.DATE, -2);
                 test = stockPriceService.getStockPriceBySymbolAndDate("AAPL", curr.getTime());
             }
-            for (String stockTicker: calculated.keySet()){
-                StockPrice stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr.getTime());
-                while (stockPrice == null){
-                    stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr.getTime());
+            for (String stockTicker : calculated.keySet()) {
+                StockPrice stockPrice =
+                        stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr.getTime());
+                while (stockPrice == null) {
+                    stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker,
+                            curr.getTime());
                 }
                 val += stockPrice.getClose() * (calculated.get(stockTicker).getPosition() * 1.0);
             }

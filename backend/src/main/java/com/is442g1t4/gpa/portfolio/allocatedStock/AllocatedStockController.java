@@ -2,9 +2,6 @@ package com.is442g1t4.gpa.portfolio.allocatedStock;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-
-// import org.modelmapper.ModelMapper;
-
 import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +21,7 @@ public class AllocatedStockController {
 
     @PostMapping("/")
     public ResponseEntity<?> createAllocatedStock(@RequestBody AllocatedStock allocatedStock) {
-        AllocatedStock savedAllocatedStock =
-                allocatedStockService.addAllocatedStock(allocatedStock);
+        AllocatedStock savedAllocatedStock = allocatedStockService.addAllocatedStock(allocatedStock);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedAllocatedStock);
     }
 

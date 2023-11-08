@@ -10,12 +10,6 @@ import { toast } from "react-toastify";
 
 export default function App() {
   const router = useRouter();
-  // const {
-  //   data: isLoggedIn,
-  //   isLoading: isLoginStatusLoading,
-  //   isError: isLoginStatusError,
-  //   error: loginStatusError,
-  // } = useGetLoginStatus();
   const { data, isLoading, isSuccess, isError, error, mutateAsync } =
     useLogin();
 
@@ -24,7 +18,10 @@ export default function App() {
 
   useEffect(() => {
     if (isSuccess && data.isVerified && data.token) {
-      router.push("/dashboard");
+      setTimeout(() => {
+        router.push("/dashboard");
+        console.log("Completed");
+      }, 500);
       return;
     }
 
@@ -39,11 +36,6 @@ export default function App() {
   if (isLoading) {
     return <Loader />;
   }
-
-  // if (isLoggedIn) {
-  //   router.push("/dashboard");
-  //   return;
-  // }
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">

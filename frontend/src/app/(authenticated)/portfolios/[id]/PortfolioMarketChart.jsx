@@ -47,10 +47,12 @@ export default function PortfolioMarketChart({
     for (let key in data) {
       let year = key.split("-")[0].slice(-2);
       let month = key.split("-")[1];
-      tmpChartData.push({
-        name: months[month] + "' " + year,
-        Value: data[key],
-      });
+      if (data[key] !== 0) {
+        tmpChartData.push({
+          name: months[month] + "' " + year,
+          Value: data[key],
+        });
+      }
     }
     setChartData(tmpChartData);
   }, [data]);
@@ -66,7 +68,7 @@ export default function PortfolioMarketChart({
     <ResponsiveContainer width="100%" height={300}>
       <LineChart width={640} height={300} data={chartData}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
+        <XAxis dataKey="name" domain={["auto", "auto"]} />
         <YAxis type="number" domain={["auto", "auto"]} />
         <Tooltip />
         <Legend />

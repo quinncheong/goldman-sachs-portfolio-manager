@@ -6,7 +6,7 @@ export default function PortfolioCarousel({ publicPortfolios }) {
     return "There are no publicly available portfolios";
   }
   return (
-    <div className="mx-auto carousel carousel-end rounded-box w-full overflow-x-auto">
+    <div className="mx-auto carousel carousel-end rounded-box flex w-full overflow-x-auto">
       <RenderPublicPortfolios publicPortfolios={publicPortfolios} />
     </div>
   );
