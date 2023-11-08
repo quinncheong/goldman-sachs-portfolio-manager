@@ -2,27 +2,17 @@ package com.is442g1t4.gpa.portfolio.portfolioCalculator;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.is442g1t4.gpa.stock.StockService;
-import com.is442g1t4.gpa.user.User;
-import com.is442g1t4.gpa.user.UserRepository;
 import com.is442g1t4.gpa.stock.model.Stock;
 import com.is442g1t4.gpa.stock.stockPrice.StockPriceService;
-import com.is442g1t4.gpa.portfolio.Portfolio;
-import com.is442g1t4.gpa.portfolio.PortfolioRepository;
 import com.is442g1t4.gpa.portfolio.PortfolioService;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
-import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
-import com.is442g1t4.gpa.portfolio.portfolioanalyzer.PortfolioAnalyzerService;
-import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockRepository;
 import com.is442g1t4.gpa.stock.stockPrice.StockPrice;
 
 import java.util.*;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 
 @Service
@@ -42,7 +32,6 @@ public class PortfolioCalculatorService {
         double totalValue = 0;
 
         List<AllocatedStock> allocatedStocks = portfolioService.getAllAllocatedStocksInPortfolio(id);
-
 
         for (AllocatedStock allocatedStock : allocatedStocks){
             String stockTicker = allocatedStock.getStockTicker();
@@ -122,4 +111,32 @@ public class PortfolioCalculatorService {
 
         return data;
     }   
+
+    public Map<String, Double> getAdjustedMonthlyPortfolioValueByDateRange(ObjectId id, Date startDate, Date endDate){
+        List<AllocatedStock> allocatedStocks = portfolioService.getAllAllocatedStocksInPortfolio(id);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        Map<String, Double> result = new TreeMap<>();
+        Calendar curr = Calendar.getInstance();
+        curr.setTime(endDate);
+        while((curr.getTime().getTime() - startDate.getTime()) > 0){
+            Double val = 0.0;
+            StockPrice test = stockPriceService.getStockPriceBySymbolAndDate("AAPL", curr.getTime());
+            while (test == null){
+                curr.add(Calendar.DATE, -2);
+                test = stockPriceService.getStockPriceBySymbolAndDate("AAPL", curr.getTime());
+            }
+            List<AllocatedStock> temp = PortfolioCalculatorUtility.getAllocatedStocksByDate(allocatedStocks, curr.getTime());
+            Map<String, PortfolioCalculator> calculated = PortfolioCalculatorUtility.getCalculatedStocks(temp);
+            for (String stockTicker: calculated.keySet()){
+                StockPrice stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr.getTime());
+                while (stockPrice == null){
+                    stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr.getTime());
+                }
+                val += stockPrice.getClose() * (calculated.get(stockTicker).getPosition() * 1.0);
+            }
+            result.put(sdf.format(curr.getTime()), PortfolioCalculatorUtility.round(val));
+            curr.add(Calendar.MONTH, -1);
+        }
+        return result;
+    }
 }

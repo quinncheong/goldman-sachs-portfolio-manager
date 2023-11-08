@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
-import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
 import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculator;
 import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculatorService;
 import com.is442g1t4.gpa.portfolio.portfolioanalyzer.PortfolioAnalyzerService;
@@ -148,5 +147,12 @@ public class PortfolioController {
         Map<String, PortfolioCalculator> calculated = portfolioCalculatorService.getCalculatedStockInPortfolio(id);
         Map<String, Double> result = portfolioService.getMonthlyPortfolioValueByDateRange(calculated, startDate, endDate);
         return new ResponseEntity<Map<String, Double>>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/timely2/{id}/{startDate}/{endDate}")
+    public ResponseEntity<Map<String, Double>> getTimely2(@PathVariable ObjectId id, 
+                                                        @PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate,
+                                                        @PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate) {
+        return new ResponseEntity<Map<String, Double>>(portfolioCalculatorService.getAdjustedMonthlyPortfolioValueByDateRange(id, startDate, endDate), HttpStatus.OK);
     }
 }

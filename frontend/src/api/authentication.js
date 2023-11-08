@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getCookie, setCookie } from "cookies-next";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { setCookie } from "cookies-next";
 
 import { BASE_SERVER_URL, AUTH_API_PATH } from "./apiFactory";
 import { createAccessLog, createLogWithToken } from "./user";
@@ -153,7 +153,6 @@ export const useSendResetPwMail = () => {
     useMutation({
       mutationFn: (data) => sendResetPasswordMail(data),
       onSuccess: async (tokenData) => {
-        // createLogWithToken(tokenData.token, "RESET_PASSWORD_PENDING");
       },
       onError: (error) => {
         alert(error);

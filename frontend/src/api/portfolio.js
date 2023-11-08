@@ -6,7 +6,6 @@ import { getCookie } from "cookies-next";
 import {
   BASE_SERVER_URL,
   PORTFOLIO_API_PATH,
-  USER_API_PATH,
 } from "./apiFactory";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
@@ -228,7 +227,6 @@ export const useUpdatePortfolio = () => {
       });
     },
     onSettled: (data, error, variables, context) => {
-      // Error or success... doesn't matter!
     },
   });
 
@@ -327,7 +325,6 @@ export const useRemoveStock = () => {
       });
     },
     onSettled: (data, error, variables, context) => {
-      // Error or success... doesn't matter!
     },
   });
 
@@ -380,7 +377,7 @@ export const useGetTimeSeriesAnalysis = (portfolioStartEnd) => {
 
 const getTimeSeriesAnalysis = async (portfolioStartEnd) => {
   let response = await axiosInstance.get(
-    "/timely/" +
+    "/timely2/" +
       portfolioStartEnd.id +
       "/" +
       portfolioStartEnd.start +
