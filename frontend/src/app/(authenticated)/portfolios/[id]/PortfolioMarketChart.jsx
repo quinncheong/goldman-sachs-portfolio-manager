@@ -14,14 +14,13 @@ import Loader from "@/components/loading/Loader";
 export default function PortfolioMarketChart({ portfolioData }) {
   const { data, isLoading, isError, error } = useGetTimeSeriesAnalysis({
     id: portfolioData.id,
-    start: "2015-10-01",
-    end: "2023-09-01"
+    start: portfolioData,
+    end: portfolioData.end
   });
   if (isLoading) return <Loader />;
 
   const entries = [];
   for (let key in data) {
-    console.log(key, data[key])
     entries.push({ name: key, Price: data[key] });
   }
 
