@@ -3,9 +3,11 @@ package com.is442g1t4.gpa.portfolio.portfolioCalculator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.*;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,6 +33,13 @@ public class PortfolioCalculatorController {
     public ResponseEntity<Map<String, PortfolioCalculator>> getCalculatedStock(@PathVariable ObjectId id) {
         return new ResponseEntity<Map<String, PortfolioCalculator>>(
                 portfolioCalculatorService.getCalculatedStockInPortfolio(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/timely/{id}/{startDate}/{endDate}")
+    public ResponseEntity<Map<String, Double>> getTimely2(@PathVariable ObjectId id, 
+                                                        @PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate,
+                                                        @PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate) {
+        return new ResponseEntity<Map<String, Double>>(portfolioCalculatorService.getAdjustedMonthlyPortfolioValueByDateRange(id, startDate, endDate), HttpStatus.OK);
     }
 
 }

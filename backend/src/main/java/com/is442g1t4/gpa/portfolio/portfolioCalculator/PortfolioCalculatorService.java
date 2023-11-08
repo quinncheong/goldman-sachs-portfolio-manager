@@ -23,6 +23,7 @@ import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockRepository;
 import com.is442g1t4.gpa.stock.stockPrice.StockPrice;
 
 import java.util.*;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 
 @Service
@@ -122,4 +123,33 @@ public class PortfolioCalculatorService {
 
         return data;
     }   
+
+    public Map<String, Double> getAdjustedMonthlyPortfolioValueByDateRange(ObjectId portfolioId, Date startDate, Date endDate){
+        List<AllocatedStock> allocatedStocks = portfolioService.getAllAllocatedStocksInPortfolio(portfolioId);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        Map<String, Double> result = new TreeMap<>();
+        Calendar curr = Calendar.getInstance();
+        curr.setTime(endDate);
+        while((curr.getTime().getTime() - startDate.getTime()) > 0){
+            Double val = 0.0;
+            StockPrice test = stockPriceService.getStockPriceBySymbolAndDate("AAPL", curr.getTime());
+            while (test == null){
+                curr.add(Calendar.DATE, -2);
+                test = stockPriceService.getStockPriceBySymbolAndDate("AAPL", curr.getTime());
+            }
+            List<AllocatedStock> temp = PortfolioCalculatorUtility.getAllocatedStocksByDate(allocatedStocks, curr.getTime());
+            Map<String, PortfolioCalculator> calculated = PortfolioCalculatorUtility.getCalculatedStocks(temp);
+            for (String stockTicker: calculated.keySet()){
+                StockPrice stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr.getTime());
+                while (stockPrice == null){
+                    stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr.getTime());
+                }
+                val += stockPrice.getClose() * (calculated.get(stockTicker).getPosition() * 1.0);
+                System.out.println(stockPrice);
+            }
+            result.put(sdf.format(curr.getTime()), PortfolioCalculatorUtility.round(val));
+            curr.add(Calendar.MONTH, -1);
+        }
+        return result;
+    }
 }
