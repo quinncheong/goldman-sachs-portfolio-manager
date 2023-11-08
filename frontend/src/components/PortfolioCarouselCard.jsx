@@ -19,23 +19,16 @@ export default function PortfolioCarouselCard({ portfolio }) {
   } = useGetAccountIdData(portfolio.userId);
   const {
     data: userObjData,
-    userisLoading,
-    userisError,
-    userError,
+    isLoading: isUserLoading,
+    isError: isUserError,
+    error: userError,
   } = useGetUser(portfolio.userId);
 
-  // const { data: ror, isLoading: rorLoading, isError: isRorError, error: rorError} = useGetROROfPortfolio(portfolio.id);
-  const ror = 30;
-
   if (portfolio.userId == jwtDecode(getCookie("token")).userId) {
-    return <></>
+    return <></>;
   }
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (userisLoading) {
+  if (isLoading || isUserLoading) {
     return <Loader />;
   }
 
@@ -46,7 +39,7 @@ export default function PortfolioCarouselCard({ portfolio }) {
   }
 
   return (
-    <div className="card w-100 glass flex flex-col items-center">
+    <div className="card w-[400px] glass flex flex-col items-center">
       <CardAvatar />
       <div className="card-body items-center">
         <h2 className="card-title">
@@ -57,8 +50,8 @@ export default function PortfolioCarouselCard({ portfolio }) {
           Title: <span className="font-normal">{portfolio.name}</span>
         </h2>
         <h2 className="card-title">
-          Description:{" "}
-          <span className="font-normal">{portfolio.description}</span>
+          <p className="">Description: </p>
+          <span className="font-normal text-wrap">{portfolio.description}</span>
         </h2>
         <h2 className="card-title mt-3">Portfolio Statistics</h2>
         <div className="container flex border-double border-4 border-black rounded p-3">
@@ -91,10 +84,6 @@ export default function PortfolioCarouselCard({ portfolio }) {
                 {userData.pnlp.toFixed(2)}%
               </div>
             </div>
-            <div>
-              {/* <span>RoR: </span> */}
-              {/* <div className={`badge text-white font-bold ${ror >= 0 ? "badge-success" : "badge-error"}`}>{ror >= 0 ? "+" : ""}{ror.toFixed(2)}%</div> */}
-            </div>
           </div>
         </div>
         <div className="card-actions mt-3 justify-end">
@@ -105,21 +94,6 @@ export default function PortfolioCarouselCard({ portfolio }) {
             View Portfolio!
           </button>
         </div>
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="card glass bg-secondary-100 flex flex-col justify-items-center">
-      <figure>
-        <img src="/images/face1.jpg" alt="car!" />
-      </figure>
-      <div className="card-title">This Porfolio is owned by</div>
-      <div className="card-body text-black">
-        <div className="flex flex-row justify-between"></div>
-        <button className="btn bg-secondary-100 text-white">
-          View Portfolio Details
-        </button>
       </div>
     </div>
   );

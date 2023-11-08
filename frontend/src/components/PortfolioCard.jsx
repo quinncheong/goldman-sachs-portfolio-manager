@@ -11,7 +11,12 @@ export default function PortfolioCard({ portfolio }) {
     error: analysisError,
   } = useGetAnalysis(portfolio.id);
 
-  const { data: ror, isLoading: rorLoading, isError: isRorError, error: rorError} = useGetROROfPortfolio(portfolio.id);
+  const {
+    data: ror,
+    isLoading: rorLoading,
+    isError: isRorError,
+    error: rorError,
+  } = useGetROROfPortfolio(portfolio.id);
 
   const router = useRouter();
 
@@ -68,7 +73,14 @@ export default function PortfolioCard({ portfolio }) {
               </div>
               <div>
                 <span>RoR: </span>
-                <div className={`badge text-white font-bold ${ror > 0 ? "badge-success" : "badge-error"}`}>{ror >= 0 ? "+" : ""}{ror.toFixed(2)}%</div>
+                <div
+                  className={`badge text-white font-bold ${
+                    ror > 0 ? "badge-success" : "badge-error"
+                  }`}
+                >
+                  {ror >= 0 ? "+" : ""}
+                  {ror.toFixed(2)}%
+                </div>
               </div>
             </div>
           </div>
