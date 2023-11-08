@@ -1,6 +1,7 @@
 import { useGetAnalysis, useGetROROfPortfolio } from "@/api/portfolio";
 import IsPublicBadge from "@/components/IsPublicBadge";
 import { useRouter } from "next/navigation";
+import Loader from "@/components/loading/Loader";
 
 export default function PortfolioCard({ portfolio }) {
   const {
@@ -10,7 +11,7 @@ export default function PortfolioCard({ portfolio }) {
     error: analysisError,
   } = useGetAnalysis(portfolio.id);
 
-  // const { data: ror, isLoading: rorLoading, isError: isRorError, error: rorError} = useGetROROfPortfolio(portfolio.id);
+  const { data: ror, isLoading: rorLoading, isError: isRorError, error: rorError} = useGetROROfPortfolio(portfolio.id);
 
   const router = useRouter();
 
@@ -18,7 +19,7 @@ export default function PortfolioCard({ portfolio }) {
     router.push(`/portfolios/${portfolio.id}`);
   };
 
-  if (!analysisData) return <div>Portfolio Loading</div>;
+  if (analysisIsLoading || rorLoading) return <Loader />;
 
   const totalAssets = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -66,8 +67,8 @@ export default function PortfolioCard({ portfolio }) {
                 </div>
               </div>
               <div>
-                {/* <span>RoR: </span> */}
-                {/* <div className={`badge text-white font-bold ${ror > 0 ? "badge-success" : "badge-error"}`}>{ror >= 0 ? "+" : ""}{ror.toFixed(2)}%</div> */}
+                <span>RoR: </span>
+                <div className={`badge text-white font-bold ${ror > 0 ? "badge-success" : "badge-error"}`}>{ror >= 0 ? "+" : ""}{ror.toFixed(2)}%</div>
               </div>
             </div>
           </div>
