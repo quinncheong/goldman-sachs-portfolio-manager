@@ -50,7 +50,7 @@ public class PortfolioService {
         if (user.isPresent()) {
             return portfolioRepository.findByUserId(user.get().getId());
         } else {
-            
+
             return Collections.<Portfolio>emptyList();
         }
     }
@@ -85,7 +85,8 @@ public class PortfolioService {
     public Portfolio addStockToPortfolio(String symbol, int quantity, ObjectId portfolioId) {
         Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
         if (portfolio.isPresent()) {
-            portfolio.get().getAllocatedStocks().add(allocatedStockService.addAllocatedStock(symbol, quantity));
+            portfolio.get().getAllocatedStocks()
+                    .add(allocatedStockService.addAllocatedStock(symbol, quantity));
         }
         return portfolioRepository.save(portfolio.get());
     }
@@ -107,9 +108,11 @@ public class PortfolioService {
         return allocatedStocks;
     }
 
-    public Portfolio addAllocatedStock(AllocatedStock allocatedStock, ObjectId portfolioId, ObjectId userId) {
+    public Portfolio addAllocatedStock(AllocatedStock allocatedStock, ObjectId portfolioId,
+            ObjectId userId) {
 
-        AllocatedStock savedAllocatedStock = allocatedStockService.addAllocatedStock(allocatedStock);
+        AllocatedStock savedAllocatedStock =
+                allocatedStockService.addAllocatedStock(allocatedStock);
 
         double allocatedStockValue = 0.0;
         double userCashBalance = 0.0;
@@ -118,7 +121,8 @@ public class PortfolioService {
 
             Optional<User> user = userRepository.findById(userId);
             if (user.isPresent()) {
-                allocatedStockValue = savedAllocatedStock.getStockQuantity() * savedAllocatedStock.getStockBuyPrice();
+                allocatedStockValue = savedAllocatedStock.getStockQuantity()
+                        * savedAllocatedStock.getStockBuyPrice();
 
                 userCashBalance = user.get().getCashBalance();
                 if (userCashBalance >= allocatedStockValue) {
@@ -137,7 +141,7 @@ public class PortfolioService {
         return portfolioRepository.save(portfolio.get());
     }
 
-    public Portfolio deleteAllocatedStockFromPortfolio(ObjectId portfolioId, String stockTicker){
+    public Portfolio deleteAllocatedStockFromPortfolio(ObjectId portfolioId, String stockTicker) {
         Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
         List<AllocatedStock> newAllocatedStocks = new ArrayList<>();
 
@@ -145,11 +149,12 @@ public class PortfolioService {
 
             List<AllocatedStock> allocatedStocks = portfolio.get().getAllocatedStocks();
 
-            for (AllocatedStock allocatedStock: allocatedStocks){
-                if (!allocatedStock.getStockTicker().equals(stockTicker)){
+            for (AllocatedStock allocatedStock : allocatedStocks) {
+                if (!allocatedStock.getStockTicker().equals(stockTicker)) {
                     newAllocatedStocks.add(allocatedStock);
-                }else{
-                    double allocatedStockValue = allocatedStock.getStockQuantity() * allocatedStock.getStockBuyPrice();
+                } else {
+                    double allocatedStockValue =
+                            allocatedStock.getStockQuantity() * allocatedStock.getStockBuyPrice();
                     double portfolioInitialValue = portfolio.get().getInitialValue();
                     portfolio.get().setInitialValue(portfolioInitialValue + allocatedStockValue);
                     portfolioRepository.save(portfolio.get());
@@ -161,10 +166,10 @@ public class PortfolioService {
         return retrievedPortfolio;
     }
 
-    public Double getPortfolioStockExAndVar(Map<String, PortfolioCalculator> calculated){
+    public Double getPortfolioStockExAndVar(Map<String, PortfolioCalculator> calculated) {
         Double ror = 0.0;
         Map<String, Map<String, Double>> result = new HashMap<>();
-        for (String stockTicker : calculated.keySet()){
+        for (String stockTicker : calculated.keySet()) {
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.HOUR, 0);
             cal.set(Calendar.MINUTE, 0);
@@ -178,18 +183,21 @@ public class PortfolioService {
             System.out.println("SEx is working");
             System.out.println(stockTicker);
             System.out.println(cal.getTime());
-            StockPrice stockPrice1 = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
-            while (stockPrice1 == null){
+            StockPrice stockPrice1 =
+                    stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
+            while (stockPrice1 == null) {
                 cal.add(Calendar.DATE, -3);
-                stockPrice1 = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
+                stockPrice1 =
+                        stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
             }
             System.out.println(stockPrice1);
             stockPrices.add(stockPrice1.getClose());
-            for (int i = 0; i < 6; i ++){
+            for (int i = 0; i < 6; i++) {
                 cal.add(Calendar.YEAR, -1);
                 Date curr = cal.getTime();
-                StockPrice stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr);
-                while (stockPrice == null){
+                StockPrice stockPrice =
+                        stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr);
+                while (stockPrice == null) {
                     cal.add(Calendar.DATE, -3);
                     curr = cal.getTime();
                     stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr);
@@ -199,28 +207,31 @@ public class PortfolioService {
                 System.out.println(stockPrice);
                 stockPrices.add(stockPrice.getClose());
             }
-            for (int i = stockPrices.size() - 1; i > 0; i --){
-                Double perc = PortfolioCalculatorUtility.round((stockPrices.get(i - 1) / stockPrices.get(i) - 1) * 100);
+            for (int i = stockPrices.size() - 1; i > 0; i--) {
+                Double perc = PortfolioCalculatorUtility
+                        .round((stockPrices.get(i - 1) / stockPrices.get(i) - 1) * 100);
                 percentages.add(perc);
             }
-            Double percGrowth = (stockPrices.get(0)/stockPrices.get(stockPrices.size() - 1) - 1)*100;
+            Double percGrowth =
+                    (stockPrices.get(0) / stockPrices.get(stockPrices.size() - 1) - 1) * 100;
             Double ex;
-            if (percGrowth < 0){
-                ex = PortfolioCalculatorUtility.round(Math.pow(-percGrowth, 1.0/5.0)) * -1.0;
+            if (percGrowth < 0) {
+                ex = PortfolioCalculatorUtility.round(Math.pow(-percGrowth, 1.0 / 5.0)) * -1.0;
             } else {
-                ex = PortfolioCalculatorUtility.round(Math.pow(percGrowth, 1.0/5.0));
+                ex = PortfolioCalculatorUtility.round(Math.pow(percGrowth, 1.0 / 5.0));
             }
             System.out.println(stockPrices.get(0));
             System.out.println(stockPrices.get(stockPrices.size() - 1));
             System.out.println(percGrowth);
             Double sum = 0.0;
-            for (Double perc: percentages){
+            for (Double perc : percentages) {
                 sum += Math.pow(perc - ex, 2);
             }
-            Double var = PortfolioCalculatorUtility.round(Math.pow(sum / 5.0, 1.0/2.0));
+            Double var = PortfolioCalculatorUtility.round(Math.pow(sum / 5.0, 1.0 / 2.0));
             temp.put("ex", ex);
             temp.put("var", var);
-            ror += PortfolioCalculatorUtility.round(ex * cPortfolioCalculator.getPositionsRatio()/100);
+            ror += PortfolioCalculatorUtility
+                    .round(ex * cPortfolioCalculator.getPositionsRatio() / 100);
             result.put(stockTicker, temp);
         }
         Map<String, Double> portfolio = new HashMap<>();

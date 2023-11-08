@@ -1,4 +1,4 @@
-import { useGetAnalysis } from "@/api/portfolio";
+import { useGetAnalysis, useGetROROfPortfolio } from "@/api/portfolio";
 import IsPublicBadge from "@/components/IsPublicBadge";
 import { useRouter } from "next/navigation";
 
@@ -7,8 +7,10 @@ export default function PortfolioCard({ portfolio }) {
     data: analysisData,
     isLoading: analysisIsLoading,
     isError: analysisIsError,
-    error: analysisError
+    error: analysisError,
   } = useGetAnalysis(portfolio.id);
+
+  // const { data: ror, isLoading: rorLoading, isError: isRorError, error: rorError} = useGetROROfPortfolio(portfolio.id);
 
   const router = useRouter();
 
@@ -16,11 +18,11 @@ export default function PortfolioCard({ portfolio }) {
     router.push(`/portfolios/${portfolio.id}`);
   };
 
-  if (!analysisData)
-    return <div>Portfolio Loading</div>
+  if (!analysisData) return <div>Portfolio Loading</div>;
 
-  const totalAssets = new Intl.NumberFormat('en-US', {
-    style: 'decimal',
+  const totalAssets = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
   }).format(analysisData.value);
 
   return (
@@ -30,8 +32,8 @@ export default function PortfolioCard({ portfolio }) {
           <div>
             <h2 className="card-title">{portfolio.name}</h2>
             <p>
-              <span className="text-gray-400">Total Assets: </span>
-              <span className="font-bold text-gray-700">${totalAssets}</span>
+              <span className="text-gray-400">Total Securities: </span>
+              <span className="font-bold text-gray-700">{totalAssets}</span>
             </p>
             <p className="pt-2">{portfolio.description}</p>
             <p className="text-xl mt-2">
@@ -43,17 +45,29 @@ export default function PortfolioCard({ portfolio }) {
             <div className="card-actions flex flex-col items-end">
               <div>
                 <span>Daily P&L: </span>
-                <div className={`badge text-white font-bold ${analysisData.dpnl > 0 ? "badge-success" : "badge-error"}`}>{analysisData.dpnl > 0 ? "+" : ""}{analysisData.dpnl.toFixed(2)}%</div>
+                <div
+                  className={`badge text-white font-bold ${
+                    analysisData.dpnl >= 0 ? "badge-success" : "badge-error"
+                  }`}
+                >
+                  {analysisData.dpnl >= 0 ? "+" : ""}
+                  {analysisData.dpnl.toFixed(2)}%
+                </div>
               </div>
               <div>
                 <span>Total P&L: </span>
-                <div className={`badge text-white font-bold ${analysisData.pnl > 0 ? "badge-success" : "badge-error"}`}>{analysisData.pnl > 0 ? "+" : ""}{analysisData.pnl.toFixed(2)}%</div>
+                <div
+                  className={`badge text-white font-bold ${
+                    analysisData.pnl >= 0 ? "badge-success" : "badge-error"
+                  }`}
+                >
+                  {analysisData.pnl >= 0 ? "+" : ""}
+                  {analysisData.pnl.toFixed(2)}%
+                </div>
               </div>
               <div>
                 <span>RoR: </span>
-                <div className="badge badge-success text-white font-bold">
-                  +22.14%
-                </div>
+                {/* <div className={`badge text-white font-bold ${ror > 0 ? "badge-success" : "badge-error"}`}>{ror >= 0 ? "+" : ""}{ror.toFixed(2)}%</div> */}
               </div>
             </div>
           </div>

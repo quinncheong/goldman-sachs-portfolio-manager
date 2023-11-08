@@ -13,7 +13,7 @@ export default function Navbar() {
   const { accessLogError, addAccessLog } = useCreateAccessLog();
 
   useEffect(() => {
-    let items = ["Dashboard", "Account", "Portfolios", "Stocks"];
+    let items = ["Dashboard", "Portfolios"];
     if (jwtDecode(getCookie("token")).role === "ADMIN") {
       items.push("Logging");
     }

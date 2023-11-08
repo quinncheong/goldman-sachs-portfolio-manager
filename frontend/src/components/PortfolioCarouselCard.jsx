@@ -1,18 +1,57 @@
+import { useGetAccountIdData, useGetUser } from "@/api/user";
+import { useGetROROfPortfolio } from "@/api/portfolio";
 import { useRouter } from "next/navigation";
+import Loader from "@/components/loading/Loader";
+import { jwtDecode } from "jwt-decode";
+import { getCookie } from "cookies-next";
 
 export default function PortfolioCarouselCard({ portfolio }) {
   const router = useRouter();
-
+  let totalAssets;
   const viewPortfolioDetails = () => {
     router.push(`/portfolios/${portfolio.id}`);
   };
+  const {
+    data: userData,
+    isLoading,
+    isError,
+    error,
+  } = useGetAccountIdData(portfolio.userId);
+  const {
+    data: userObjData,
+    userisLoading,
+    userisError,
+    userError,
+  } = useGetUser(portfolio.userId);
+
+  // const { data: ror, isLoading: rorLoading, isError: isRorError, error: rorError} = useGetROROfPortfolio(portfolio.id);
+  const ror = 30;
+
+  if (portfolio.userId == jwtDecode(getCookie("token")).userId) {
+    return <></>
+  }
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (userisLoading) {
+    return <Loader />;
+  }
+
+  if (userData) {
+    totalAssets = new Intl.NumberFormat("en-US", { style: "decimal" }).format(
+      userData.totalAssets.toFixed(2)
+    );
+  }
 
   return (
     <div className="card w-100 glass flex flex-col items-center">
       <CardAvatar />
       <div className="card-body items-center">
         <h2 className="card-title">
-          Portfolio Owner: <span className="font-normal">John Doe</span>
+          Portfolio Owner:{" "}
+          <span className="font-normal">{userObjData.name}</span>
         </h2>
         <h2 className="card-title">
           Title: <span className="font-normal">{portfolio.name}</span>
@@ -27,26 +66,34 @@ export default function PortfolioCarouselCard({ portfolio }) {
             <div>
               <p>
                 <span className="text-gray-400">Total Assets: </span>
-                <span className="font-bold text-gray-700">$25,000</span>
+                <span className="font-bold text-gray-700">${totalAssets}</span>
               </p>
             </div>
             <div>
               <span>Daily P&L: </span>
-              <div className="badge badge-error text-white font-bold">
-                -0.50%
+              <div
+                className={`badge text-white font-bold ${
+                  userData.dpnlp >= 0 ? "badge-success" : "badge-error"
+                }`}
+              >
+                {userData.dpnlp >= 0 ? "+" : ""}
+                {userData.dpnlp.toFixed(2)}%
               </div>
             </div>
             <div>
               <span>Total P&L: </span>
-              <div className="badge badge-success text-white font-bold">
-                +11.07%
+              <div
+                className={`badge text-white font-bold ${
+                  userData.pnlp >= 0 ? "badge-success" : "badge-error"
+                }`}
+              >
+                {userData.pnlp >= 0 ? "+" : ""}
+                {userData.pnlp.toFixed(2)}%
               </div>
             </div>
             <div>
               <span>RoR: </span>
-              <div className="badge badge-success text-white font-bold">
-                +22.14%
-              </div>
+              <div className={`badge text-white font-bold ${ror >= 0 ? "badge-success" : "badge-error"}`}>{ror >= 0 ? "+" : ""}{ror.toFixed(2)}%</div>
             </div>
           </div>
         </div>

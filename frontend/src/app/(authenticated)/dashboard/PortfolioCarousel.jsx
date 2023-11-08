@@ -4,7 +4,7 @@ import PortfolioCarouselCard from "@/components/PortfolioCarouselCard";
 
 export default function PortfolioCarousel({ publicPortfolios }) {
   if (!publicPortfolios || publicPortfolios.length === 0) {
-    return "There are no publicly available portfolios";
+    return "There are no publicly available portfolios"
   }
 
   return (

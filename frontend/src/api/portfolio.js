@@ -277,8 +277,6 @@ export const useDeletePortfolio = () => {
   };
 };
 
-
-
 const deletePortfolio = async (portfolioId) => {
   console.log(portfolioId);
   try {
@@ -288,7 +286,6 @@ const deletePortfolio = async (portfolioId) => {
     return error;
   }
 };
-
 
 export const useRemoveStock = () => {
   const queryClient = useQueryClient();
@@ -300,9 +297,6 @@ export const useRemoveStock = () => {
     mutate: remStock,
   } = useMutation({
     mutationFn: (data) => removeStock(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["useGetStockData",  "useGetStockDetails"]);
-    },
     onMutate: (variables) => {
       // A mutation is about to happen!
       // Optionally return a context containing data to use when for example rolling back
@@ -314,8 +308,18 @@ export const useRemoveStock = () => {
       toast.error(error);
     },
     onSuccess: (data, variables, context) => {
-      toast.success("Stock Successfully Removed!");
-      console.log(data);
+      queryClient.invalidateQueries({
+        queryKey: ["getPortfolioByPortfolioId", data.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getStockDetails", data.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getStockData", data.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getAnalysis", data.id],
+      });
     },
     onSettled: (data, error, variables, context) => {
       // Error or success... doesn't matter!
@@ -332,13 +336,30 @@ export const useRemoveStock = () => {
 };
 
 const removeStock = async (removed) => {
-
   try {
     const portfolioId = removed.portfolioId;
     const stockTicker = removed.stockTicker;
-    let response = await axiosInstance.delete("/" + portfolioId + "/" + stockTicker);
+    let response = await axiosInstance.delete(
+      "/" + portfolioId + "/" + stockTicker
+    );
     return response.data;
   } catch (error) {
     return error;
   }
+};
+
+export const useGetROROfPortfolio = (portfolioId) => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getROROfPortfolio", portfolioId],
+    queryFn: () => getROROfPortfolio(portfolioId),
+  });
+
+  return { data, isLoading, isError, error };
+};
+
+const getROROfPortfolio = async (portfolioId) => {
+  let response = await axiosInstance.get("/ror/" + portfolioId, {
+    timeout: 20000,
+  });
+  return response.data;
 };
