@@ -181,5 +181,5 @@ Quinn Cheong - [Github](https://github.com/quinncheong)<br/>
 [issues-shield]: https://img.shields.io/github/issues/quinncheong/goldman-sachs-portfolio-manager.svg?style=for-the-badge
 [issues-url]: https://github.com/quinncheong/goldman-sachs-portfolio-manager/issues
 [license-shield]: https://img.shields.io/github/license/quinncheong/goldman-sachs-portfolio-manager.svg?style=for-the-badge
-[license-url]: https://github.com/quinncheong/goldman-sachs-portfolio-manager/blob/master/LICENSE.txt
+[license-url]: https://github.com/quinncheong/goldman-sachs-portfolio-manager/blob/main/LICENSE.txt
 [product-screenshot]: images/screenshot.png
