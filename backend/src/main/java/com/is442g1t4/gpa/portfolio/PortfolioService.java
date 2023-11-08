@@ -14,6 +14,7 @@ import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculatorUtilit
 import com.is442g1t4.gpa.stock.stockPrice.StockPrice;
 import com.is442g1t4.gpa.stock.stockPrice.StockPriceService;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -246,5 +247,32 @@ public class PortfolioService {
         result.put("portfolio", portfolio);
 
         return ror;
+    }
+
+    public Map<String, Double> getMonthlyPortfolioValueByDateRange(Map<String, PortfolioCalculator> calculated, Date startDate, Date endDate){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        Map<String, Double> result = new HashMap<>();
+        Calendar curr = Calendar.getInstance();
+        curr.setTime(endDate);
+        while((curr.getTime().getTime() - startDate.getTime()) > 0){
+            Double val = 0.0;
+            StockPrice test = stockPriceService.getStockPriceBySymbolAndDate("AAPL", curr.getTime());
+            while (test == null){
+                curr.add(Calendar.DATE, -2);
+                test = stockPriceService.getStockPriceBySymbolAndDate("AAPL", curr.getTime());
+            }
+            System.out.println(test);
+            for (String stockTicker: calculated.keySet()){
+                StockPrice stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr.getTime());
+                while (stockPrice == null){
+                    stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr.getTime());
+                }
+                val += stockPrice.getClose() * (calculated.get(stockTicker).getPosition() * 1.0);
+                System.out.println(stockPrice);
+            }
+            result.put(sdf.format(curr.getTime()), PortfolioCalculatorUtility.round(val));
+            curr.add(Calendar.MONTH, -1);
+        }
+        return result;
     }
 }
