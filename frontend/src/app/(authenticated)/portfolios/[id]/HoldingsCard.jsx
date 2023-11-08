@@ -1,7 +1,11 @@
-import { useRemoveStock } from "@/api/portfolio";
+import { useRemoveStock, useUpdatePortfolio } from "@/api/portfolio";
 import { getMapping } from "./countryMappings.js";
+import { jwtDecode } from "jwt-decode";
+import { getCookie } from "cookies-next";
 
 export default function HoldingsCard({ stock, portfolioData }) {
+  let userId = jwtDecode(getCookie("token")).userId;
+
   const {
     isRemoving,
     isSuccessRemoving,
@@ -10,7 +14,7 @@ export default function HoldingsCard({ stock, portfolioData }) {
     remStock,
   } = useRemoveStock();
 
-  const handleRemoveStock = (e) => {
+  const handleRemoveStock = async (e) => {
     e.preventDefault();
     remStock({ portfolioId: portfolioData.id, stockTicker: stock.stockTicker });
   };
@@ -72,16 +76,18 @@ export default function HoldingsCard({ stock, portfolioData }) {
       <div className="w-[7%] font-semibold">
         <span>{stock.positionsRatio.toFixed(2)}%</span>
       </div>
-      <div className="w-[8%] font-semibold text-right">
-        <span>
-          <button
-            className="btn bg-error p-4 text-white border-0"
-            onClick={handleRemoveStock}
-          >
-            x
-          </button>
-        </span>
-      </div>
+      {userId === portfolioData.userId && (
+        <div className="w-[8%] font-semibold text-right">
+          <span>
+            <button
+              className="btn bg-error p-4 text-white border-0"
+              onClick={handleRemoveStock}
+            >
+              x
+            </button>
+          </span>
+        </div>
+      )}
     </div>
   );
 }

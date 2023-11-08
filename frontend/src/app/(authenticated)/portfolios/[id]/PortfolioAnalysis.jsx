@@ -18,7 +18,12 @@ export default function PortfolioAnalysis({
           </h1>
         </div>
       );
-    return <MonetaryAnalysis analysisData={analysisData} portfolioData={portfolioData} />;
+    return (
+      <MonetaryAnalysis
+        analysisData={analysisData}
+        portfolioData={portfolioData}
+      />
+    );
   };
 
   function renderSectorChart(type) {
@@ -59,10 +64,12 @@ export default function PortfolioAnalysis({
         </div>
       );
     const securitiesValue = new Intl.NumberFormat("en-US", {
-      style: "currency", currency:'USD'
+      style: "currency",
+      currency: "USD",
     }).format(analysisData.value);
     const cashBalance = new Intl.NumberFormat("en-US", {
-      style: "currency", currency:'USD'
+      style: "currency",
+      currency: "USD",
     }).format(portfolioData.initialValue);
 
     return { total: securitiesValue, cash: cashBalance };

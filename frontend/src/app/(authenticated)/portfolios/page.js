@@ -13,9 +13,6 @@ function Portfolio({}) {
     error,
   } = useGetPortfoliosOfUser();
 
-  
-
-
   const addPortfolio = (e) => {
     e.preventDefault();
     router.push("/addportfolio");
