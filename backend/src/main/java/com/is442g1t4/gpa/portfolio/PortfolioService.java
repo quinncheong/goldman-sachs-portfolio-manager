@@ -95,7 +95,8 @@ public class PortfolioService {
     public Portfolio addAllocatedStock(AllocatedStock allocatedStock, ObjectId portfolioId,
             ObjectId userId) {
 
-        AllocatedStock savedAllocatedStock = allocatedStockService.addAllocatedStock(allocatedStock);
+        AllocatedStock savedAllocatedStock =
+                allocatedStockService.addAllocatedStock(allocatedStock);
 
         double allocatedStockValue = 0.0;
         double userCashBalance = 0.0;
@@ -136,7 +137,8 @@ public class PortfolioService {
                 if (!allocatedStock.getStockTicker().equals(stockTicker)) {
                     newAllocatedStocks.add(allocatedStock);
                 } else {
-                    double allocatedStockValue = allocatedStock.getStockQuantity() * allocatedStock.getStockBuyPrice();
+                    double allocatedStockValue =
+                            allocatedStock.getStockQuantity() * allocatedStock.getStockBuyPrice();
                     double portfolioInitialValue = portfolio.get().getInitialValue();
                     portfolio.get().setInitialValue(portfolioInitialValue + allocatedStockValue);
                     portfolioRepository.save(portfolio.get());
@@ -165,22 +167,26 @@ public class PortfolioService {
             System.out.println("SEx is working");
             System.out.println(stockTicker);
             System.out.println(cal.getTime());
-            StockPrice stockPrice1 = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
+            StockPrice stockPrice1 =
+                    stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
             while (stockPrice1 == null) {
                 cal.add(Calendar.DATE, -3);
-                stockPrice1 = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
+                stockPrice1 =
+                        stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
             }
             System.out.println(stockPrice1);
             stockPrices.add(stockPrice1.getClose());
             cal.add(Calendar.YEAR, -6);
-            stockPrice1 = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
+            stockPrice1 =
+                    stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
             while (stockPrice1 == null) {
                 cal.add(Calendar.DATE, -3);
-                stockPrice1 = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
+                stockPrice1 =
+                        stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
             }
-            stockPrices.add(stockPrice1
-                    .getClose());
-            Double percGrowth = (stockPrices.get(0) / stockPrices.get(stockPrices.size() - 1) - 1) * 100;
+            stockPrices.add(stockPrice1.getClose());
+            Double percGrowth =
+                    (stockPrices.get(0) / stockPrices.get(stockPrices.size() - 1) - 1) * 100;
 
             Double ex;
             if (percGrowth < 0) {
@@ -210,27 +216,28 @@ public class PortfolioService {
         return ror;
     }
 
-    public Map<String, Double> getMonthlyPortfolioValueByDateRange(Map<String, PortfolioCalculator> calculated,
-            Date startDate, Date endDate) {
+    public Map<String, Double> getMonthlyPortfolioValueByDateRange(
+            Map<String, PortfolioCalculator> calculated, Date startDate, Date endDate) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
         Map<String, Double> result = new TreeMap<>();
         Calendar curr = Calendar.getInstance();
         curr.setTime(endDate);
         while ((curr.getTime().getTime() - startDate.getTime()) > 0) {
             Double val = 0.0;
-            StockPrice test = stockPriceService.getStockPriceBySymbolAndDate("AAPL", curr.getTime());
+            StockPrice test =
+                    stockPriceService.getStockPriceBySymbolAndDate("AAPL", curr.getTime());
             while (test == null) {
                 curr.add(Calendar.DATE, -2);
                 test = stockPriceService.getStockPriceBySymbolAndDate("AAPL", curr.getTime());
             }
-            System.out.println(test);
             for (String stockTicker : calculated.keySet()) {
-                StockPrice stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr.getTime());
+                StockPrice stockPrice =
+                        stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr.getTime());
                 while (stockPrice == null) {
-                    stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr.getTime());
+                    stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker,
+                            curr.getTime());
                 }
                 val += stockPrice.getClose() * (calculated.get(stockTicker).getPosition() * 1.0);
-                System.out.println(stockPrice);
             }
             result.put(sdf.format(curr.getTime()), PortfolioCalculatorUtility.round(val));
             curr.add(Calendar.MONTH, -1);
