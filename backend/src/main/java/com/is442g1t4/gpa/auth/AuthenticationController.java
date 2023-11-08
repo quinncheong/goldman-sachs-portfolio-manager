@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.is442g1t4.gpa.auth.email.EmailDetails;
 import com.is442g1t4.gpa.auth.email.EmailRequest;
 import com.is442g1t4.gpa.auth.email.EmailResponse;
 import com.is442g1t4.gpa.auth.email.EmailService;
@@ -17,7 +16,6 @@ import com.is442g1t4.gpa.auth.utility.ForgetPasswordRequest;
 import com.is442g1t4.gpa.auth.utility.PasswordChangedStatus;
 import com.is442g1t4.gpa.auth.utility.RegisterRequest;
 
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -42,23 +40,6 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> registerAdmin(
             @RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authenticationService.registerAdmin(request));
-    }
-
-    @PostMapping("/register/verification")
-    public ResponseEntity<String> sendVerificationEmail(@RequestBody EmailDetails emailDetails) {
-        String recipientEmail = emailDetails.getRecipient();
-        String token = "hello I am a jwt token";
-        String name = "Bryan";
-        try {
-            System.out.println("Sending...");
-            emailservice.sendVerificationEmail(name, recipientEmail, token);
-            System.out.println("Email sent successfully");
-            return new ResponseEntity<String>("Email sent succesfully", HttpStatus.OK);
-        } catch (MessagingException e) {
-            System.out.println("Failed to send email. Error: " + e.getMessage());
-            return new ResponseEntity<String>("Failed to send email. Error: " + e.getMessage(),
-                    HttpStatus.OK);
-        }
     }
 
     @PostMapping("/register/verification/{token}")

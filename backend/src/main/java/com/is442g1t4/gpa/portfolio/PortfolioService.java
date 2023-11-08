@@ -164,7 +164,6 @@ public class PortfolioService {
             Map<String, Double> temp = new HashMap<>();
             ArrayList<Double> stockPrices = new ArrayList<>();
             ArrayList<Double> percentages = new ArrayList<>();
-            System.out.println("SEx is working");
             System.out.println(stockTicker);
             System.out.println(cal.getTime());
             StockPrice stockPrice1 =

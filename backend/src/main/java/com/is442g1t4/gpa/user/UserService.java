@@ -54,17 +54,13 @@ public class UserService {
 
     public User changeUserPassword(ObjectId id, PasswordRequest request)
             throws WrongPasswordException {
-        System.out.println("Old Password: " + request.getOldpassword());
-        System.out.println("New Password: " + request.getNewpassword());
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             String oldPassword = user.get().getPassword();
-            boolean isPasswordMatch = passwordEncoder.matches(request.getOldpassword(), oldPassword);
-            System.out.println(isPasswordMatch);
+            boolean isPasswordMatch =
+                    passwordEncoder.matches(request.getOldpassword(), oldPassword);
             if (isPasswordMatch) {
-                System.out.println("Password match, changing password...");
                 user.get().setPassword(passwordEncoder.encode(request.getNewpassword()));
-                System.out.println("Password changed");
             } else {
                 throw new WrongPasswordException("Old password does not match");
             }
@@ -134,7 +130,8 @@ public class UserService {
         List<Portfolio> portfolios = portfolioService.getPortfoliosByUserId(id);
         if (portfolios.size() > 0) {
             for (Portfolio portfolio : portfolios) {
-                Map<String, Double> result = portfolioAnalyzer.getPortfolioAnalysis(portfolio.getId());
+                Map<String, Double> result =
+                        portfolioAnalyzer.getPortfolioAnalysis(portfolio.getId());
                 System.out.println(result);
                 dpnl += result.get("dpnl");
                 dpnla += result.get("dpnla");
