@@ -61,7 +61,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![App Overview!][product-screenshot]]
+![App Overview][product-screenshot]
 
 This Portfolio Analzyer was built as a project with Goldman Sachs to allow Financial Analysts to create, analyze, and share investment portfolios.
 
@@ -149,9 +149,9 @@ Before you can run the application, you must have the following installed
   ./run.bat
   ```
 5. If Step 4 does not work, you can run the backend directly with the command below
-   ```sh
-   mvn spring-boot:run
-   ```
+  ```sh
+  mvn spring-boot:run
+  ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
