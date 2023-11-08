@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useCreatePortfolio } from "@/api/portfolio";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export default function AddPortfolio() {
   const [name, setName] = useState("");

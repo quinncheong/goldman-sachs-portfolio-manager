@@ -1,8 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-
 import { useRegister } from "@/api/authentication";
 
 export default function Register() {
@@ -57,9 +56,6 @@ export default function Register() {
     await mutateAsync(newUser);
   };
 
-  //   Todo make a call to the server and check if the username is already present
-  const validateUsername = (e) => {};
-
   const validatePassword = async (e) => {
     let errors = [];
     if (password.length < 8 || password.length > 25) {
@@ -88,7 +84,6 @@ export default function Register() {
 
     return errors;
   };
-
   const validateConfirmPassword = (e) => {
     let errors = [];
 

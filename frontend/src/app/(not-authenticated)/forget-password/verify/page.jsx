@@ -1,11 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-
 import { verifyJWT } from "@/api/authentication";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
-
 import TokenVerified from "./TokenVerified";
 
 function Page() {
@@ -22,7 +19,6 @@ function Page() {
       }
 
       let isVerified = await verifyJWT(token);
-      console.log("isVerified " + isVerified);
       setVerified(isVerified);
     }
   }, [searchParams]);
@@ -32,18 +28,8 @@ function Page() {
       <TokenVerified token={token} />
     </div>
   ) : (
-    <RenderUnverified />
+    <></>
   );
-}
-
-function RenderUnverified() {
-  const router = useRouter();
-
-  useEffect(() => {
-    // router.push("/");
-  }, []);
-
-  return <></>;
 }
 
 export default Page;

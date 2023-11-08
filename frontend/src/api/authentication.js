@@ -6,6 +6,7 @@ import { getCookie, setCookie } from "cookies-next";
 import { BASE_SERVER_URL, AUTH_API_PATH } from "./apiFactory";
 import { createAccessLog, createLogWithToken } from "./user";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
 
 const axiosAuthInstance = axios.create({
   baseURL: BASE_SERVER_URL + AUTH_API_PATH,
@@ -23,7 +24,8 @@ export const useRegister = () => {
         createLogWithToken(tokenData.token, "REGISTER");
       },
       onError: (error) => {
-        alert(error);
+        console.log(error);
+        toast.error("Username or password is already in use");
       },
     });
 
@@ -41,8 +43,7 @@ const register = async (userData) => {
     let response = await axiosAuthInstance.post("/register", userData);
     return response.data;
   } catch (error) {
-    console.log(error);
-    return error;
+    throw error;
   }
 };
 
@@ -51,11 +52,10 @@ export const useVerifyRegisteredUser = () => {
     useMutation({
       mutationFn: (data) => verifyRegisteredUser(data),
       onSuccess: async (tokenData) => {
-        console.log(tokenData);
         createLogWithToken(tokenData.token, "VERIFY_EMAIL");
       },
       onError: (error) => {
-        alert(error);
+        toast.error("There was an error with your request");
       },
     });
 
@@ -74,11 +74,9 @@ export const verifyRegisteredUser = async (token) => {
     let response = await axiosAuthInstance.post(
       "/register/verification/" + token
     );
-    console.log(response);
     return response.data;
   } catch (error) {
-    console.log(error);
-    return error;
+    throw error;
   }
 };
 
@@ -118,7 +116,6 @@ export const login = async ({ username, password }) => {
 
   try {
     let response = await axiosAuthInstance.post("/authenticate", json);
-    console.log(response);
     res.token = response.data.token;
     res.isVerified = response.data.verified;
   } catch (err) {
@@ -176,7 +173,6 @@ export const useSendResetPwMail = () => {
 const sendResetPasswordMail = async (email) => {
   try {
     let response = await axiosAuthInstance.post("/password/reset/email", email);
-    console.log(response);
     return response.data.token;
   } catch (err) {
     console.log(err);
@@ -186,10 +182,8 @@ const sendResetPasswordMail = async (email) => {
 
 export const verifyJWT = async (token) => {
   try {
-    console.log("Verifying JWT: " + token);
     jwtDecode(token);
     let response = await axiosAuthInstance.get("/verify/" + token);
-    console.log(response);
     if (response.data) {
       return true;
     }

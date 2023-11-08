@@ -1,9 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-
 import { verifyJWT } from "@/api/authentication";
-
 import RegisterTokenVerified from "./RegisterTokenVerified";
 
 function Page() {
@@ -20,7 +18,6 @@ function Page() {
       }
 
       let isVerified = await verifyJWT(token);
-      console.log("isVerified " + isVerified);
       setVerified(isVerified);
     }
   }, [searchParams]);

@@ -15,14 +15,7 @@ import com.is442g1t4.gpa.stock.stockPrice.StockPrice;
 import com.is442g1t4.gpa.stock.stockPrice.StockPriceService;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.Map;
-import java.util.Date;
+import java.util.*;
 
 @Service
 public class PortfolioService {
@@ -251,7 +244,7 @@ public class PortfolioService {
 
     public Map<String, Double> getMonthlyPortfolioValueByDateRange(Map<String, PortfolioCalculator> calculated, Date startDate, Date endDate){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-        Map<String, Double> result = new HashMap<>();
+        Map<String, Double> result = new TreeMap<>();
         Calendar curr = Calendar.getInstance();
         curr.setTime(endDate);
         while((curr.getTime().getTime() - startDate.getTime()) > 0){
