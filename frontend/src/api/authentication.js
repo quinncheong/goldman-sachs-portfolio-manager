@@ -6,6 +6,7 @@ import { getCookie, setCookie } from "cookies-next";
 import { BASE_SERVER_URL, AUTH_API_PATH } from "./apiFactory";
 import { createAccessLog, createLogWithToken } from "./user";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
 
 const axiosAuthInstance = axios.create({
   baseURL: BASE_SERVER_URL + AUTH_API_PATH,
@@ -23,7 +24,8 @@ export const useRegister = () => {
         createLogWithToken(tokenData.token, "REGISTER");
       },
       onError: (error) => {
-        alert(error);
+        console.log(error);
+        toast.error("Username or password is already in use");
       },
     });
 
@@ -41,8 +43,7 @@ const register = async (userData) => {
     let response = await axiosAuthInstance.post("/register", userData);
     return response.data;
   } catch (error) {
-    console.log(error);
-    return error;
+    throw error;
   }
 };
 
@@ -54,7 +55,7 @@ export const useVerifyRegisteredUser = () => {
         createLogWithToken(tokenData.token, "VERIFY_EMAIL");
       },
       onError: (error) => {
-        alert(error);
+        toast.error("There was an error with your request");
       },
     });
 
@@ -75,8 +76,7 @@ export const verifyRegisteredUser = async (token) => {
     );
     return response.data;
   } catch (error) {
-    console.log(error);
-    return error;
+    throw error;
   }
 };
 

@@ -135,8 +135,7 @@ export const useCreatePortfolio = () => {
     mutate: createNewPortfolio,
   } = useMutation({
     mutationFn: (data) => createPortfolio(data),
-    onMutate: (variables) => {
-    },
+    onMutate: (variables) => {},
     onError: (error, variables, context) => {
       toast.error(error);
     },
@@ -144,8 +143,7 @@ export const useCreatePortfolio = () => {
       toast.success("Portfolio Created!");
       queryClient.invalidateQueries(["getPortfoliosOfUser"]);
     },
-    onSettled: (data, error, variables, context) => {
-    },
+    onSettled: (data, error, variables, context) => {},
   });
 
   return {
@@ -178,8 +176,7 @@ export const useUpdatePortfolio = () => {
     mutate,
   } = useMutation({
     mutationFn: (data) => updatePortfolio(data),
-    onMutate: (variables) => {
-    },
+    onMutate: (variables) => {},
     onError: (error, variables, context) => {
       toast.error(error);
     },
@@ -241,16 +238,14 @@ export const useDeletePortfolio = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(["getPortfoliosOfUser"]);
     },
-    onMutate: (variables) => {
-    },
+    onMutate: (variables) => {},
     onError: (error, variables, context) => {
       toast.error(error);
     },
     onSuccess: (data, variables, context) => {
       toast.success("Portfolio Successfully Delete!");
     },
-    onSettled: (data, error, variables, context) => {
-    },
+    onSettled: (data, error, variables, context) => {},
   });
 
   return {
@@ -281,8 +276,7 @@ export const useRemoveStock = () => {
     mutate: remStock,
   } = useMutation({
     mutationFn: (data) => removeStock(data),
-    onMutate: (variables) => {
-    },
+    onMutate: (variables) => {},
     onError: (error, variables, context) => {
       toast.error(error);
     },
@@ -304,7 +298,7 @@ export const useRemoveStock = () => {
       });
       queryClient.invalidateQueries({
         queryKey: ["getTimeSeriesAnalysis"],
-      }); 
+      });
     },
     onSettled: (data, error, variables, context) => {
       // Error or success... doesn't matter!
