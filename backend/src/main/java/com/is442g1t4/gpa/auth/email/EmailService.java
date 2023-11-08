@@ -35,7 +35,6 @@ public class EmailService {
         mimeMessageHelper.setFrom("is442g1t4@gmail.com");
         mimeMessageHelper.setTo(email);
         mimeMessageHelper.setText(messageText, true);
-        // mimeMessageHelper.setText("hi",true);
         mimeMessageHelper.setSubject("NEW USER ACCOUNT VERIFICATION");
 
         javaMailSender.send(mimeMessage);
@@ -56,7 +55,6 @@ public class EmailService {
         mimeMessageHelper.setFrom("is442g1t4@gmail.com");
         mimeMessageHelper.setTo(email);
         mimeMessageHelper.setText(messageText, true);
-        // mimeMessageHelper.setText("hi",true);
         mimeMessageHelper.setSubject("FORGET PASSWORD");
 
         javaMailSender.send(mimeMessage);

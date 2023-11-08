@@ -6,7 +6,6 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.rsocket.RSocketSecurity.AuthorizePayloadsSpec.Access;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,7 +60,6 @@ public class UserController {
     public ResponseEntity<AccessLog> createAccessLog(@RequestBody AccessLog accessLog) {
         return new ResponseEntity<AccessLog>(userService.createAccessLog(accessLog), HttpStatus.OK);
     }
-
 
     @PutMapping("/{id}/{portfolioId}")
     public ResponseEntity<User> addPortfolioToUser(@PathVariable ObjectId id,

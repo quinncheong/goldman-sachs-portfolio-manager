@@ -1,11 +1,8 @@
 package com.is442g1t4.gpa.stock.scheduler;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,16 +15,12 @@ import com.is442g1t4.gpa.stock.TrackedStockRepository;
 import com.is442g1t4.gpa.stock.model.Stock;
 import com.is442g1t4.gpa.stock.model.TrackedStock;
 import com.is442g1t4.gpa.stock.stockPrice.StockPrice;
-import com.is442g1t4.gpa.stock.stockPrice.StockPriceRepository;
 import com.is442g1t4.gpa.utility.DateParser;
 
 import com.is442g1t4.gpa.stock.scheduler.AlphavantageResponse.AlphavantageStockPrice;
 
 import reactor.core.publisher.Mono;
 
-/**
- * ScheduledStockDetailsRetriever
- */
 @Component
 public class StockDetailsRetriever {
 
@@ -64,7 +57,6 @@ public class StockDetailsRetriever {
             try {
                 Thread.sleep(30000);
             } catch (InterruptedException e) {
-                // TODO Add to custom logger or DLQ
                 e.printStackTrace();
             }
         }
@@ -85,7 +77,6 @@ public class StockDetailsRetriever {
         return response.getBody();
     }
 
-    // https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&outputsize=full&apikey=demo
     public List<StockPrice> retrieveFullStockPrices(String stockSymbol) {
         Mono<ResponseEntity<AlphavantageResponse>> responseMono = baseQueryClient.get()
                 .uri(builder -> builder

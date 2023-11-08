@@ -6,8 +6,6 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-// import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,13 +24,10 @@ public class StockPrice {
     private double close;
     private double low;
     private double adjustedClose;
-    // private long volume;
-    // private double dividend;
-    // private double splitCoefficient;
 
     public StockPrice(String stockTicker, Date date, double open, double high, double close, double low,
             double adjustedClose) {
-        this.id = new ObjectId(); // Set a new ObjectId internally
+        this.id = new ObjectId();
         this.stockTicker = stockTicker;
         this.date = date;
         this.open = open;

@@ -4,23 +4,10 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.is442g1t4.gpa.stock.StockService;
 import com.is442g1t4.gpa.stock.StockRepository;
 import com.is442g1t4.gpa.stock.model.Stock;
-import com.is442g1t4.gpa.user.User;
-import com.is442g1t4.gpa.user.UserRepository;
-import com.is442g1t4.gpa.portfolio.Portfolio;
-import com.is442g1t4.gpa.portfolio.PortfolioRepository;
-import com.is442g1t4.gpa.portfolio.PortfolioService;
-import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
-import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockRepository;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +34,7 @@ public class AllocatedStockService {
         }
     }
 
-    public AllocatedStock addAllocatedStock(AllocatedStock allocatedStock){
+    public AllocatedStock addAllocatedStock(AllocatedStock allocatedStock) {
 
         return allocatedStockRepository.save(allocatedStock);
     }

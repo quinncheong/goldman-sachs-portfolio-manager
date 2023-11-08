@@ -66,16 +66,6 @@ public class PortfolioService {
         return "Portfolio Deleted";
     }
 
-    // public Portfolio oldaddStockToPortfolio(ObjectId allocatedStockId, ObjectId
-    // portfolioId) {
-    // Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
-    // Optional<AllocatedStock> allocatedStock =
-    // allocatedStockRepository.findById(allocatedStockId);
-    // if (portfolio.isPresent()) {
-    // portfolio.get().getAllocatedStocks().add(allocatedStock.get());
-    // }
-    // return portfolioRepository.save(portfolio.get());
-    // }
     public Portfolio addStockToPortfolio(String symbol, int quantity, ObjectId portfolioId) {
         Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
         if (portfolio.isPresent()) {
@@ -105,8 +95,7 @@ public class PortfolioService {
     public Portfolio addAllocatedStock(AllocatedStock allocatedStock, ObjectId portfolioId,
             ObjectId userId) {
 
-        AllocatedStock savedAllocatedStock =
-                allocatedStockService.addAllocatedStock(allocatedStock);
+        AllocatedStock savedAllocatedStock = allocatedStockService.addAllocatedStock(allocatedStock);
 
         double allocatedStockValue = 0.0;
         double userCashBalance = 0.0;
@@ -147,8 +136,7 @@ public class PortfolioService {
                 if (!allocatedStock.getStockTicker().equals(stockTicker)) {
                     newAllocatedStocks.add(allocatedStock);
                 } else {
-                    double allocatedStockValue =
-                            allocatedStock.getStockQuantity() * allocatedStock.getStockBuyPrice();
+                    double allocatedStockValue = allocatedStock.getStockQuantity() * allocatedStock.getStockBuyPrice();
                     double portfolioInitialValue = portfolio.get().getInitialValue();
                     portfolio.get().setInitialValue(portfolioInitialValue + allocatedStockValue);
                     portfolioRepository.save(portfolio.get());
@@ -177,42 +165,22 @@ public class PortfolioService {
             System.out.println("SEx is working");
             System.out.println(stockTicker);
             System.out.println(cal.getTime());
-            StockPrice stockPrice1 =
-                    stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
+            StockPrice stockPrice1 = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
             while (stockPrice1 == null) {
                 cal.add(Calendar.DATE, -3);
-                stockPrice1 =
-                        stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
+                stockPrice1 = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
             }
             System.out.println(stockPrice1);
             stockPrices.add(stockPrice1.getClose());
             cal.add(Calendar.YEAR, -6);
             stockPrice1 = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
-            while (stockPrice1 == null){
+            while (stockPrice1 == null) {
                 cal.add(Calendar.DATE, -3);
                 stockPrice1 = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
             }
             stockPrices.add(stockPrice1
-            .getClose());
-            // for (int i = 0; i < 6; i ++){
-            //     cal.add(Calendar.YEAR, -1);
-            //     Date curr = cal.getTime();
-            //     StockPrice stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr);
-            //     while (stockPrice == null){
-            //         cal.add(Calendar.DATE, -3);
-            //         curr = cal.getTime();
-            //         stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr);
-            //     }
-            //     System.out.println(stockTicker);
-            //     System.out.println(curr);
-            //     System.out.println(stockPrice);
-            //     stockPrices.add(stockPrice.getClose());
-            // }
-            // for (int i = stockPrices.size() - 1; i > 0; i --){
-            //     Double perc = PortfolioCalculatorUtility.round((stockPrices.get(i - 1) / stockPrices.get(i) - 1) * 100);
-            //     percentages.add(perc);
-            // }
-            Double percGrowth = (stockPrices.get(0)/stockPrices.get(stockPrices.size() - 1) - 1)*100;
+                    .getClose());
+            Double percGrowth = (stockPrices.get(0) / stockPrices.get(stockPrices.size() - 1) - 1) * 100;
 
             Double ex;
             if (percGrowth < 0) {
@@ -242,22 +210,23 @@ public class PortfolioService {
         return ror;
     }
 
-    public Map<String, Double> getMonthlyPortfolioValueByDateRange(Map<String, PortfolioCalculator> calculated, Date startDate, Date endDate){
+    public Map<String, Double> getMonthlyPortfolioValueByDateRange(Map<String, PortfolioCalculator> calculated,
+            Date startDate, Date endDate) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
         Map<String, Double> result = new TreeMap<>();
         Calendar curr = Calendar.getInstance();
         curr.setTime(endDate);
-        while((curr.getTime().getTime() - startDate.getTime()) > 0){
+        while ((curr.getTime().getTime() - startDate.getTime()) > 0) {
             Double val = 0.0;
             StockPrice test = stockPriceService.getStockPriceBySymbolAndDate("AAPL", curr.getTime());
-            while (test == null){
+            while (test == null) {
                 curr.add(Calendar.DATE, -2);
                 test = stockPriceService.getStockPriceBySymbolAndDate("AAPL", curr.getTime());
             }
             System.out.println(test);
-            for (String stockTicker: calculated.keySet()){
+            for (String stockTicker : calculated.keySet()) {
                 StockPrice stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr.getTime());
-                while (stockPrice == null){
+                while (stockPrice == null) {
                     stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr.getTime());
                 }
                 val += stockPrice.getClose() * (calculated.get(stockTicker).getPosition() * 1.0);

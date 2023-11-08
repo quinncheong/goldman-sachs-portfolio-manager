@@ -150,19 +150,19 @@ function PortfolioPage({ params }) {
     return (
       <div className="flex w-5/6 gap-4">
         <button
-          className="btn btn-error p-4 text-white border-0 ml-auto"
+          className="btn btn-error hover:bg-red-500 p-4 text-white border-0 ml-auto"
           onClick={handleDeletePortfolio}
         >
           Delete Portfolio
         </button>
         <button
-          className="btn btn-info p-4 text-white border-0"
+          className="btn btn-info hover:bg-blue-500 p-4 text-white border-0"
           onClick={openUpdateModal}
         >
           Edit Portfolio
         </button>
         <button
-          className="btn bg-primary-200 p-4 text-white border-0"
+          className="btn bg-primary-200 hover:bg-blue-800 p-4 text-white border-0"
           onClick={openModal}
         >
           Add Stocks

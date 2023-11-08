@@ -24,8 +24,3 @@ public class AccessLog {
     @Enumerated(EnumType.STRING)
     private Action action;
 }
-
-
-// enum Action {
-//     LOGIN, LOGOUT, REGISTER, RESET_PASSWORD_PENDING, RESET_PASSWORD_SUCCESS, VERIFY_EMAIL
-// }

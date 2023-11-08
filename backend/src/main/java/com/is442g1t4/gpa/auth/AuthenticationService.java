@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,7 +43,7 @@ public class AuthenticationService {
                 Optional<User> duplicateUsername = userRepository.findByUsername(request.getUsername());
                 Optional<User> duplicateEmail = userRepository.findByEmail(request.getEmail());
 
-                if (duplicateUsername.isPresent()||duplicateEmail.isPresent()){
+                if (duplicateUsername.isPresent() || duplicateEmail.isPresent()) {
                         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Duplicate username or email");
                 }
                 User user = User.builder().name(request.getName()).username(request.getUsername())
@@ -83,7 +82,6 @@ public class AuthenticationService {
                         throws ResponseStatusException {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                                 request.getUsername(), request.getPassword()));
-                // user and password is correct, authenticated
                 User user = userRepository.findByUsername(request.getUsername()).orElseThrow();
 
                 Map<String, Object> extraClaims = new HashMap<>();
@@ -112,7 +110,6 @@ public class AuthenticationService {
         public AuthenticationResponse verifyUser(String token) {
                 String username = jwtService.extractUsername(token);
 
-                // set user to be verified
                 User user = userRepository.findByUsername(username).orElseThrow();
                 user.setVerified(true);
                 userRepository.save(user);
@@ -135,7 +132,6 @@ public class AuthenticationService {
                 Optional<User> user = userRepository.findByEmail(request.getEmail());
 
                 if (user.isPresent()) {
-                        // A user with the provided email was found, generate jwttoken
                         User foundUser = user.get();
                         Map<String, Object> extraClaims = new HashMap<>();
                         extraClaims.put("userId", foundUser.getId().toString());
@@ -144,7 +140,6 @@ public class AuthenticationService {
                         String jwtToken = jwtService.generateRegistrationToken(
                                         foundUser.getUsername(), extraClaims);
 
-                        // once jwt token generated, send forget password email
                         try {
                                 emailservice.sendForgetPasswordEmail(foundUser.getName(),
                                                 foundUser.getEmail(), jwtToken);
@@ -165,7 +160,6 @@ public class AuthenticationService {
                 String username = jwtService.extractUsername(token);
                 User user = userRepository.findByUsername(username).orElseThrow();
                 System.out.println(newPassword);
-                // set new password
                 user.setPassword(passwordEncoder.encode(newPassword));
                 userRepository.save(user);
 

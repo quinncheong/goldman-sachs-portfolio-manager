@@ -2,17 +2,11 @@ package com.is442g1t4.gpa.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.is442g1t4.gpa.stock.StockRepository;
 import com.is442g1t4.gpa.stock.TrackedStockRepository;
-import com.is442g1t4.gpa.stock.model.Stock;
 import com.is442g1t4.gpa.stock.model.TrackedStock;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AdminService {
@@ -20,11 +14,7 @@ public class AdminService {
     @Autowired
     private TrackedStockRepository trackedStockRepository;
 
-    @Autowired
-    private StockRepository stockRepository;
-
     public List<TrackedStock> seedTrackedStocks() {
-        // Drop collection and then repopulate with only ticker from
         trackedStockRepository.deleteAll();
         ArrayList<String> DJSymbols = new ArrayList<>(
                 Arrays.asList("AAPL",
@@ -64,9 +54,5 @@ public class AdminService {
         }
         trackedStockRepository.deleteAll();
         return trackedStockRepository.saveAll(trackedStocks);
-    }
-
-    public void seedStockPrice() {
-
     }
 }

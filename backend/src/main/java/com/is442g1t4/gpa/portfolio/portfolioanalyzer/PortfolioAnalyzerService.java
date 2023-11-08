@@ -5,23 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.is442g1t4.gpa.stock.StockService;
-import com.is442g1t4.gpa.stock.stockPrice.StockPriceService;
-import com.is442g1t4.gpa.stock.stockPrice.StockPrice;
 import com.is442g1t4.gpa.stock.model.Stock;
-import com.is442g1t4.gpa.user.User;
-import com.is442g1t4.gpa.user.UserRepository;
-import com.is442g1t4.gpa.portfolio.Portfolio;
-import com.is442g1t4.gpa.portfolio.PortfolioRepository;
 import com.is442g1t4.gpa.portfolio.PortfolioService;
-import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculator;
 import com.is442g1t4.gpa.portfolio.portfolioCalculator.PortfolioCalculatorUtility;
 import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStock;
-import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockService;
-import com.is442g1t4.gpa.portfolio.allocatedStock.AllocatedStockRepository;
 
 import java.util.*;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.Instant;
@@ -35,11 +24,9 @@ public class PortfolioAnalyzerService {
     @Autowired
     private StockService stockService;
 
-    private static final DecimalFormat df = new DecimalFormat("0.00");
-
     public Map<String, Double> getPortfolioAnalysis(ObjectId id) {
         Map<String, Double> result = new HashMap<>();
-        
+
         List<AllocatedStock> allocatedStocks = portfolioService.getAllAllocatedStocksInPortfolio(id);
         if (allocatedStocks.size() == 0) {
             result.put("dpnl", 0.0);
@@ -66,15 +53,12 @@ public class PortfolioAnalyzerService {
             Instant instant = buyDate.toInstant();
 
             cost = cost + (allocatedStock.getStockBuyPrice() * quantity);
-            // value  = value + (90 * quantity);
             double priceToday = stock.getPriceToday();
-            value  = value + (priceToday * quantity);
+            value = value + (priceToday * quantity);
 
-            if(instant.atZone(ZoneId.systemDefault()).toLocalDate().equals(LocalDate.now()) ){
-                // previousValue = previousValue + (90 * quantity);
+            if (instant.atZone(ZoneId.systemDefault()).toLocalDate().equals(LocalDate.now())) {
                 previousValue = previousValue + (priceToday * quantity);
             } else {
-                // previousValue = previousValue + (100 * quantity);
                 previousValue = previousValue + (stock.getPriceYesterday() * quantity);
             }
         }
@@ -88,11 +72,8 @@ public class PortfolioAnalyzerService {
         result.put("pnl", pnl);
         result.put("dpnla", dpnla);
         result.put("pnla", pnla);
-        result.put("value",PortfolioCalculatorUtility.round(value));
+        result.put("value", PortfolioCalculatorUtility.round(value));
 
         return result;
     }
 }
-
-    
-// }

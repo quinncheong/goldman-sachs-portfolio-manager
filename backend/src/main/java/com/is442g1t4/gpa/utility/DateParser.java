@@ -10,7 +10,6 @@ public class DateParser {
             Date date = dateFormat.parse(dateStr);
             return date;
         } catch (Exception e) {
-            // TODO: handle exception
             System.out.print("Invalid Date format");
             return null;
         }

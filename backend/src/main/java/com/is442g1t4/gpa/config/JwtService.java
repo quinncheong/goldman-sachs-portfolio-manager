@@ -28,7 +28,6 @@ public class JwtService {
 
     @Value("${JWT_SECRET_KEY}")
     private String SECRET_KEY;
-    
 
     public String generateToken(User user) {
         return generateToken(user.getUsername(), new HashMap<>());
@@ -71,7 +70,6 @@ public class JwtService {
         String userId = extractAllClaims(token).get("userId", String.class);
         return new ObjectId(userId);
     }
-
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
