@@ -61,7 +61,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]]
+![App Overview][product-screenshot]
 
 This Portfolio Analzyer was built as a project with Goldman Sachs to allow Financial Analysts to create, analyze, and share investment portfolios.
 
@@ -141,10 +141,17 @@ Before you can run the application, you must have the following installed
 3. Fill in all the necessary details. 
    1. MongoDB Details can be from when creating an Atlas Account. 
    2. Spring Mail details can be found by creating a new GMAIL account to send out emails.
-4. Run the Backend
-   ```sh
-   mvn spring-boot:run
-   ```
+4. Run the follow 2 scripts to compile and run the application.
+  ```sh
+  ./compile.bat
+  ```
+  ```sh
+  ./run.bat
+  ```
+5. If Step 4 does not work, you can run the backend directly with the command below
+  ```sh
+  mvn spring-boot:run
+  ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -182,4 +189,4 @@ Quinn Cheong - [Github](https://github.com/quinncheong)<br/>
 [issues-url]: https://github.com/quinncheong/goldman-sachs-portfolio-manager/issues
 [license-shield]: https://img.shields.io/github/license/quinncheong/goldman-sachs-portfolio-manager.svg?style=for-the-badge
 [license-url]: https://github.com/quinncheong/goldman-sachs-portfolio-manager/blob/main/LICENSE.txt
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: images/gpa-app.png
