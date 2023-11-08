@@ -20,10 +20,6 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/quinncheong/">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
   <h3 align="center">Goldman Sachs Portfolio Analyzer</h3>
 
   <p align="center">
@@ -65,7 +61,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][product-screenshot]]
 
 This Portfolio Analzyer was built as a project with Goldman Sachs to allow Financial Analysts to create, analyze, and share investment portfolios.
 
@@ -165,7 +161,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 This project was built by the following contributors:
 
 Ang Wei Sheng - [Github](https://github.com/angweisheng)<br/>
-Bryan Leee - [Github](https://github.com/bryanleezh)<br/>
+Bryan Lee - [Github](https://github.com/bryanleezh)<br/>
 Chester Chia - [Github](https://github.com/chesterchia)<br/>
 Elijah Khor - [Github](https://github.com/ekcm)<br/>
 Japheth Leong - [Github](https://github.com/japhethleongyh)<br/>
@@ -177,13 +173,13 @@ Quinn Cheong - [Github](https://github.com/quinncheong)<br/>
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
+[contributors-url]: https://github.com/quinncheong/goldman-sachs-portfolio-manager/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
+[forks-url]: https://github.com/quinncheong/goldman-sachs-portfolio-manager/network/members
 [stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
+[stars-url]: https://github.com/quinncheong/goldman-sachs-portfolio-manager/stargazers
 [issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
+[issues-url]: https://github.com/quinncheong/goldman-sachs-portfolio-manager/issues
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[license-url]: https://github.com/quinncheong/goldman-sachs-portfolio-manager/blob/master/LICENSE.txt
 [product-screenshot]: images/screenshot.png
