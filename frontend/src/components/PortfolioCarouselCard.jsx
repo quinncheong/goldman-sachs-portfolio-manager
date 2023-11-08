@@ -1,5 +1,4 @@
 import { useGetAccountIdData, useGetUser } from "@/api/user";
-import { useGetROROfPortfolio } from "@/api/portfolio";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/loading/Loader";
 import { jwtDecode } from "jwt-decode";
@@ -28,14 +27,19 @@ export default function PortfolioCarouselCard({ portfolio }) {
     return <></>;
   }
 
-  if (isLoading || isUserLoading) {
+  if (
+    isLoading ||
+    isUserLoading ||
+    userObjData === undefined ||
+    userData === undefined
+  ) {
     return <Loader />;
   }
 
-  if (userData) {
-    totalAssets = new Intl.NumberFormat("en-US", { style: "decimal" }).format(
-      userData.totalAssets.toFixed(2)
-    );
+  if (userData && userData.totalAssets !== undefined) {
+    totalAssets = new Intl.NumberFormat("en-US", {
+      style: "decimal",
+    }).format(userData.totalAssets.toFixed(2));
   }
 
   return (
@@ -44,7 +48,7 @@ export default function PortfolioCarouselCard({ portfolio }) {
       <div className="card-body items-center">
         <h2 className="card-title">
           Portfolio Owner:{" "}
-          <span className="font-normal">{userObjData.name}</span>
+          <span className="font-normal">{userObjData?.name}</span>
         </h2>
         <h2 className="card-title">
           Title: <span className="font-normal">{portfolio.name}</span>

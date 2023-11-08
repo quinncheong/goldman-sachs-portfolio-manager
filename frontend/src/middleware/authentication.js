@@ -27,7 +27,7 @@ export const withAuth = (Component) => {
       }
     }, [isAuthenticated, router]);
 
-    return !!isAuth ? <Component {...props} /> : null; // Render whatever you want while the authentication occurs
+    return !!isAuth ? <Component {...props} /> : null;
   };
 };
 

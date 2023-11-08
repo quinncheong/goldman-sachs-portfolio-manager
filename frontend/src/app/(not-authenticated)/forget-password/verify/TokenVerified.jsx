@@ -95,9 +95,11 @@ function TokenVerified({ token }) {
       <div className="flex flex-col align-items-center">
         <h2>You have successfully reset your password!</h2>
         <p>Click the button below to sign in!</p>
-        <button className="w-full mt-3 text-white btn bg-primary-300 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-          <Link href={"/"}>Sign In</Link>
-        </button>
+        <Link href={"/"}>
+          <button className="w-full mt-3 text-white btn bg-primary-300 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+            Sign In
+          </button>
+        </Link>
       </div>
     );
   }
