@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PortfolioMarketChart from "./PortfolioMarketChart";
 import PortfolioSectorChart from "./PortfolioSectorChart";
 import MonetaryAnalysis from "./MonetaryAnalysis";
+import { toast } from "react-toastify";
 
 export default function PortfolioAnalysis({
   stockData,
@@ -9,8 +10,8 @@ export default function PortfolioAnalysis({
   analysisData,
   portfolioData,
 }) {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [shouldShowTimeChart, setShouldShowTimeChart] = useState(false);
 
   const renderAnalysis = () => {
@@ -50,7 +51,17 @@ export default function PortfolioAnalysis({
     return <PortfolioSectorChart stockData={stockData} type={type} />;
   }
 
-  function showTimeChart() {
+  function showTimeChart(e) {
+    if (!endDate || !startDate) {
+      toast.warn("Start Date and End Date cannot be empty");
+      return;
+    }
+
+    if (endDate < startDate) {
+      toast.warn("Your end date cannot be before your start date");
+      return;
+    }
+
     setShouldShowTimeChart(true);
   }
 
