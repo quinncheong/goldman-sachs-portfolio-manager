@@ -214,6 +214,9 @@ export const useUpdatePortfolio = () => {
       queryClient.invalidateQueries({
         queryKey: ["getROROfPortfolio", data.id],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["getTimeSeriesAnalysis"],
+      });
     },
     onSettled: (data, error, variables, context) => {
       // Error or success... doesn't matter!
@@ -372,7 +375,7 @@ const getROROfPortfolio = async (portfolioId) => {
 
 export const useGetTimeSeriesAnalysis = (portfolioStartEnd) => {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["getTimeSeriesAnalysis", portfolioStartEnd],
+    queryKey: ["getTimeSeriesAnalysis"],
     queryFn: () => getTimeSeriesAnalysis(portfolioStartEnd),
   });
 
@@ -380,6 +383,14 @@ export const useGetTimeSeriesAnalysis = (portfolioStartEnd) => {
 };
 
 const getTimeSeriesAnalysis = async (portfolioStartEnd) => {
-  let response = await axiosInstance.get("/timely/" + portfolioStartEnd.id + "/" + portfolioStartEnd.start + "/" + portfolioStartEnd.end, {timeout: 20000});
+  let response = await axiosInstance.get(
+    "/timely/" +
+      portfolioStartEnd.id +
+      "/" +
+      portfolioStartEnd.start +
+      "/" +
+      portfolioStartEnd.end,
+    { timeout: 20000 }
+  );
   return response.data;
 };

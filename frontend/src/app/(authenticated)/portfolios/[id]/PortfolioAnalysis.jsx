@@ -11,7 +11,7 @@ export default function PortfolioAnalysis({
 }) {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [render, setRender] = useState(false);
+  const [shouldShowTimeChart, setShouldShowTimeChart] = useState(false);
 
   const renderAnalysis = () => {
     if (analysisData === undefined)
@@ -50,10 +50,8 @@ export default function PortfolioAnalysis({
     return <PortfolioSectorChart stockData={stockData} type={type} />;
   }
 
-  function useRenderMarketChart() {
-    portfolioData.start = startDate;
-    portfolioData.end = endDate;
-    setRender(true);
+  function showTimeChart() {
+    setShouldShowTimeChart(true);
   }
 
   function renderTotal() {
@@ -105,8 +103,8 @@ export default function PortfolioAnalysis({
             <input
               value={startDate}
               onChange={(e) => {
-                setStartDate(e.target.value)
-                setRender(false)
+                setStartDate(e.target.value);
+                setShouldShowTimeChart(false);
               }}
               name="start"
               type="date"
@@ -130,8 +128,8 @@ export default function PortfolioAnalysis({
             <input
               value={endDate}
               onChange={(e) => {
-                setEndDate(e.target.value)
-                setRender(false)
+                setEndDate(e.target.value);
+                setShouldShowTimeChart(false);
               }}
               name="end"
               type="date"
@@ -139,11 +137,17 @@ export default function PortfolioAnalysis({
               placeholder="Select date end"
             />
           </div>
-          <button type="button" onClick={useRenderMarketChart}>
-              Go
-            </button>
+          <button type="button" onClick={showTimeChart}>
+            Go
+          </button>
         </div>
-        {render && <PortfolioMarketChart portfolioData={portfolioData} />}
+        {shouldShowTimeChart && (
+          <PortfolioMarketChart
+            portfolioData={portfolioData}
+            startDate={startDate}
+            endDate={endDate}
+          />
+        )}
       </div>
 
       <div className="col-span-4 conatainer p-5 bg-white rounded-md">
