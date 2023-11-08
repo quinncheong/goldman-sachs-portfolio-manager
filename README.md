@@ -1,4 +1,4 @@
-# goldman-sachs-portfolio-manager
+# Goldman Sachs Portfolio Analyzer
 
 <div id="top"></div>
 
@@ -15,8 +15,6 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
 
 
 <!-- PROJECT LOGO -->
@@ -42,22 +40,23 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#project-features">Project Features</a></li>
         <li><a href="#built-with">Built With</a></li>
+        <li><a href="#key-libraries-used">Key Libraries Used</a></li>
       </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#caveats-and-notes">Caveats and Notes</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#running-the-front-end">Running the Frontend</a></li>
+        <li><a href="#running-the-back-end">Running the Backend</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#contributors">Contributors</a></li>
   </ol>
 </details>
 
@@ -154,15 +153,6 @@ Before you can run the application, you must have the following installed
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-<!-- USAGE EXAMPLES -->
-## Usage
-
-
-
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
 <!-- LICENSE -->
 ## License
 
@@ -171,18 +161,15 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-
-<!-- CONTACT -->
-## Contact
+## Contributors
 This project was built by the following contributors:
 
-Ang Wei Sheng - [Github](https://github.com/angweisheng)
-Bryan Leee - [Github](https://github.com/bryanleezh)
-Chester Chia - [Github](https://github.com/chesterchia)
-Elijah Khor - [Github](https://github.com/ekcm)
-Japheth Leong - [Github](https://github.com/japhethleongyh)
-Quinn Cheong - [Github](https://github.com/quinncheong)
-
+Ang Wei Sheng - [Github](https://github.com/angweisheng)<br/>
+Bryan Leee - [Github](https://github.com/bryanleezh)<br/>
+Chester Chia - [Github](https://github.com/chesterchia)<br/>
+Elijah Khor - [Github](https://github.com/ekcm)<br/>
+Japheth Leong - [Github](https://github.com/japhethleongyh)<br/>
+Quinn Cheong - [Github](https://github.com/quinncheong)<br/>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
