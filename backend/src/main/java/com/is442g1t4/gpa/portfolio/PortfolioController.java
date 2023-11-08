@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -140,4 +141,12 @@ public class PortfolioController {
             portfolioService.getPortfolioStockExAndVar(calculated), HttpStatus.OK);
     }
 
+    @GetMapping("/timely/{id}/{startDate}/{endDate}")
+    public ResponseEntity<Map<String, Double>> getTimely(@PathVariable ObjectId id, 
+                                                        @PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate,
+                                                        @PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate){
+        Map<String, PortfolioCalculator> calculated = portfolioCalculatorService.getCalculatedStockInPortfolio(id);
+        Map<String, Double> result = portfolioService.getMonthlyPortfolioValueByDateRange(calculated, startDate, endDate);
+        return new ResponseEntity<Map<String, Double>>(result, HttpStatus.OK);
+    }
 }
