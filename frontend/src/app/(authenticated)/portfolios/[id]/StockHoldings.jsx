@@ -1,11 +1,15 @@
 import HoldingsCard from "./HoldingsCard";
 import MarketSector from "./MarketSector";
+import { jwtDecode } from "jwt-decode";
+import { getCookie } from "cookies-next";
+
 
 export default function StockHoldings({
   stockDetails,
   stockData,
   portfolioData,
 }) {
+  let userId = jwtDecode(getCookie("token")).userId;
   function renderStocks() {
     if (stockDetails === undefined)
       return (
@@ -86,9 +90,11 @@ export default function StockHoldings({
             <div className="w-[10%] text-xs">
               <span>Pos. Ratio</span>
             </div>
+            {userId === portfolioData.userId && (
             <div className="w-[6%] text-xs">
               <span>Remove</span>
             </div>
+            )}
           </div>
         </div>
         {renderStocks()}
