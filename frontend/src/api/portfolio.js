@@ -329,6 +329,9 @@ export const useRemoveStock = () => {
       queryClient.invalidateQueries({
         queryKey: ["getROROfPortfolio", data.id],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["getTimeSeriesAnalysis"],
+      }); 
     },
     onSettled: (data, error, variables, context) => {
       // Error or success... doesn't matter!
