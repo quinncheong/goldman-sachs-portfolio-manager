@@ -18,6 +18,12 @@ import com.is442g1t4.gpa.user.UserRepository;
 
 import jakarta.mail.MessagingException;
 
+import com.is442g1t4.gpa.auth.email.EmailRequest;
+import com.is442g1t4.gpa.auth.email.EmailResponse;
+import com.is442g1t4.gpa.auth.email.EmailService;
+import com.is442g1t4.gpa.auth.utility.ForgetPasswordRequest;
+import com.is442g1t4.gpa.auth.utility.PasswordChangedStatus;
+import com.is442g1t4.gpa.auth.utility.RegisterRequest;
 import com.is442g1t4.gpa.config.JwtService;
 import com.is442g1t4.gpa.user.RoleEnum;
 import com.is442g1t4.gpa.user.User;
@@ -35,7 +41,7 @@ public class AuthenticationService {
 
         public AuthenticationResponse register(RegisterRequest request) {
 
-                Optional<User> duplicateUsername = userRepository.findByEmail(request.getEmail());
+                Optional<User> duplicateUsername = userRepository.findByUsername(request.getUsername());
                 Optional<User> duplicateEmail = userRepository.findByEmail(request.getEmail());
 
                 if (duplicateUsername.isPresent()||duplicateEmail.isPresent()){

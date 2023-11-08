@@ -1,4 +1,4 @@
-package com.is442g1t4.gpa.auth;
+package com.is442g1t4.gpa.auth.utility;
 
 public class WrongPasswordException extends RuntimeException{
     // Default constructor that sets the default message
