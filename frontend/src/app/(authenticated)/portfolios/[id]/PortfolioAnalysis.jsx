@@ -79,6 +79,27 @@ export default function PortfolioAnalysis({
     <div className="grid gap-5 p-5 grid-cols-12">
       <div className="col-span-12 p-5 bg-white rounded-md">
         <h1 className="m-3 text-xl font-semibold">Time Series Data</h1>
+
+        <div className="flex">
+          <label className="label mt-3">
+            <span className="label-text">From</span>
+          </label>
+          <input
+            type="date"
+            placeholder="Type here"
+            className="input input-bordered text-white w-full max-w-xs"
+          />
+
+          <label className="label mt-3">
+            <span className="label-text">To</span>
+          </label>
+          <input
+            type="date"
+            placeholder="Type here"
+            className="input input-bordered text-white w-full max-w-xs"
+          />
+        </div>
+
         <PortfolioMarketChart />
       </div>
 
