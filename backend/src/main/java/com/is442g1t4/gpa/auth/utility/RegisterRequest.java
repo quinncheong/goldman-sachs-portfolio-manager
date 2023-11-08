@@ -1,4 +1,4 @@
-package com.is442g1t4.gpa.auth;
+package com.is442g1t4.gpa.auth.utility;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmailRequest {
+public class RegisterRequest {
+    private String name;
+    private String username;
+    private String password;
     private String email;
 }

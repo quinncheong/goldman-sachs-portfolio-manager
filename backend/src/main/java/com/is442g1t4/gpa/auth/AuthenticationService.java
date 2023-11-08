@@ -18,6 +18,12 @@ import com.is442g1t4.gpa.user.UserRepository;
 
 import jakarta.mail.MessagingException;
 
+import com.is442g1t4.gpa.auth.email.EmailRequest;
+import com.is442g1t4.gpa.auth.email.EmailResponse;
+import com.is442g1t4.gpa.auth.email.EmailService;
+import com.is442g1t4.gpa.auth.utility.ForgetPasswordRequest;
+import com.is442g1t4.gpa.auth.utility.PasswordChangedStatus;
+import com.is442g1t4.gpa.auth.utility.RegisterRequest;
 import com.is442g1t4.gpa.config.JwtService;
 import com.is442g1t4.gpa.user.RoleEnum;
 import com.is442g1t4.gpa.user.User;
