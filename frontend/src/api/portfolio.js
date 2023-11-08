@@ -125,6 +125,32 @@ const getAnalysis = async (portfolioId) => {
   return response.data;
 };
 
+export const useGetManyAnalysis = (portfolios) => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getManyAnalysis"],
+    queryFn: () => getManyAnalysis(portfolios),
+  });
+
+  return { data, isLoading, isError, error };
+};
+
+const getManyAnalysis = async (portfolios) => {
+  let data = [];
+
+  if (!portfolios || portfolios === undefined) {
+    return data;
+  }
+
+  for (let p of portfolios) {
+    if (p === undefined) {
+      continue;
+    }
+    let response = await axiosInstance.get("/" + p.id + "/portfolio");
+    data.push(response.data);
+  }
+  return data;
+};
+
 export const useCreatePortfolio = () => {
   const queryClient = useQueryClient();
   const {

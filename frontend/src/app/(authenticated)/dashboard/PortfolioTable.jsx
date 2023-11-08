@@ -1,19 +1,27 @@
 "use client";
 import "react-data-grid/lib/styles.css";
-import { useGetAnalysis } from "@/api/portfolio";
+import { useGetManyAnalysis } from "@/api/portfolio";
 import PortfolioTableRow from "./PortfolioTableRow";
+import { useEffect, useState } from "react";
+import Loader from "@/components/loading/Loader";
 
 export default function PortfolioTable({ portfolios }) {
+  const {
+    data: portfolioData,
+    isLoading,
+    isError,
+    error,
+  } = useGetManyAnalysis(portfolios);
+
   if (!portfolios) {
     return <div>No Portfolios to display! Start creating </div>;
   }
 
-  const portfolioData = portfolios.map((portfolio) => {
-    const { data, isLoading, isError, error } = useGetAnalysis(portfolio.id);
-    return data;
-  });
+  if (isLoading) {
+    return <Loader />;
+  }
 
-  if (portfolioData.includes(undefined)) {
+  if (!portfolioData || portfolioData.includes(undefined)) {
     return <></>;
   }
   let appendedPortfolios = [];
