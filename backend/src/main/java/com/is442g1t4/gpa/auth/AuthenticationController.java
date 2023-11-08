@@ -12,6 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.is442g1t4.gpa.auth.email.EmailDetails;
+import com.is442g1t4.gpa.auth.email.EmailRequest;
+import com.is442g1t4.gpa.auth.email.EmailResponse;
+import com.is442g1t4.gpa.auth.email.EmailService;
+import com.is442g1t4.gpa.auth.utility.ForgetPasswordRequest;
+import com.is442g1t4.gpa.auth.utility.PasswordChangedStatus;
+import com.is442g1t4.gpa.auth.utility.RegisterRequest;
+
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 

@@ -125,6 +125,32 @@ const getAnalysis = async (portfolioId) => {
   return response.data;
 };
 
+export const useGetManyAnalysis = (portfolios) => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getManyAnalysis"],
+    queryFn: () => getManyAnalysis(portfolios),
+  });
+
+  return { data, isLoading, isError, error };
+};
+
+const getManyAnalysis = async (portfolios) => {
+  let data = [];
+
+  if (!portfolios || portfolios === undefined) {
+    return data;
+  }
+
+  for (let p of portfolios) {
+    if (p === undefined) {
+      continue;
+    }
+    let response = await axiosInstance.get("/" + p.id + "/portfolio");
+    data.push(response.data);
+  }
+  return data;
+};
+
 export const useCreatePortfolio = () => {
   const queryClient = useQueryClient();
   const {
@@ -135,24 +161,15 @@ export const useCreatePortfolio = () => {
     mutate: createNewPortfolio,
   } = useMutation({
     mutationFn: (data) => createPortfolio(data),
-    onMutate: (variables) => {
-      // A mutation is about to happen!
-      // Optionally return a context containing data to use when for example rolling back
-      // return { id: 1 };
-    },
+    onMutate: (variables) => {},
     onError: (error, variables, context) => {
-      // An error happened!
-      // console.log(`rolling back optimistic update with id ${context.id}`);
       toast.error(error);
     },
     onSuccess: (data, variables, context) => {
       toast.success("Portfolio Created!");
-      console.log(data);
       queryClient.invalidateQueries(["getPortfoliosOfUser"]);
     },
-    onSettled: (data, error, variables, context) => {
-      // Error or success... doesn't matter!
-    },
+    onSettled: (data, error, variables, context) => {},
   });
 
   return {
@@ -185,20 +202,12 @@ export const useUpdatePortfolio = () => {
     mutate,
   } = useMutation({
     mutationFn: (data) => updatePortfolio(data),
-    onMutate: (variables) => {
-      // A mutation is about to happen!
-      // Optionally return a context containing data to use when for example rolling back
-      // return { id: 1 };
-    },
+    onMutate: (variables) => {},
     onError: (error, variables, context) => {
-      // An error happened!
-      // console.log(`rolling back optimistic update with id ${context.id}`);
       toast.error(error);
     },
     onSuccess: (data, variables, context) => {
       toast.success("Portfolio has been saved!");
-      console.log(data);
-
       queryClient.invalidateQueries({
         queryKey: ["getPortfolioByPortfolioId", data.id],
       });
@@ -213,6 +222,9 @@ export const useUpdatePortfolio = () => {
       });
       queryClient.invalidateQueries({
         queryKey: ["getROROfPortfolio", data.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getTimeSeriesAnalysis"],
       });
     },
     onSettled: (data, error, variables, context) => {
@@ -252,23 +264,14 @@ export const useDeletePortfolio = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(["getPortfoliosOfUser"]);
     },
-    onMutate: (variables) => {
-      // A mutation is about to happen!
-      // Optionally return a context containing data to use when for example rolling back
-      // return { id: 1 };
-    },
+    onMutate: (variables) => {},
     onError: (error, variables, context) => {
-      // An error happened!
-      // console.log(`rolling back optimistic update with id ${context.id}`);
       toast.error(error);
     },
     onSuccess: (data, variables, context) => {
       toast.success("Portfolio Successfully Delete!");
-      console.log(data);
     },
-    onSettled: (data, error, variables, context) => {
-      // Error or success... doesn't matter!
-    },
+    onSettled: (data, error, variables, context) => {},
   });
 
   return {
@@ -281,7 +284,6 @@ export const useDeletePortfolio = () => {
 };
 
 const deletePortfolio = async (portfolioId) => {
-  console.log(portfolioId);
   try {
     let response = await axiosInstance.delete("/" + portfolioId);
     return response.data;
@@ -300,14 +302,8 @@ export const useRemoveStock = () => {
     mutate: remStock,
   } = useMutation({
     mutationFn: (data) => removeStock(data),
-    onMutate: (variables) => {
-      // A mutation is about to happen!
-      // Optionally return a context containing data to use when for example rolling back
-      // return { id: 1 };
-    },
+    onMutate: (variables) => {},
     onError: (error, variables, context) => {
-      // An error happened!
-      // console.log(`rolling back optimistic update with id ${context.id}`);
       toast.error(error);
     },
     onSuccess: (data, variables, context) => {
@@ -325,6 +321,9 @@ export const useRemoveStock = () => {
       });
       queryClient.invalidateQueries({
         queryKey: ["getROROfPortfolio", data.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getTimeSeriesAnalysis"],
       });
     },
     onSettled: (data, error, variables, context) => {
@@ -367,5 +366,27 @@ const getROROfPortfolio = async (portfolioId) => {
   let response = await axiosInstance.get("/ror/" + portfolioId, {
     timeout: 20000,
   });
+  return response.data;
+};
+
+export const useGetTimeSeriesAnalysis = (portfolioStartEnd) => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getTimeSeriesAnalysis"],
+    queryFn: () => getTimeSeriesAnalysis(portfolioStartEnd),
+  });
+
+  return { data, isLoading, isError, error };
+};
+
+const getTimeSeriesAnalysis = async (portfolioStartEnd) => {
+  let response = await axiosInstance.get(
+    "/timely/" +
+      portfolioStartEnd.id +
+      "/" +
+      portfolioStartEnd.start +
+      "/" +
+      portfolioStartEnd.end,
+    { timeout: 20000 }
+  );
   return response.data;
 };

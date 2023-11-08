@@ -1,3 +1,5 @@
+"use client";
+
 import {
   LineChart,
   Line,
@@ -8,63 +10,72 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useGetTimeSeriesAnalysis } from "@/api/portfolio";
+import Loader from "@/components/loading/Loader";
+import { useState, useEffect } from "react";
 
-const data = [
-  {
-    name: "23/07/10",
-    Benchmark: 4000,
-    Price: 2400,
-    amt: 2400,
-  },
-  {
-    name: "24/07/10",
-    Benchmark: 3000,
-    Price: 1398,
-    amt: 2210,
-  },
-  {
-    name: "25/07/10",
-    Benchmark: 2000,
-    Price: 9800,
-    amt: 2290,
-  },
-  {
-    name: "26/07/10",
-    Benchmark: 2780,
-    Price: 3908,
-    amt: 2000,
-  },
-  {
-    name: "27/07/10",
-    Benchmark: 1890,
-    Price: 4800,
-    amt: 2181,
-  },
-  {
-    name: "28/07/10",
-    Benchmark: 2390,
-    Price: 3800,
-    amt: 2500,
-  },
-  {
-    name: "29/07/10",
-    Benchmark: 3490,
-    Price: 4300,
-    amt: 2100,
-  },
-];
+const months = {
+  "01": "Jan",
+  "02": "Feb",
+  "03": "Mar",
+  "04": "Apr",
+  "05": "May",
+  "06": "Jun",
+  "07": "Jul",
+  "08": "Aug",
+  "09": "Sep",
+  10: "Oct",
+  11: "Nov",
+  12: "Dec",
+};
 
-export default function PortfolioMarketChart() {
+export default function PortfolioMarketChart({
+  portfolioData,
+  startDate,
+  endDate,
+}) {
+  const { data, isLoading, isError, error } = useGetTimeSeriesAnalysis({
+    id: portfolioData.id,
+    start: startDate,
+    end: endDate,
+  });
+
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    let tmpChartData = [];
+    for (let key in data) {
+      let year = key.split("-")[0].slice(-2);
+      let month = key.split("-")[1];
+      tmpChartData.push({
+        name: months[month] + "' " + year,
+        Value: data[key],
+      });
+    }
+    setChartData(tmpChartData);
+  }, [data]);
+
+  if (isLoading)
+    return (
+      <div className="flex">
+        <Loader />
+      </div>
+    );
+
   return (
     <ResponsiveContainer width="100%" height={300}>
-      <LineChart width={640} height={300} data={data}>
+      <LineChart width={640} height={300} data={chartData}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
-        <YAxis />
+        <YAxis type="number" domain={["auto", "auto"]} />
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="Price" stroke="#8884d8" />
-        <Line type="monotone" dataKey="Benchmark" stroke="#82ca9d" />
+        <Line
+          type="monotone"
+          dataKey="Value"
+          stroke="#8884d8"
+          name="Portfolio Value"
+        />
       </LineChart>
     </ResponsiveContainer>
   );

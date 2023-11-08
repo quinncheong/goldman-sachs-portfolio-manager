@@ -1,4 +1,4 @@
-package com.is442g1t4.gpa.auth;
+package com.is442g1t4.gpa.auth.email;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmailDetails {
     private String recipient;
-    // private String subject;
-    // private String msgBody;
-    // private String attachment;
 }

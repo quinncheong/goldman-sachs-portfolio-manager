@@ -28,7 +28,6 @@ export const useGetAccountData = () => {
 const getAccountData = async () => {
   try {
     let userId = jwtDecode(getCookie("token")).userId;
-    console.log(userId);
     let response = await axiosUserInstance.get("/data/" + userId);
     return response.data;
   } catch (error) {
@@ -116,18 +115,12 @@ export const useCreateAccessLog = () => {
       queryClient.invalidateQueries(["getAccessLogs"]);
     },
     onMutate: (variables) => {
-      // A mutation is about to happen!
-      // Optionally return a context containing data to use when for example rolling back
-      // return { id: 1 };
     },
     onError: (error, variables, context) => {
-      // An error happened!
-      // console.log(`rolling back optimistic update with id ${context.id}`);
       console.log(error);
     },
     onSuccess: (data, variables, context) => {},
     onSettled: (data, error, variables, context) => {
-      // Error or success... doesn't matter!
     },
   });
 

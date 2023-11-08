@@ -3,7 +3,6 @@ import MarketSector from "./MarketSector";
 import { jwtDecode } from "jwt-decode";
 import { getCookie } from "cookies-next";
 
-
 export default function StockHoldings({
   stockDetails,
   stockData,
@@ -66,34 +65,28 @@ export default function StockHoldings({
         <div className="h-20">
           <h1 className="m-3 text-xl font-semibold">Stock Holdings</h1>
           <div className="w-full flex flex-row items-end min-h-8">
-            <div className="w-[22%] text-xs">
+            <div className="w-[30%] text-xs">
               <span>Symbol | Name</span>
             </div>
-            <div className="w-[10%] text-xs">
+            <div className="w-[13%] text-xs">
               <span>Pos. | Mkt.</span>
             </div>
-            <div className="w-[10%] text-xs">
+            <div className="w-[13%] text-xs">
               <span>Last | Cost</span>
             </div>
-            <div className="w-[14%] text-xs">
+            <div className="w-[12.5%] text-xs">
               <span>P&L</span>
             </div>
-            <div className="w-[13.5%] text-xs">
+            <div className="w-[13%] text-xs">
               <span>Daily P&L</span>
             </div>
-            <div className="w-[9.5%] text-xs">
-              <span>Asset Var.</span>
-            </div>
-            <div className="w-[10%] text-xs">
-              <span>MC to Risk</span>
-            </div>
-            <div className="w-[10%] text-xs">
+            <div className="w-[12.5%] text-xs">
               <span>Pos. Ratio</span>
             </div>
             {userId === portfolioData.userId && (
-            <div className="w-[6%] text-xs">
-              <span>Remove</span>
-            </div>
+              <div className="w-[6%] text-xs">
+                <span>Remove</span>
+              </div>
             )}
           </div>
         </div>

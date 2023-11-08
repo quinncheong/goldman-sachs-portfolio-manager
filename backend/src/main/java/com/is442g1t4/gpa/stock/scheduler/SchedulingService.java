@@ -1,6 +1,6 @@
 package com.is442g1t4.gpa.stock.scheduler;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,8 +47,7 @@ public class SchedulingService {
     }
 
     public void saveStockDetailsForOneStock(String symbol) {
-        Stock completedStockDetails = stockDetailsRetriever
-                .retrieveOneStockDetails(symbol);
+        Stock completedStockDetails = stockDetailsRetriever.retrieveOneStockDetails(symbol);
         stockRepository.save(completedStockDetails);
     }
 
@@ -56,8 +55,8 @@ public class SchedulingService {
         List<TrackedStock> trackedStocks = trackedStockRepository.findAll();
 
         for (TrackedStock trackedStock : trackedStocks) {
-            List<StockPrice> fullStockPrices = stockDetailsRetriever
-                    .retrieveFullStockPrices(trackedStock.getSymbol());
+            List<StockPrice> fullStockPrices =
+                    stockDetailsRetriever.retrieveFullStockPrices(trackedStock.getSymbol());
 
             stockPriceRepository.saveAll(fullStockPrices);
             System.out.println("Saved for" + trackedStock.getSymbol());
@@ -73,7 +72,8 @@ public class SchedulingService {
     }
 
     public void savePriceForOneStock(String stockSymbol) {
-        List<StockPrice> fullStockPrices = stockDetailsRetriever.retrieveFullStockPrices(stockSymbol);
+        List<StockPrice> fullStockPrices =
+                stockDetailsRetriever.retrieveFullStockPrices(stockSymbol);
         stockPriceRepository.saveAll(fullStockPrices);
         System.out.println("Saved for stock: " + stockSymbol);
     }
@@ -95,22 +95,32 @@ public class SchedulingService {
     }
 
     public void updateLatestPriceForOneStock(String stockSymbol) {
-        List<StockPrice> latestStockPrices = stockDetailsRetriever
-                .retrieveCurrStockPrices(stockSymbol);
+        List<StockPrice> latestStockPrices =
+                stockDetailsRetriever.retrieveCurrStockPrices(stockSymbol);
 
         StockPrice priceToday = latestStockPrices.get(0);
         StockPrice priceYesterday = latestStockPrices.get(1);
 
         System.out.print(stockSymbol);
 
-        StockPrice priceTodayFromDb = stockPriceRepository.findStockPriceByStockTickerAndDate(
-                priceToday.getStockTicker(),
-                priceToday.getDate(),
-                priceToday.getDate());
-
-        if (priceTodayFromDb == null) {
-            stockPriceRepository.save(priceToday);
+        for (StockPrice stockPrice : latestStockPrices) {
+            Date curr = stockPrice.getDate();
+            Date nextDay = new Date(curr.getTime() + 86400000);
+            StockPrice priceFromDB = stockPriceRepository
+                    .findStockPriceByStockTickerAndDate(stockSymbol, curr, nextDay);
+            if (priceFromDB == null) {
+                stockPriceRepository.save(stockPrice);
+            }
         }
+
+        // StockPrice priceTodayFromDb = stockPriceRepository.findStockPriceByStockTickerAndDate(
+        // priceToday.getStockTicker(),
+        // priceToday.getDate(),
+        // priceToday.getDate());
+
+        // if (priceTodayFromDb == null) {
+        // stockPriceRepository.save(priceToday);
+        // }
 
         Optional<Stock> stock = stockRepository.findStockBySymbol(stockSymbol);
         if (stock.isPresent()) {

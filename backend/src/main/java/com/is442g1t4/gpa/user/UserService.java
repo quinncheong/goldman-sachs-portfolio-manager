@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.is442g1t4.gpa.auth.PasswordRequest;
-import com.is442g1t4.gpa.auth.WrongPasswordException;
+import com.is442g1t4.gpa.auth.utility.PasswordRequest;
+import com.is442g1t4.gpa.auth.utility.WrongPasswordException;
 import com.is442g1t4.gpa.portfolio.Portfolio;
 import com.is442g1t4.gpa.portfolio.PortfolioService;
 import java.util.Date;

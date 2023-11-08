@@ -1,4 +1,4 @@
-package com.is442g1t4.gpa.auth;
+package com.is442g1t4.gpa.auth.utility;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

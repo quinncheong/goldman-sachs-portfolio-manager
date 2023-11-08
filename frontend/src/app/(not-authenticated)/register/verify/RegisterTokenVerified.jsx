@@ -2,10 +2,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
 import { useVerifyRegisteredUser } from "@/api/authentication";
 import Loader from "@/components/loading/Loader";
-
 function RegisterTokenVerified({ token }) {
   const router = useRouter();
 

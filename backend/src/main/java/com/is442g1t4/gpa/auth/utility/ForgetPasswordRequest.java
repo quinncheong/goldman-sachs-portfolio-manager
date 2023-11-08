@@ -1,4 +1,4 @@
-package com.is442g1t4.gpa.auth;
+package com.is442g1t4.gpa.auth.utility;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PasswordRequest {
-    private String newpassword;
-    private String oldpassword;
+public class ForgetPasswordRequest {
+    String newPassword;
 }

@@ -257,7 +257,6 @@ const mapping = [
 ];
 
 export function getMapping(country) {
-    console.log(country)
     for (const m of mapping) {
         if (m.name.toUpperCase() == country.toUpperCase()) {
             return m.code;

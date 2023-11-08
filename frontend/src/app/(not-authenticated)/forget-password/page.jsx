@@ -34,12 +34,6 @@ export default function Page() {
     await mutateAsync(email);
   };
 
-  //   if (mailSent) {
-  //     return (
-
-  //     )
-  //   }
-
   const renderSuccessMsg = () => {
     return (
       <div className="container flex flex-col">
