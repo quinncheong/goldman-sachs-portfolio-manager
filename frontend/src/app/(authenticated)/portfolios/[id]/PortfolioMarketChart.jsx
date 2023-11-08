@@ -14,15 +14,17 @@ import Loader from "@/components/loading/Loader";
 export default function PortfolioMarketChart({ portfolioData }) {
   const { data, isLoading, isError, error } = useGetTimeSeriesAnalysis({
     id: portfolioData.id,
-    start: "2015-10-01",
-    end: "2023-09-01"
+    start: "2022-03-01",
+    end: "2023-08-01"
   });
-  if (isLoading) return <Loader />;
+  if (isLoading) return <div className="flex"><Loader /></div>;
 
   const entries = [];
+  const months = {"01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May","06": "Jun", "07": "Jul", "08": "Aug", "09": "Sep", "10": "Oct","11": "Nov", "12": "Dec"};
   for (let key in data) {
-    console.log(key, data[key])
-    entries.push({ name: key, Price: data[key] });
+    let year = key.split("-")[0].slice(-2);
+    let month = key.split("-")[1];
+    entries.push({ name: months[month]+"' "+year, Value: data[key] });
   }
 
   return (
@@ -30,10 +32,10 @@ export default function PortfolioMarketChart({ portfolioData }) {
       <LineChart width={640} height={300} data={entries}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
-        <YAxis />
+        <YAxis type="number" domain={['auto', 'auto']}/>
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="Price" stroke="#8884d8" />
+        <Line type="monotone" dataKey="Value" stroke="#8884d8" name="Portfolio Value"/>
       </LineChart>
     </ResponsiveContainer>
   );
