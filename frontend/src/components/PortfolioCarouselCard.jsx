@@ -92,8 +92,8 @@ export default function PortfolioCarouselCard({ portfolio }) {
               </div>
             </div>
             <div>
-              <span>RoR: </span>
-              <div className={`badge text-white font-bold ${ror >= 0 ? "badge-success" : "badge-error"}`}>{ror >= 0 ? "+" : ""}{ror.toFixed(2)}%</div>
+              {/* <span>RoR: </span> */}
+              {/* <div className={`badge text-white font-bold ${ror >= 0 ? "badge-success" : "badge-error"}`}>{ror >= 0 ? "+" : ""}{ror.toFixed(2)}%</div> */}
             </div>
           </div>
         </div>

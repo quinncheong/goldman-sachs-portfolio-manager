@@ -66,7 +66,7 @@ export default function PortfolioCard({ portfolio }) {
                 </div>
               </div>
               <div>
-                <span>RoR: </span>
+                {/* <span>RoR: </span> */}
                 {/* <div className={`badge text-white font-bold ${ror > 0 ? "badge-success" : "badge-error"}`}>{ror >= 0 ? "+" : ""}{ror.toFixed(2)}%</div> */}
               </div>
             </div>
