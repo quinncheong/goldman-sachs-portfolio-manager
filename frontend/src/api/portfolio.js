@@ -211,6 +211,9 @@ export const useUpdatePortfolio = () => {
       queryClient.invalidateQueries({
         queryKey: ["getAnalysis", data.id],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["getROROfPortfolio", data.id],
+      });
     },
     onSettled: (data, error, variables, context) => {
       // Error or success... doesn't matter!
@@ -319,6 +322,9 @@ export const useRemoveStock = () => {
       });
       queryClient.invalidateQueries({
         queryKey: ["getAnalysis", data.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getROROfPortfolio", data.id],
       });
     },
     onSettled: (data, error, variables, context) => {
