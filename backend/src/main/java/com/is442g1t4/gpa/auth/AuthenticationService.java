@@ -40,11 +40,13 @@ public class AuthenticationService {
 
         public AuthenticationResponse register(RegisterRequest request) {
 
-                Optional<User> duplicateUsername = userRepository.findByUsername(request.getUsername());
+                Optional<User> duplicateUsername =
+                                userRepository.findByUsername(request.getUsername());
                 Optional<User> duplicateEmail = userRepository.findByEmail(request.getEmail());
 
                 if (duplicateUsername.isPresent() || duplicateEmail.isPresent()) {
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Duplicate username or email");
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                        "Duplicate username or email");
                 }
                 User user = User.builder().name(request.getName()).username(request.getUsername())
                                 .password(passwordEncoder.encode(request.getPassword()))
@@ -159,7 +161,6 @@ public class AuthenticationService {
                 String newPassword = request.getNewPassword();
                 String username = jwtService.extractUsername(token);
                 User user = userRepository.findByUsername(username).orElseThrow();
-                System.out.println(newPassword);
                 user.setPassword(passwordEncoder.encode(newPassword));
                 userRepository.save(user);
 

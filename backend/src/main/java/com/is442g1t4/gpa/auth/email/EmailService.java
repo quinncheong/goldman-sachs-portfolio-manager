@@ -39,7 +39,6 @@ public class EmailService {
 
         javaMailSender.send(mimeMessage);
 
-        System.out.println("Message sent");
     }
 
     public void sendForgetPasswordEmail(String name, String email, String token)
@@ -59,6 +58,5 @@ public class EmailService {
 
         javaMailSender.send(mimeMessage);
 
-        System.out.println("Message sent");
     }
 }
