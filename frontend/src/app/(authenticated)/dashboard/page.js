@@ -101,7 +101,7 @@ function Dashboard() {
     setAnalysis(tmpAnalysis);
   }, [accData]);
 
-  if (isAccDataLoading || isPublicPorfoliosLoading) {
+  if (isAccDataLoading || isPublicPorfoliosLoading || isLoading) {
     return <Loader />;
   }
 
