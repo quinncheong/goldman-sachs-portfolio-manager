@@ -14,8 +14,8 @@ import Loader from "@/components/loading/Loader";
 export default function PortfolioMarketChart({ portfolioData }) {
   const { data, isLoading, isError, error } = useGetTimeSeriesAnalysis({
     id: portfolioData.id,
-    start: "2022-03-01",
-    end: "2023-08-01"
+    start: portfolioData,
+    end: portfolioData.end
   });
   if (isLoading) return <div className="flex"><Loader /></div>;
 
