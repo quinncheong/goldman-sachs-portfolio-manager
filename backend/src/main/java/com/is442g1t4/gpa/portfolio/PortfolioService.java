@@ -185,24 +185,32 @@ public class PortfolioService {
             }
             System.out.println(stockPrice1);
             stockPrices.add(stockPrice1.getClose());
-            for (int i = 0; i < 6; i ++){
-                cal.add(Calendar.YEAR, -1);
-                Date curr = cal.getTime();
-                StockPrice stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr);
-                while (stockPrice == null){
-                    cal.add(Calendar.DATE, -3);
-                    curr = cal.getTime();
-                    stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr);
-                }
-                System.out.println(stockTicker);
-                System.out.println(curr);
-                System.out.println(stockPrice);
-                stockPrices.add(stockPrice.getClose());
+            cal.add(Calendar.YEAR, -6);
+            stockPrice1 = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
+            while (stockPrice1 == null){
+                cal.add(Calendar.DATE, -3);
+                stockPrice1 = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, cal.getTime());
             }
-            for (int i = stockPrices.size() - 1; i > 0; i --){
-                Double perc = PortfolioCalculatorUtility.round((stockPrices.get(i - 1) / stockPrices.get(i) - 1) * 100);
-                percentages.add(perc);
-            }
+            stockPrices.add(stockPrice1
+            .getClose());
+            // for (int i = 0; i < 6; i ++){
+            //     cal.add(Calendar.YEAR, -1);
+            //     Date curr = cal.getTime();
+            //     StockPrice stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr);
+            //     while (stockPrice == null){
+            //         cal.add(Calendar.DATE, -3);
+            //         curr = cal.getTime();
+            //         stockPrice = stockPriceService.getStockPriceBySymbolAndDate(stockTicker, curr);
+            //     }
+            //     System.out.println(stockTicker);
+            //     System.out.println(curr);
+            //     System.out.println(stockPrice);
+            //     stockPrices.add(stockPrice.getClose());
+            // }
+            // for (int i = stockPrices.size() - 1; i > 0; i --){
+            //     Double perc = PortfolioCalculatorUtility.round((stockPrices.get(i - 1) / stockPrices.get(i) - 1) * 100);
+            //     percentages.add(perc);
+            // }
             Double percGrowth = (stockPrices.get(0)/stockPrices.get(stockPrices.size() - 1) - 1)*100;
             Double ex;
             if (percGrowth < 0){
