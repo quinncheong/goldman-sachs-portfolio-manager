@@ -8,56 +8,26 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useGetTimeSeriesAnalysis } from "@/api/portfolio";
+import Loader from "@/components/loading/Loader";
 
-const data = [
-  // {
-  //   name: "23/07/10",
-  //   Benchmark: 4000,
-  //   Price: 2400,
-  //   amt: 2400,
-  // },
-  // {
-  //   name: "24/07/10",
-  //   Benchmark: 3000,
-  //   Price: 1398,
-  //   amt: 2210,
-  // },
-  // {
-  //   name: "25/07/10",
-  //   Benchmark: 2000,
-  //   Price: 9800,
-  //   amt: 2290,
-  // },
-  // {
-  //   name: "26/07/10",
-  //   Benchmark: 2780,
-  //   Price: 3908,
-  //   amt: 2000,
-  // },
-  // {
-  //   name: "27/07/10",
-  //   Benchmark: 1890,
-  //   Price: 4800,
-  //   amt: 2181,
-  // },
-  // {
-  //   name: "28/07/10",
-  //   Benchmark: 2390,
-  //   Price: 3800,
-  //   amt: 2500,
-  // },
-  // {
-  //   name: "29/07/10",
-  //   Benchmark: 3490,
-  //   Price: 4300,
-  //   amt: 2100,
-  // },
-];
+export default function PortfolioMarketChart({ portfolioData }) {
+  const { data, isLoading, isError, error } = useGetTimeSeriesAnalysis({
+    id: portfolioData.id,
+    start: "2015-10-01",
+    end: "2023-09-01"
+  });
+  if (isLoading) return <Loader />;
 
-export default function PortfolioMarketChart() {
+  const entries = [];
+  for (let key in data) {
+    console.log(key, data[key])
+    entries.push({ name: key, Price: data[key] });
+  }
+
   return (
     <ResponsiveContainer width="100%" height={300}>
-      <LineChart width={640} height={300} data={data}>
+      <LineChart width={640} height={300} data={entries}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis />

@@ -3,6 +3,7 @@ import PortfolioMarketChart from "./PortfolioMarketChart";
 import PortfolioSectorChart from "./PortfolioSectorChart";
 import MonetaryAnalysis from "./MonetaryAnalysis";
 
+
 export default function PortfolioAnalysis({
   stockData,
   stockDetails,
@@ -100,7 +101,7 @@ export default function PortfolioAnalysis({
           />
         </div>
 
-        <PortfolioMarketChart />
+        <PortfolioMarketChart portfolioData={portfolioData} />
       </div>
 
       <div className="col-span-4 conatainer p-5 bg-white rounded-md">

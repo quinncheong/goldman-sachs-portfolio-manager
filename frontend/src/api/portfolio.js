@@ -369,3 +369,17 @@ const getROROfPortfolio = async (portfolioId) => {
   });
   return response.data;
 };
+
+export const useGetTimeSeriesAnalysis = (portfolioStartEnd) => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getTimeSeriesAnalysis", portfolioStartEnd],
+    queryFn: () => getTimeSeriesAnalysis(portfolioStartEnd),
+  });
+
+  return { data, isLoading, isError, error };
+};
+
+const getTimeSeriesAnalysis = async (portfolioStartEnd) => {
+  let response = await axiosInstance.get("/timely/" + portfolioStartEnd.id + "/" + portfolioStartEnd.start + "/" + portfolioStartEnd.end, {timeout: 20000});
+  return response.data;
+};
